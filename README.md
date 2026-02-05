@@ -11,5 +11,5 @@ It’s intentionally calm and planning-focused (not social-media heavy).
 - Local GeoJSON demo trail file (auto-loaded and fit-to-bounds)
 - Download button for the demo trail map
 
-## Project structure
+## Project structure 
 
