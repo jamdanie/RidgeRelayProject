@@ -25,13 +25,8 @@
     crossorigin=""
   />
 
- <link rel="stylesheet" href="./css/styles.css" />
-<script src="./js/main.js"></script>
-
-<a href="./assets/maps/rattlesnake-ridge-demo.geojson" download>
-  Download Demo Trail Map
-</a>
-
+  <!-- IMPORTANT: your repo has styles.css in the root -->
+  <link rel="stylesheet" href="./styles.css" />
 </head>
 
 <body>
@@ -114,7 +109,6 @@
         </div>
 
         <div class="hero-card" aria-label="Trust summary">
-          <!-- Optional hero image (placeholder). If you don’t add an image, the layout still works. -->
           <div class="hero-media" role="img" aria-label="Topographic styled outdoor background"></div>
 
           <div class="hero-card-body">
@@ -246,7 +240,6 @@
             </header>
 
             <form class="planner-form" aria-label="Trip planner form">
-              <!-- Intent declaration -->
               <div class="field">
                 <label for="intent">Intent declaration</label>
                 <textarea
@@ -258,19 +251,16 @@
                 <p class="hint" id="intentHint">Be specific enough that someone else can understand your plan.</p>
               </div>
 
-              <!-- Start time -->
               <div class="field">
                 <label for="startTime">Start time</label>
                 <input id="startTime" name="startTime" type="datetime-local" />
               </div>
 
-              <!-- Expected return -->
               <div class="field">
                 <label for="returnTime">Expected return</label>
                 <input id="returnTime" name="returnTime" type="datetime-local" />
               </div>
 
-              <!-- Check-in cadence -->
               <div class="field">
                 <label for="cadence">Check-in cadence</label>
                 <select id="cadence" name="cadence" aria-label="Check-in cadence">
@@ -281,7 +271,6 @@
                 </select>
               </div>
 
-              <!-- Emergency contact -->
               <div class="field">
                 <label for="emergency">Emergency contact</label>
                 <input
@@ -295,20 +284,19 @@
                 <p class="hint" id="emergencyHint">First person who should be notified if you miss check-ins.</p>
               </div>
 
-              <!-- Start trip button (demo) -->
               <button class="btn btn-primary btn-block" type="button" id="startTripBtn">
                 Start Trip (Demo)
               </button>
 
-              <!-- “Demo result” area (populated by JS) -->
               <div class="demo-status" id="demoStatus" aria-live="polite"></div>
             </form>
 
             <footer class="card-footer">
               <div class="btn-row">
+                <!-- IMPORTANT: your repo has assets/map (singular) -->
                 <a
                   class="btn btn-secondary"
-                  href="./assets/maps/rattlesnake-ridge-demo.geojson"
+                  href="./assets/map/rattlesnake-ridge-demo.geojson"
                   download="rattlesnake-ridge-demo.geojson"
                 >
                   Download Demo Trail Map
@@ -343,7 +331,6 @@
               <p class="card-subtitle">OpenStreetMap + Leaflet (demo GeoJSON overlay).</p>
             </header>
 
-            <!-- Leaflet map container -->
             <div class="map" id="map" role="application" aria-label="Leaflet map showing demo trail"></div>
 
             <footer class="map-footer">
@@ -440,7 +427,6 @@
                 Prefer email?
               </p>
 
-              <!-- Replace with your real email when ready -->
               <a class="btn btn-secondary btn-block" href="mailto:hello@ridgerelay.example?subject=RidgeRelay%20Feedback">
                 Email RidgeRelay
               </a>
@@ -473,6 +459,7 @@
     crossorigin=""
   ></script>
 
-  <script src="./js/main.js"></script>
+  <!-- IMPORTANT: your repo has main.js in the root -->
+  <script src="./main.js"></script>
 </body>
 </html>
