@@ -155,7 +155,7 @@ function prettyDate(value) {
    Leaflet map + local GeoJSON overlay
    Requirements:
    - Leaflet.js + OpenStreetMap tiles
-   - Load /assets/maps/rattlesnake-ridge-demo.geojson
+   - Load /assets/map/rattlesnake-ridge-demo.geojson
    - Draw on map and fit bounds
    ----------------------------- */
 (async function initMap() {
@@ -172,13 +172,16 @@ function prettyDate(value) {
   // 2) OpenStreetMap tiles (standard public tile server).
   // Note: For heavy production usage, consider a tile provider with an API key.
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    attribution:
+      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     maxZoom: 19,
   }).addTo(map);
 
   // 3) Load the local GeoJSON and add it to the map.
   try {
-    const geojsonUrl = "./assets/maps/rattlesnake-ridge-demo.geojson";
+    // IMPORTANT: Your repo has assets/map (singular), so use this path:
+    const geojsonUrl = "./assets/map/rattlesnake-ridge-demo.geojson";
+
     const res = await fetch(geojsonUrl, { cache: "no-store" });
     if (!res.ok) throw new Error(`GeoJSON fetch failed: ${res.status}`);
 
@@ -201,15 +204,17 @@ function prettyDate(value) {
     // Optional: Add a quiet marker at the approximate trailhead (demo).
     // This is purely illustrative and not authoritative.
     const trailhead = L.marker([47.4845, -121.7860]).addTo(map);
-    trailhead.bindPopup("<strong>Demo trailhead</strong><br/>Rattlesnake Ledge area");
-
+    trailhead.bindPopup(
+      "<strong>Demo trailhead</strong><br/>Rattlesnake Ledge area"
+    );
   } catch (err) {
     console.error(err);
 
     // If something fails, keep the site usable and communicate gently.
     const fallback = document.createElement("div");
     fallback.className = "map-fallback";
-    fallback.textContent = "Map failed to load the demo trail. Check that the GeoJSON file path exists.";
+    fallback.textContent =
+      "Map failed to load the demo trail. Check that the GeoJSON file path exists.";
     mapEl.appendChild(fallback);
   }
 })();
