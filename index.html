@@ -1,0 +1,472 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!--
+    RidgeRelay — Single-page concept site (GitHub Pages ready)
+    Mobile-first, calm, safety-first UX.
+    No build tools. Pure HTML/CSS/JS.
+  -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="RidgeRelay is a concept outdoor safety system for low/no-cell areas—plan smart, return safe." />
+
+  <title>RidgeRelay — Plan smart. Return safe.</title>
+
+  <!-- Modern sans-serif (Google Fonts). Optional, but works great on GitHub Pages. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Leaflet (open-source) -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""
+  />
+
+  <link rel="stylesheet" href="./css/styles.css" />
+</head>
+
+<body>
+  <!-- Skip link for keyboard users -->
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <!-- Header / Nav -->
+  <header class="site-header" data-elevate="false">
+    <div class="container header-inner">
+      <a class="brand" href="#home" aria-label="RidgeRelay home">
+        <span class="brand-mark" aria-hidden="true">RR</span>
+        <span class="brand-text">
+          <span class="brand-name">RidgeRelay</span>
+          <span class="brand-sub">Outdoor safety system (concept)</span>
+        </span>
+      </a>
+
+      <!-- Desktop nav -->
+      <nav class="nav-desktop" aria-label="Primary navigation">
+        <a href="#overview">Overview</a>
+        <a href="#how">How it works</a>
+        <a href="#visual">Visual example</a>
+        <a href="#about">About</a>
+        <a href="#contact" class="nav-cta">Contact</a>
+      </nav>
+
+      <!-- Mobile menu button -->
+      <button
+        class="menu-btn"
+        type="button"
+        aria-label="Open menu"
+        aria-controls="mobileDrawer"
+        aria-expanded="false"
+        id="menuBtn"
+      >
+        <span aria-hidden="true">Menu</span>
+      </button>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="drawer" id="mobileDrawer" hidden>
+      <nav class="nav-mobile" aria-label="Mobile navigation">
+        <a href="#overview">Overview</a>
+        <a href="#how">How it works</a>
+        <a href="#visual">Visual example</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main content -->
+  <main id="main">
+    <!-- HOME / HERO -->
+    <section id="home" class="section hero" aria-label="Home">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">Low / no-cell recreation</p>
+
+          <h1 class="hero-title">
+            RidgeRelay
+            <span class="hero-title-accent">Plan smart. Return safe.</span>
+          </h1>
+
+          <p class="hero-lede">
+            A calm, safety-first planning flow that helps you set expectations, share guardrails,
+            and keep people informed when your signal disappears.
+          </p>
+
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#visual">Start a Demo Plan</a>
+            <a class="btn btn-ghost" href="#how">See how it works</a>
+          </div>
+
+          <ul class="hero-bullets" aria-label="Key benefits">
+            <li>Intent declaration + return time</li>
+            <li>Check-in cadence for peace of mind</li>
+            <li>Escalation steps when you don’t check in</li>
+          </ul>
+        </div>
+
+        <div class="hero-card" aria-label="Trust summary">
+          <!-- Optional hero image (placeholder). If you don’t add an image, the layout still works. -->
+          <div class="hero-media" role="img" aria-label="Topographic styled outdoor background"></div>
+
+          <div class="hero-card-body">
+            <h2 class="card-title">Designed for clarity</h2>
+            <p class="card-text">
+              RidgeRelay is intentionally not “social.” It’s a focused safety companion you’ll want to
+              open before you leave the trailhead—and trust during the trip.
+            </p>
+
+            <div class="mini-updates" aria-label="Community updates preview">
+              <h3 class="mini-updates-title">Community updates</h3>
+              <ul class="mini-updates-list">
+                <li><span class="tag">Update</span> Demo trail map now loads automatically</li>
+                <li><span class="tag">Tip</span> Set check-ins shorter for winter conditions</li>
+              </ul>
+              <p class="mini-updates-note">
+                (Preview only—no feed, no pressure, just useful notes.)
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- OVERVIEW -->
+    <section id="overview" class="section" aria-label="Overview">
+      <div class="container split">
+        <div>
+          <h2 class="section-title">Overview</h2>
+          <p class="section-lede">
+            Out here, your phone can go from “fine” to “no service” in minutes. That’s normal—
+            but it makes it harder for others to know your plan, your boundaries, and when to worry.
+          </p>
+
+          <p class="section-body">
+            RidgeRelay is a concept for a lightweight outdoor safety system built around planning.
+            You set your intent, timing, and check-in rhythm before you go. If check-ins stop,
+            the system escalates in predictable steps—starting with your chosen contacts and only
+            moving toward emergency support when it’s truly needed.
+          </p>
+
+          <div class="callout" role="note" aria-label="Safety note">
+            <strong>Safety-first by design:</strong> clear expectations reduce panic, false alarms, and wasted search time.
+          </div>
+        </div>
+
+        <div class="stat-card" aria-label="Quick summary">
+          <h3 class="stat-title">What RidgeRelay prioritizes</h3>
+          <ul class="stat-list">
+            <li><strong>Planning</strong> over posting</li>
+            <li><strong>Clarity</strong> over complexity</li>
+            <li><strong>Trust</strong> through predictable steps</li>
+            <li><strong>Offline-friendly</strong> mindset (concept)</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section id="how" class="section section-alt" aria-label="How RidgeRelay works">
+      <div class="container">
+        <h2 class="section-title">How it works</h2>
+        <p class="section-lede">
+          A simple 4-step flow—built to feel calm under stress.
+        </p>
+
+        <ol class="steps" aria-label="Four step flow">
+          <li class="step">
+            <div class="step-badge" aria-hidden="true">1</div>
+            <div class="step-body">
+              <h3>Plan</h3>
+              <p>
+                Declare your intent (where you’re going, when you start, when you expect to return).
+                Add one emergency contact who should be notified first.
+              </p>
+            </div>
+          </li>
+
+          <li class="step">
+            <div class="step-badge" aria-hidden="true">2</div>
+            <div class="step-body">
+              <h3>Guardrails</h3>
+              <p>
+                Set reasonable boundaries: route, timing, and a “latest acceptable return.”
+                The goal is shared expectations—not perfect tracking.
+              </p>
+            </div>
+          </li>
+
+          <li class="step">
+            <div class="step-badge" aria-hidden="true">3</div>
+            <div class="step-body">
+              <h3>Check-ins</h3>
+              <p>
+                Choose a cadence (e.g., every 30–60 minutes). If you miss a check-in, the system
+                starts with gentle nudges and context for your contact.
+              </p>
+            </div>
+          </li>
+
+          <li class="step">
+            <div class="step-badge" aria-hidden="true">4</div>
+            <div class="step-body">
+              <h3>Escalation</h3>
+              <p>
+                If time thresholds pass, RidgeRelay escalates in steps—contact, then secondary actions,
+                then emergency support as needed. No surprises.
+              </p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- VISUAL EXAMPLE -->
+    <section id="visual" class="section" aria-label="Visual example">
+      <div class="container">
+        <h2 class="section-title">Visual example</h2>
+        <p class="section-lede">
+          Demo plan + a simple trail map preview for <strong>Rattlesnake Ridge / Rattlesnake Ledge, WA</strong>.
+        </p>
+
+        <div class="visual-grid">
+          <!-- Planner Card -->
+          <section class="card planner" aria-label="Demo planner">
+            <header class="card-header">
+              <h3 class="card-title">Trip Planner (Demo)</h3>
+              <p class="card-subtitle">Non-functional UI, designed to feel real.</p>
+            </header>
+
+            <form class="planner-form" aria-label="Trip planner form">
+              <!-- Intent declaration -->
+              <div class="field">
+                <label for="intent">Intent declaration</label>
+                <textarea
+                  id="intent"
+                  name="intent"
+                  rows="3"
+                  placeholder="Example: Day hike to Rattlesnake Ledge. Staying on main trail. Turning around if weather shifts."
+                ></textarea>
+                <p class="hint" id="intentHint">Be specific enough that someone else can understand your plan.</p>
+              </div>
+
+              <!-- Start time -->
+              <div class="field">
+                <label for="startTime">Start time</label>
+                <input id="startTime" name="startTime" type="datetime-local" />
+              </div>
+
+              <!-- Expected return -->
+              <div class="field">
+                <label for="returnTime">Expected return</label>
+                <input id="returnTime" name="returnTime" type="datetime-local" />
+              </div>
+
+              <!-- Check-in cadence -->
+              <div class="field">
+                <label for="cadence">Check-in cadence</label>
+                <select id="cadence" name="cadence" aria-label="Check-in cadence">
+                  <option value="30">Every 30 minutes</option>
+                  <option value="45">Every 45 minutes</option>
+                  <option value="60" selected>Every 60 minutes</option>
+                  <option value="90">Every 90 minutes</option>
+                </select>
+              </div>
+
+              <!-- Emergency contact -->
+              <div class="field">
+                <label for="emergency">Emergency contact</label>
+                <input
+                  id="emergency"
+                  name="emergency"
+                  type="text"
+                  inputmode="email"
+                  placeholder="Name + phone/email"
+                  aria-describedby="emergencyHint"
+                />
+                <p class="hint" id="emergencyHint">First person who should be notified if you miss check-ins.</p>
+              </div>
+
+              <!-- Start trip button (demo) -->
+              <button class="btn btn-primary btn-block" type="button" id="startTripBtn">
+                Start Trip (Demo)
+              </button>
+
+              <!-- “Demo result” area (populated by JS) -->
+              <div class="demo-status" id="demoStatus" aria-live="polite"></div>
+            </form>
+
+            <footer class="card-footer">
+              <div class="btn-row">
+                <a
+                  class="btn btn-secondary"
+                  href="./assets/maps/rattlesnake-ridge-demo.geojson"
+                  download="rattlesnake-ridge-demo.geojson"
+                >
+                  Download Demo Trail Map
+                </a>
+              </div>
+
+              <div class="btn-row btn-row-tight">
+                <a
+                  class="btn btn-ghost"
+                  href="https://maps.app.goo.gl/r79LstcUM4UWg4s27"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  View on Google Maps
+                </a>
+                <a
+                  class="btn btn-ghost"
+                  href="https://www.alltrails.com/trail/us/washington/rattlesnake-ledge"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  View on AllTrails
+                </a>
+              </div>
+            </footer>
+          </section>
+
+          <!-- Map Card -->
+          <section class="card map-card" aria-label="Map preview">
+            <header class="card-header">
+              <h3 class="card-title">Map preview</h3>
+              <p class="card-subtitle">OpenStreetMap + Leaflet (demo GeoJSON overlay).</p>
+            </header>
+
+            <!-- Leaflet map container -->
+            <div class="map" id="map" role="application" aria-label="Leaflet map showing demo trail"></div>
+
+            <footer class="map-footer">
+              <p class="tiny">
+                Map data © OpenStreetMap contributors. Demo trail line is illustrative only.
+              </p>
+            </footer>
+          </section>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="section section-alt" aria-label="About">
+      <div class="container split">
+        <div>
+          <h2 class="section-title">About</h2>
+          <p class="section-lede">
+            RidgeRelay is a concept prototype built as a school project.
+          </p>
+          <p class="section-body">
+            This site demonstrates a calm, planning-first UX for low/no-cell recreation. It’s intentionally
+            static (GitHub Pages) and uses open-source tools (Leaflet + OpenStreetMap). The goal is to
+            explore how clear intent, guardrails, and check-in rhythms can reduce confusion when something goes wrong.
+          </p>
+          <p class="section-body">
+            In a full product, offline maps, device capabilities, and an emergency escalation workflow would be carefully
+            tested and designed with safety stakeholders. This prototype focuses on the user experience and information flow.
+          </p>
+        </div>
+
+        <div class="about-card" aria-label="Project details">
+          <div class="about-media" role="img" aria-label="Subtle topographic image placeholder"></div>
+          <div class="about-body">
+            <h3 class="card-title">Prototype scope</h3>
+            <ul class="stat-list">
+              <li>Single-page UX concept</li>
+              <li>Demo planner UI</li>
+              <li>Leaflet map with local GeoJSON</li>
+              <li>No accounts, no feed, no tracking</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="section" aria-label="Contact">
+      <div class="container">
+        <h2 class="section-title">Contact</h2>
+        <p class="section-lede">
+          Want to share feedback on the concept? Send a note.
+        </p>
+
+        <div class="contact-grid">
+          <form class="card contact-card" aria-label="Contact form">
+            <header class="card-header">
+              <h3 class="card-title">Message (Demo)</h3>
+              <p class="card-subtitle">This form is non-functional on purpose (static hosting).</p>
+            </header>
+
+            <div class="card-body">
+              <div class="field">
+                <label for="name">Name</label>
+                <input id="name" name="name" type="text" autocomplete="name" placeholder="Your name" />
+              </div>
+
+              <div class="field">
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" />
+              </div>
+
+              <div class="field">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" rows="5" placeholder="What would make this concept more trustworthy or useful?"></textarea>
+              </div>
+
+              <button class="btn btn-primary btn-block" type="button" id="contactBtn">
+                Send (Demo)
+              </button>
+
+              <div class="demo-status" id="contactStatus" aria-live="polite"></div>
+            </div>
+          </form>
+
+          <aside class="card contact-aside" aria-label="Email contact">
+            <header class="card-header">
+              <h3 class="card-title">Direct email</h3>
+              <p class="card-subtitle">Use a placeholder mailto link for now.</p>
+            </header>
+
+            <div class="card-body">
+              <p class="section-body">
+                Prefer email?
+              </p>
+
+              <!-- Replace with your real email when ready -->
+              <a class="btn btn-secondary btn-block" href="mailto:hello@ridgerelay.example?subject=RidgeRelay%20Feedback">
+                Email RidgeRelay
+              </a>
+
+              <p class="tiny">
+                Tip: On GitHub Pages, you can wire up form submissions later using a serverless endpoint
+                (still optional), but this concept stays intentionally static.
+              </p>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer" aria-label="Footer">
+    <div class="container footer-inner">
+      <p class="tiny">
+        RidgeRelay is a prototype concept. Always follow trail guidance, carry essentials, and tell someone your plan.
+      </p>
+      <a class="tiny" href="#home">Back to top ↑</a>
+    </div>
+  </footer>
+
+  <!-- Leaflet (open-source) -->
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""
+  ></script>
+
+  <script src="./js/main.js"></script>
+</body>
+</html>
