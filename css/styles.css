@@ -362,3 +362,68 @@ input:focus, textarea:focus, select:focus{
   *{ transition:none !important; scroll-behavior:auto !important; }
   .reveal{ opacity:1 !important; transform:none !important; }
 }
+/* ---------- SaaS Steps (icon rows) ---------- */
+.steps{
+  margin: 24px 0 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 12px;
+}
+
+.step-item{
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 16px;
+  border-radius: 16px;
+  border: 1px solid rgba(15,23,42,0.10);
+  background: rgba(255,255,255,0.85);
+}
+
+.step-icon{
+  width: 38px;
+  height: 38px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  background: rgba(249,115,22,0.12);
+  flex: 0 0 auto;
+}
+
+.step-text strong{
+  display: block;
+  margin-bottom: 2px;
+}
+
+.step-text span{
+  color: rgba(15,23,42,0.68);
+}
+/* ---------- Reveal animation ---------- */
+.reveal{
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity .7s ease, transform .7s ease;
+}
+.reveal.is-visible{
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce){
+  .reveal{ opacity:1 !important; transform:none !important; transition:none !important; }
+}
+/* ---------- Card hover polish ---------- */
+.card{
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+.card:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(2,6,23,0.10);
+}
+
+/* ---------- Tablet layout ---------- */
+@media (min-width: 700px){
+  .hero-grid{ display:grid; grid-template-columns: 1.2fr 0.9fr; gap: 40px; }
+  .visual-grid{ display:grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+}
