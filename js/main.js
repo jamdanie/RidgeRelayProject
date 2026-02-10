@@ -218,3 +218,35 @@ function prettyDate(value) {
     mapEl.appendChild(fallback);
   }
 })();
+
+/* =========================================================
+   SaaS UI Upgrade: reveal-on-scroll animations
+   - Adds .reveal to main sections and reveals them on view
+   ========================================================= */
+(function revealOnScroll() {
+  const sections = document.querySelectorAll("main section");
+  sections.forEach((s) => s.classList.add("reveal"));
+
+  // Reveal the first section immediately (hero)
+  if (sections[0]) sections[0].classList.add("is-visible");
+
+  // Use IntersectionObserver for lightweight scroll animations
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          io.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.12 }
+  );
+
+  sections.forEach((s, idx) => {
+    // skip hero since we revealed it already
+    if (idx === 0) return;
+    io.observe(s);
+  });
+})();
+
