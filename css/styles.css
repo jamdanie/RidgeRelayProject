@@ -1,236 +1,146 @@
-/* =========================================================
-   RidgeRelay — Clean Safety-Focused Design System
-   Mobile-first, calm, structured
-   ========================================================= */
-
-/* ------------------ CSS Variables ------------------ */
 :root {
-  --color-bg: #f7f7f6;
-  --color-surface: #ffffff;
-  --color-primary: #f97316;      /* Safety orange */
-  --color-primary-dark: #ea580c;
-  --color-text: #1f2937;         /* Deep charcoal */
-  --color-muted: #6b7280;
-  --border-light: #e5e7eb;
-
+  --bg: #f7f7f6;
+  --surface: #ffffff;
+  --primary: #f97316;
+  --primary-dark: #ea580c;
+  --text: #1f2937;
+  --muted: #6b7280;
+  --border: #e5e7eb;
   --radius: 14px;
-
-  --space-xs: 6px;
-  --space-sm: 12px;
-  --space-md: 20px;
-  --space-lg: 40px;
-  --space-xl: 80px;
-
-  --max-width: 1100px;
+  --max: 1100px;
 }
 
-/* ------------------ Base Reset ------------------ */
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
   margin: 0;
   font-family: 'Inter', sans-serif;
-  background: var(--color-bg);
-  color: var(--color-text);
+  background: var(--bg);
+  color: var(--text);
   line-height: 1.6;
 }
 
-h1, h2, h3 {
-  margin-top: 0;
-  line-height: 1.2;
-}
-
-p {
-  margin-bottom: var(--space-md);
-}
-
-/* ------------------ Layout ------------------ */
 .container {
-  width: 100%;
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 0 var(--space-md);
+  max-width: var(--max);
+  margin: auto;
+  padding: 0 20px;
 }
 
 .section {
-  padding: var(--space-xl) 0;
+  padding: 80px 0;
 }
 
 .section-alt {
   background: #f0f0ef;
 }
 
-/* ------------------ Header ------------------ */
 .site-header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
   position: sticky;
   top: 0;
-  background: var(--color-surface);
-  border-bottom: 1px solid var(--border-light);
   z-index: 100;
 }
 
 .header-inner {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  padding: var(--space-md) 0;
-}
-
-.brand-name {
-  font-weight: 700;
-}
-
-.brand-sub {
-  display: block;
-  font-size: 0.8rem;
-  color: var(--color-muted);
-}
-
-/* ------------------ Navigation ------------------ */
-.nav-desktop {
-  display: none;
+  align-items: center;
+  padding: 20px 0;
 }
 
 .nav-desktop a {
-  margin-left: var(--space-md);
+  margin-left: 20px;
   text-decoration: none;
-  color: var(--color-text);
+  color: var(--text);
   font-weight: 500;
 }
 
 .nav-desktop a:hover {
-  color: var(--color-primary);
-}
-
-/* ------------------ Hero ------------------ */
-.hero {
-  padding-top: var(--space-xl);
+  color: var(--primary);
 }
 
 .hero-title {
-  font-size: 2.2rem;
+  font-size: 2.5rem;
   font-weight: 700;
 }
 
-.hero-title-accent {
+.hero-accent {
   display: block;
-  color: var(--color-primary);
+  color: var(--primary);
 }
 
 .hero-lede {
-  font-size: 1.1rem;
-  max-width: 550px;
-  color: var(--color-muted);
+  max-width: 500px;
+  color: var(--muted);
 }
 
-/* ------------------ Buttons ------------------ */
+.card {
+  background: var(--surface);
+  padding: 30px;
+  border-radius: var(--radius);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.05);
+}
+
 .btn {
   display: inline-block;
-  padding: 12px 20px;
+  padding: 12px 18px;
   border-radius: var(--radius);
   text-decoration: none;
   font-weight: 600;
-  transition: 0.2s ease;
   border: none;
   cursor: pointer;
+  transition: 0.2s ease;
 }
 
 .btn-primary {
-  background: var(--color-primary);
+  background: var(--primary);
   color: white;
 }
 
 .btn-primary:hover {
-  background: var(--color-primary-dark);
+  background: var(--primary-dark);
 }
 
 .btn-secondary {
-  background: #fff;
-  border: 1px solid var(--border-light);
-}
-
-.btn-ghost {
-  background: transparent;
-  color: var(--color-primary);
+  background: white;
+  border: 1px solid var(--border);
 }
 
 .btn-block {
   width: 100%;
 }
 
-/* ------------------ Cards ------------------ */
-.card {
-  background: var(--color-surface);
-  border-radius: var(--radius);
-  padding: var(--space-lg);
-  box-shadow: 0 6px 18px rgba(0,0,0,0.05);
-}
-
-.card-title {
-  margin-bottom: var(--space-sm);
-}
-
-/* ------------------ Forms ------------------ */
-.field {
-  margin-bottom: var(--space-md);
-}
-
-label {
-  display: block;
-  font-weight: 600;
-  margin-bottom: 6px;
-}
-
-input,
-textarea,
-select {
+input, textarea, select {
   width: 100%;
   padding: 12px;
+  margin-bottom: 15px;
   border-radius: 10px;
-  border: 1px solid var(--border-light);
-  font-family: inherit;
+  border: 1px solid var(--border);
 }
 
-input:focus,
-textarea:focus,
-select:focus {
-  outline: 2px solid var(--color-primary);
-  border-color: var(--color-primary);
+textarea {
+  min-height: 100px;
 }
 
-/* ------------------ Grid (Desktop Upgrade) ------------------ */
-@media (min-width: 900px) {
-  .nav-desktop {
-    display: block;
-  }
-
-  .hero-grid {
-    display: grid;
-    grid-template-columns: 1.2fr 1fr;
-    gap: var(--space-lg);
-    align-items: center;
-  }
-
-  .visual-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--space-lg);
-  }
-
-  .split {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--space-lg);
-  }
+.steps li {
+  margin-bottom: 10px;
 }
 
-/* ------------------ Footer ------------------ */
 .site-footer {
-  padding: var(--space-lg) 0;
+  padding: 40px 0;
   text-align: center;
   background: #ededec;
   font-size: 0.85rem;
-  color: var(--color-muted);
+  color: var(--muted);
+}
+
+@media (min-width: 900px) {
+  .hero-grid,
+  .split,
+  .visual-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+  }
 }
