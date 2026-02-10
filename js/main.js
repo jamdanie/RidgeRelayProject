@@ -250,3 +250,24 @@ function prettyDate(value) {
   });
 })();
 
+// ---------- Reveal-on-scroll (subtle SaaS motion) ----------
+(function revealOnScroll() {
+  const sections = document.querySelectorAll("main section");
+  sections.forEach((s) => s.classList.add("reveal"));
+  if (sections[0]) sections[0].classList.add("is-visible");
+
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          e.target.classList.add("is-visible");
+          io.unobserve(e.target);
+        }
+      });
+    },
+    { threshold: 0.12 }
+  );
+
+  sections.forEach((s, i) => { if (i !== 0) io.observe(s); });
+})();
+
