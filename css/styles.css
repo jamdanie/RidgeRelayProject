@@ -1,788 +1,236 @@
-/* ==========================================================================
-   RidgeRelay — styles.css
-   - Mobile-first, calm, clean
-   - CSS variables for palette + spacing + type
-   - Subtle topo vibe (optional pattern)
-   - Highly commented for learning
-   ========================================================================== */
+/* =========================================================
+   RidgeRelay — Clean Safety-Focused Design System
+   Mobile-first, calm, structured
+   ========================================================= */
 
-/* -----------------------------
-   Design tokens (CSS variables)
-   ----------------------------- */
+/* ------------------ CSS Variables ------------------ */
 :root {
-  /* Typography */
-  --font-sans: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  --text-size-base: 16px;
-  --line-height: 1.55;
+  --color-bg: #f7f7f6;
+  --color-surface: #ffffff;
+  --color-primary: #f97316;      /* Safety orange */
+  --color-primary-dark: #ea580c;
+  --color-text: #1f2937;         /* Deep charcoal */
+  --color-muted: #6b7280;
+  --border-light: #e5e7eb;
 
-  /* Colors (calm, high-contrast) */
-  --bg: #f7f6f2;              /* warm, light background */
-  --surface: #ffffff;         /* card / raised surfaces */
-  --text: #121414;            /* near-black */
-  --muted: #4a5454;           /* subdued body text */
-  --subtle: #748080;          /* small labels/hints */
-  --border: rgba(18, 20, 20, 0.12);
+  --radius: 14px;
 
-  /* Accent (outdoor, minimal) */
-  --accent: #c66a2b;          /* warm orange-brown */
-  --accent-2: #214f4b;        /* deep evergreen for balance */
-  --focus: #1a73e8;           /* accessible focus ring */
+  --space-xs: 6px;
+  --space-sm: 12px;
+  --space-md: 20px;
+  --space-lg: 40px;
+  --space-xl: 80px;
 
-  /* Shadows (subtle) */
-  --shadow: 0 10px 30px rgba(18, 20, 20, 0.08);
-
-  /* Spacing scale */
-  --s-1: 0.25rem;
-  --s-2: 0.5rem;
-  --s-3: 0.75rem;
-  --s-4: 1rem;
-  --s-5: 1.25rem;
-  --s-6: 1.5rem;
-  --s-7: 2rem;
-  --s-8: 2.5rem;
-  --s-9: 3rem;
-
-  /* Layout */
-  --container: 1100px;
-  --radius: 16px;
-  --radius-sm: 12px;
-
-  /* Tap targets */
-  --tap: 44px;
-
-  /* Topo pattern (very subtle) */
-  --topo-opacity: 0.07;
+  --max-width: 1100px;
 }
 
-/* -----------------------------
-   Base / reset-ish
-   ----------------------------- */
-*,
-*::before,
-*::after {
+/* ------------------ Base Reset ------------------ */
+* {
   box-sizing: border-box;
-}
-
-html {
-  font-size: var(--text-size-base);
-  scroll-behavior: smooth;
 }
 
 body {
   margin: 0;
-  font-family: var(--font-sans);
-  line-height: var(--line-height);
-  color: var(--text);
-  background: var(--bg);
+  font-family: 'Inter', sans-serif;
+  background: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.6;
 }
 
-/* Ensure media doesn't overflow */
-img,
-svg,
-video {
-  max-width: 100%;
-  height: auto;
+h1, h2, h3 {
+  margin-top: 0;
+  line-height: 1.2;
 }
 
-/* Links */
-a {
-  color: inherit;
-  text-decoration: none;
+p {
+  margin-bottom: var(--space-md);
 }
 
-a:hover {
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-
-/* Focus ring (keyboard accessibility) */
-:focus-visible {
-  outline: 3px solid var(--focus);
-  outline-offset: 2px;
-  border-radius: 10px;
-}
-
-/* Skip link for keyboard users */
-.skip-link {
-  position: absolute;
-  left: -999px;
-  top: 0;
-  background: var(--surface);
-  color: var(--text);
-  padding: var(--s-3) var(--s-4);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  box-shadow: var(--shadow);
-  z-index: 9999;
-}
-.skip-link:focus {
-  left: var(--s-4);
-  top: var(--s-4);
-}
-
-/* -----------------------------
-   Layout helpers
-   ----------------------------- */
+/* ------------------ Layout ------------------ */
 .container {
-  max-width: var(--container);
+  width: 100%;
+  max-width: var(--max-width);
   margin: 0 auto;
-  padding: 0 var(--s-5);
+  padding: 0 var(--space-md);
 }
 
-/* Sections have clear separation without clutter */
 .section {
-  padding: var(--s-9) 0;
-  position: relative;
+  padding: var(--space-xl) 0;
 }
 
-/* Alternate section background for visual rhythm */
 .section-alt {
-  background: rgba(255, 255, 255, 0.55);
+  background: #f0f0ef;
 }
 
-/* Optional subtle topo vibe (thin contour pattern) */
-.section::before,
-.hero::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: var(--topo-opacity);
-  /* Lightweight contour-like lines using repeated radial gradients */
-  background:
-    radial-gradient(circle at 20% 30%, rgba(18,20,20,0.9) 1px, transparent 2px),
-    radial-gradient(circle at 70% 60%, rgba(18,20,20,0.9) 1px, transparent 2px),
-    radial-gradient(circle at 45% 80%, rgba(18,20,20,0.9) 1px, transparent 2px);
-  background-size: 220px 220px;
-  mix-blend-mode: multiply;
-}
-
-/* Keep content above pattern */
-.section > .container,
-.hero > .container {
-  position: relative;
-  z-index: 1;
-}
-
-/* -----------------------------
-   Header / navigation
-   ----------------------------- */
+/* ------------------ Header ------------------ */
 .site-header {
   position: sticky;
   top: 0;
-  z-index: 1000;
-  background: rgba(247, 246, 242, 0.85);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(18, 20, 20, 0.08);
-  transition: box-shadow 200ms ease;
-}
-
-/* Adds a shadow once user scrolls a bit (JS toggles data-elevate) */
-.site-header[data-elevate="true"] {
-  box-shadow: 0 10px 25px rgba(18,20,20,0.10);
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--border-light);
+  z-index: 100;
 }
 
 .header-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-height: 64px;
-  gap: var(--s-4);
+  padding: var(--space-md) 0;
 }
 
-.brand {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--s-3);
-  min-height: var(--tap);
-}
-
-.brand-mark {
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  border-radius: 14px;
-  background: linear-gradient(135deg, rgba(198,106,43,0.18), rgba(33,79,75,0.10));
-  border: 1px solid rgba(18,20,20,0.10);
-  font-weight: 800;
-  letter-spacing: -0.02em;
-}
-
-.brand-text {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.1;
-}
 .brand-name {
   font-weight: 700;
 }
+
 .brand-sub {
-  font-size: 0.85rem;
-  color: var(--subtle);
+  display: block;
+  font-size: 0.8rem;
+  color: var(--color-muted);
 }
 
-/* Desktop nav hidden on mobile by default */
+/* ------------------ Navigation ------------------ */
 .nav-desktop {
   display: none;
-  gap: var(--s-5);
-  align-items: center;
 }
+
 .nav-desktop a {
-  padding: var(--s-2) var(--s-3);
-  border-radius: 12px;
-  transition: transform 120ms ease, background 120ms ease;
-}
-.nav-desktop a:hover {
-  background: rgba(18,20,20,0.06);
-  transform: translateY(-1px);
+  margin-left: var(--space-md);
   text-decoration: none;
+  color: var(--color-text);
+  font-weight: 500;
 }
 
-/* A gentle CTA style for "Contact" */
-.nav-cta {
-  border: 1px solid rgba(18,20,20,0.14);
+.nav-desktop a:hover {
+  color: var(--color-primary);
 }
 
-/* Mobile menu button */
-.menu-btn {
-  min-height: var(--tap);
-  padding: 0 var(--s-4);
-  border-radius: 14px;
-  border: 1px solid rgba(18,20,20,0.14);
-  background: var(--surface);
-  font-weight: 600;
-  transition: transform 120ms ease, background 120ms ease;
-}
-.menu-btn:hover {
-  background: rgba(255,255,255,0.85);
-  transform: translateY(-1px);
-}
-.menu-btn:active {
-  transform: translateY(0);
-}
-
-/* Mobile drawer container */
-.drawer {
-  border-top: 1px solid rgba(18,20,20,0.08);
-  background: rgba(247, 246, 242, 0.92);
-  backdrop-filter: blur(10px);
-}
-
-.nav-mobile {
-  display: grid;
-  gap: var(--s-2);
-  padding: var(--s-4) var(--s-5) var(--s-5);
-}
-.nav-mobile a {
-  min-height: var(--tap);
-  display: flex;
-  align-items: center;
-  padding: 0 var(--s-4);
-  border-radius: 14px;
-  border: 1px solid rgba(18,20,20,0.10);
-  background: rgba(255,255,255,0.65);
-  transition: transform 120ms ease, background 120ms ease;
-}
-.nav-mobile a:hover {
-  background: rgba(255,255,255,0.85);
-  transform: translateY(-1px);
-}
-
-/* -----------------------------
-   Typography blocks
-   ----------------------------- */
-.section-title {
-  margin: 0 0 var(--s-3);
-  font-size: 1.6rem;
-  letter-spacing: -0.02em;
-}
-
-.section-lede {
-  margin: 0 0 var(--s-5);
-  color: var(--muted);
-  max-width: 70ch;
-}
-
-.section-body {
-  margin: 0 0 var(--s-4);
-  color: var(--muted);
-  max-width: 75ch;
-}
-
-.eyebrow {
-  margin: 0 0 var(--s-3);
-  font-weight: 600;
-  color: var(--accent-2);
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-  font-size: 0.85rem;
-}
-
-/* Small note text */
-.tiny {
-  font-size: 0.9rem;
-  color: var(--subtle);
-}
-
-/* -----------------------------
-   Hero
-   ----------------------------- */
+/* ------------------ Hero ------------------ */
 .hero {
-  padding-top: var(--s-9);
-}
-
-.hero-grid {
-  display: grid;
-  gap: var(--s-7);
+  padding-top: var(--space-xl);
 }
 
 .hero-title {
-  margin: 0 0 var(--s-4);
   font-size: 2.2rem;
-  letter-spacing: -0.03em;
+  font-weight: 700;
 }
+
 .hero-title-accent {
   display: block;
-  margin-top: var(--s-2);
-  font-weight: 700;
-  color: var(--accent);
+  color: var(--color-primary);
 }
 
 .hero-lede {
-  margin: 0 0 var(--s-6);
-  color: var(--muted);
-  max-width: 60ch;
-}
-
-.hero-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--s-3);
-  margin-bottom: var(--s-6);
-}
-
-.hero-bullets {
-  margin: 0;
-  padding-left: 1.1rem;
-  color: var(--muted);
-}
-.hero-bullets li {
-  margin: var(--s-2) 0;
-}
-
-/* Hero card with subtle image */
-.hero-card {
-  background: var(--surface);
-  border: 1px solid rgba(18,20,20,0.10);
-  border-radius: var(--radius);
-  overflow: hidden;
-  box-shadow: var(--shadow);
-}
-
-.hero-media {
-  /* If you add a real image, swap this to background-image: url(...) */
-  height: 140px;
-  background:
-    linear-gradient(135deg, rgba(198,106,43,0.18), rgba(33,79,75,0.10)),
-    radial-gradient(circle at 30% 40%, rgba(18,20,20,0.10) 1px, transparent 2px),
-    radial-gradient(circle at 70% 60%, rgba(18,20,20,0.10) 1px, transparent 2px);
-  background-size: auto, 240px 240px, 240px 240px;
-}
-
-.hero-card-body {
-  padding: var(--s-6);
-}
-
-.card-title {
-  margin: 0 0 var(--s-2);
   font-size: 1.1rem;
-  letter-spacing: -0.01em;
+  max-width: 550px;
+  color: var(--color-muted);
 }
 
-.card-text {
-  margin: 0 0 var(--s-5);
-  color: var(--muted);
-}
-
-.mini-updates {
-  border-top: 1px solid rgba(18,20,20,0.10);
-  padding-top: var(--s-4);
-}
-
-.mini-updates-title {
-  margin: 0 0 var(--s-2);
-  font-size: 1rem;
-}
-.mini-updates-list {
-  margin: 0;
-  padding-left: 1.1rem;
-  color: var(--muted);
-}
-.mini-updates-note {
-  margin: var(--s-3) 0 0;
-  color: var(--subtle);
-  font-size: 0.9rem;
-}
-
-.tag {
-  display: inline-block;
-  font-size: 0.75rem;
-  font-weight: 700;
-  padding: 0.15rem 0.45rem;
-  border-radius: 999px;
-  border: 1px solid rgba(18,20,20,0.12);
-  background: rgba(198,106,43,0.10);
-  margin-right: var(--s-2);
-}
-
-/* -----------------------------
-   Cards / callouts
-   ----------------------------- */
-.card {
-  background: var(--surface);
-  border: 1px solid rgba(18,20,20,0.10);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-}
-
-.card-header {
-  padding: var(--s-6) var(--s-6) var(--s-4);
-  border-bottom: 1px solid rgba(18,20,20,0.08);
-}
-.card-subtitle {
-  margin: var(--s-2) 0 0;
-  color: var(--subtle);
-  font-size: 0.95rem;
-}
-
-.card-body {
-  padding: var(--s-6);
-}
-
-.card-footer {
-  padding: var(--s-5) var(--s-6) var(--s-6);
-  border-top: 1px solid rgba(18,20,20,0.08);
-}
-
-.callout {
-  margin-top: var(--s-5);
-  padding: var(--s-4);
-  border-radius: var(--radius-sm);
-  border: 1px solid rgba(33,79,75,0.18);
-  background: rgba(33,79,75,0.06);
-  color: var(--muted);
-}
-
-/* Overview split layout (stack on mobile) */
-.split {
-  display: grid;
-  gap: var(--s-7);
-}
-
-.stat-card {
-  padding: var(--s-6);
-  border-radius: var(--radius);
-  border: 1px solid rgba(18,20,20,0.10);
-  background: rgba(255,255,255,0.65);
-}
-
-.stat-title {
-  margin: 0 0 var(--s-3);
-  font-size: 1.05rem;
-}
-
-.stat-list {
-  margin: 0;
-  padding-left: 1.1rem;
-  color: var(--muted);
-}
-.stat-list li {
-  margin: var(--s-2) 0;
-}
-
-/* -----------------------------
-   Steps (How it works)
-   ----------------------------- */
-.steps {
-  list-style: none;
-  padding: 0;
-  margin: var(--s-6) 0 0;
-  display: grid;
-  gap: var(--s-4);
-}
-
-.step {
-  display: grid;
-  grid-template-columns: 44px 1fr;
-  gap: var(--s-4);
-  padding: var(--s-5);
-  border-radius: var(--radius);
-  border: 1px solid rgba(18,20,20,0.10);
-  background: rgba(255,255,255,0.70);
-}
-
-.step-badge {
-  width: 44px;
-  height: 44px;
-  border-radius: 16px;
-  display: grid;
-  place-items: center;
-  font-weight: 800;
-  color: var(--accent-2);
-  border: 1px solid rgba(33,79,75,0.18);
-  background: rgba(33,79,75,0.06);
-}
-
-.step-body h3 {
-  margin: 0 0 var(--s-2);
-  font-size: 1.1rem;
-}
-.step-body p {
-  margin: 0;
-  color: var(--muted);
-}
-
-/* -----------------------------
-   Visual example (planner + map)
-   ----------------------------- */
-.visual-grid {
-  display: grid;
-  gap: var(--s-6);
-  margin-top: var(--s-6);
-}
-
-/* Planner form fields */
-.field {
-  display: grid;
-  gap: var(--s-2);
-  margin-bottom: var(--s-4);
-}
-
-label {
-  font-weight: 600;
-}
-
-input,
-select,
-textarea {
-  width: 100%;
-  padding: 0.75rem 0.85rem;
-  border-radius: 14px;
-  border: 1px solid rgba(18,20,20,0.14);
-  background: rgba(255,255,255,0.90);
-  color: var(--text);
-  font: inherit;
-}
-
-textarea {
-  resize: vertical;
-}
-
-.hint {
-  margin: 0;
-  color: var(--subtle);
-  font-size: 0.9rem;
-}
-
-/* Map card */
-.map {
-  height: 360px; /* Mobile-friendly height */
-  border-bottom-left-radius: var(--radius);
-  border-bottom-right-radius: var(--radius);
-}
-/* If the GeoJSON fails, you’ll get a visible message inside the map container */
-.map-fallback {
-  padding: 12px 14px;
-  margin: 12px;
-  border-radius: 12px;
-  border: 1px dashed rgba(18,20,20,0.25);
-  background: rgba(255,255,255,0.85);
-  color: rgba(18,20,20,0.75);
-  font-size: 0.95rem;
-}
-
-
-/* Leaflet adds its own focus styles; we keep ours consistent */
-.leaflet-container {
-  font-family: var(--font-sans);
-  border-radius: 0 0 var(--radius) var(--radius);
-}
-
-.map-footer {
-  padding: var(--s-4) var(--s-6) var(--s-6);
-}
-
-/* Button system */
+/* ------------------ Buttons ------------------ */
 .btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: var(--tap);
-  padding: 0.7rem 1rem;
-  border-radius: 14px;
-  border: 1px solid transparent;
-  font-weight: 700;
-  letter-spacing: -0.01em;
+  display: inline-block;
+  padding: 12px 20px;
+  border-radius: var(--radius);
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.2s ease;
+  border: none;
   cursor: pointer;
-  user-select: none;
-  transition: transform 120ms ease, background 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
-  text-decoration: none;
 }
-.btn:hover {
-  transform: translateY(-1px);
-  text-decoration: none;
+
+.btn-primary {
+  background: var(--color-primary);
+  color: white;
 }
-.btn:active {
-  transform: translateY(0);
+
+.btn-primary:hover {
+  background: var(--color-primary-dark);
+}
+
+.btn-secondary {
+  background: #fff;
+  border: 1px solid var(--border-light);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--color-primary);
 }
 
 .btn-block {
   width: 100%;
 }
 
-.btn-row {
-  display: grid;
-  gap: var(--s-3);
-}
-.btn-row-tight {
-  margin-top: var(--s-3);
-}
-
-/* Primary action */
-.btn-primary {
-  background: var(--accent);
-  color: #fff;
-  border-color: rgba(198,106,43,0.35);
-  box-shadow: 0 12px 30px rgba(198,106,43,0.18);
-}
-.btn-primary:hover {
-  background: rgba(198,106,43,0.92);
+/* ------------------ Cards ------------------ */
+.card {
+  background: var(--color-surface);
+  border-radius: var(--radius);
+  padding: var(--space-lg);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.05);
 }
 
-/* Secondary */
-.btn-secondary {
-  background: rgba(33,79,75,0.10);
-  border-color: rgba(33,79,75,0.22);
-  color: var(--text);
-}
-.btn-secondary:hover {
-  background: rgba(33,79,75,0.14);
+.card-title {
+  margin-bottom: var(--space-sm);
 }
 
-/* Ghost (subtle) */
-.btn-ghost {
-  background: rgba(255,255,255,0.65);
-  border-color: rgba(18,20,20,0.14);
-}
-.btn-ghost:hover {
-  background: rgba(255,255,255,0.85);
+/* ------------------ Forms ------------------ */
+.field {
+  margin-bottom: var(--space-md);
 }
 
-/* Demo status messages */
-.demo-status {
-  margin-top: var(--s-4);
-  padding: var(--s-4);
-  border-radius: var(--radius-sm);
-  border: 1px dashed rgba(18,20,20,0.18);
-  background: rgba(247,246,242,0.7);
-  color: var(--muted);
-  min-height: 44px; /* keeps layout stable even when empty */
-}
-.demo-status:empty {
-  display: none; /* hide when no content */
+label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 6px;
 }
 
-/* -----------------------------
-   About
-   ----------------------------- */
-.about-card {
-  overflow: hidden;
+input,
+textarea,
+select {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border-light);
+  font-family: inherit;
 }
 
-.about-media {
-  height: 160px;
-  background:
-    linear-gradient(135deg, rgba(33,79,75,0.14), rgba(198,106,43,0.10)),
-    radial-gradient(circle at 40% 45%, rgba(18,20,20,0.10) 1px, transparent 2px);
-  background-size: auto, 260px 260px;
+input:focus,
+textarea:focus,
+select:focus {
+  outline: 2px solid var(--color-primary);
+  border-color: var(--color-primary);
 }
 
-.about-body {
-  padding: var(--s-6);
-}
-
-/* -----------------------------
-   Contact
-   ----------------------------- */
-.contact-grid {
-  display: grid;
-  gap: var(--s-6);
-  margin-top: var(--s-6);
-}
-
-/* -----------------------------
-   Footer
-   ----------------------------- */
-.site-footer {
-  padding: var(--s-7) 0;
-  border-top: 1px solid rgba(18,20,20,0.10);
-}
-
-.footer-inner {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: var(--s-5);
-}
-
-/* -----------------------------
-   Responsive enhancements
-   (Desktop/tablet)
-   ----------------------------- */
+/* ------------------ Grid (Desktop Upgrade) ------------------ */
 @media (min-width: 900px) {
-  /* Show desktop nav, hide mobile menu button */
-  .nav-desktop { display: flex; }
-  .menu-btn { display: none; }
-  .drawer { display: none !important; }
+  .nav-desktop {
+    display: block;
+  }
 
   .hero-grid {
-    grid-template-columns: 1.1fr 0.9fr;
-    align-items: start;
-  }
-
-  .hero-title {
-    font-size: 2.6rem;
-  }
-
-  .split {
-    grid-template-columns: 1.2fr 0.8fr;
-    align-items: start;
-  }
-
-  .steps {
-    grid-template-columns: 1fr 1fr;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: var(--space-lg);
+    align-items: center;
   }
 
   .visual-grid {
-    grid-template-columns: 0.95fr 1.05fr;
-    align-items: start;
-  }
-
-  .btn-row {
-    grid-template-columns: 1fr;
-  }
-
-  .btn-row-tight {
+    display: grid;
     grid-template-columns: 1fr 1fr;
+    gap: var(--space-lg);
   }
 
-  .map {
-    height: 420px;
+  .split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-lg);
   }
+}
 
-  .contact-grid {
-    grid-template-columns: 1.1fr 0.9fr;
-    align-items: start;
-  }
+/* ------------------ Footer ------------------ */
+.site-footer {
+  padding: var(--space-lg) 0;
+  text-align: center;
+  background: #ededec;
+  font-size: 0.85rem;
+  color: var(--color-muted);
 }
