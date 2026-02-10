@@ -1,183 +1,373 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="description" content="RidgeRelay — Intent-aware outdoor safety planning for low/no-cell recreation." />
-<title>RidgeRelay — Plan smart. Return safe.</title>
+  <!--
+    RidgeRelay — Single-page concept (GitHub Pages)
+    SaaS-style polish + calm, safety-first UX
+    Repo paths:
+      /css/styles.css
+      /js/main.js
+      /assets/maps/rattlesnake-ridge-demo.geojson
+  -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="RidgeRelay is an intent-aware outdoor safety planning prototype for low/no-cell recreation." />
+  <title>RidgeRelay — Plan smart. Return safe.</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-<link rel="stylesheet" href="./css/styles.css" />
+  <!-- Leaflet (open-source) -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""
+  />
+
+  <!-- Your CSS -->
+  <link rel="stylesheet" href="./css/styles.css" />
 </head>
 
 <body>
+  <!-- Skip link for accessibility -->
+  <a class="skip-link" href="#main" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;"
+     onfocus="this.style.left='16px';this.style.top='16px';this.style.width='auto';this.style.height='auto';this.style.padding='10px 12px';this.style.background='#fff';this.style.border='1px solid rgba(15,23,42,0.15)';this.style.borderRadius='12px';this.style.zIndex='9999';"
+     onblur="this.style.left='-9999px';">
+    Skip to main content
+  </a>
 
-<header class="site-header">
-  <div class="container header-inner">
-    <div class="brand">
-      <strong>RidgeRelay</strong>
-      <span class="brand-sub">Outdoor Safety (Concept)</span>
-    </div>
-    <nav class="nav-desktop">
-      <a href="#overview">Overview</a>
-      <a href="#how">How it works</a>
-      <a href="#visual">Visual example</a>
-      <a href="#about">About</a>
-      <a href="#contact">Contact</a>
-    </nav>
-  </div>
-</header>
-
-<main>
-
-<section class="section hero">
-  <div class="container hero-grid">
-    <div>
-      <h1 class="hero-title">
-        RidgeRelay
-        <span class="hero-accent">Plan smart. Return safe.</span>
-      </h1>
-      <p class="hero-lede">
-        A calm, safety-first planning flow that helps you set expectations,
-        share guardrails, and keep people informed when your signal disappears.
-      </p>
-      <a class="btn btn-primary" href="#visual">Start Demo Plan</a>
-    </div>
-    <div class="card">
-      <h3>Designed for clarity</h3>
-      <p>
-        RidgeRelay is intentionally not “social.” It’s a focused safety companion
-        built around planning and predictable escalation.
-      </p>
-    </div>
-  </div>
-</section>
-
-<section id="overview" class="section section-alt">
-  <div class="container split">
-    <div>
-      <h2>Overview</h2>
-      <p>
-        In low or no-cell areas, expectations matter more than connectivity.
-        RidgeRelay centers safety around clear intent, return timing, and
-        escalation guardrails.
-      </p>
-    </div>
-    <div class="card">
-      <h3>What RidgeRelay prioritizes</h3>
-      <ul>
-        <li>Planning over posting</li>
-        <li>Clarity over complexity</li>
-        <li>Predictable escalation</li>
-        <li>Offline-aware mindset</li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<section id="how" class="section">
-  <div class="container">
-    <h2>How it works</h2>
-   <ul class="steps">
-  <li class="step-item">
-    <div class="step-icon" aria-hidden="true">🧭</div>
-    <div>
-      <strong>Plan</strong>
-      <span>Declare intent and return time.</span>
-    </div>
-  </li>
-
-  <li class="step-item">
-    <div class="step-icon" aria-hidden="true">🧱</div>
-    <div>
-      <strong>Guardrails</strong>
-      <span>Set boundaries and expectations.</span>
-    </div>
-  </li>
-
-  <li class="step-item">
-    <div class="step-icon" aria-hidden="true">⏱️</div>
-    <div>
-      <strong>Check-ins</strong>
-      <span>Choose a cadence that fits conditions.</span>
-    </div>
-  </li>
-
-  <li class="step-item">
-    <div class="step-icon" aria-hidden="true">🚨</div>
-    <div>
-      <strong>Escalation</strong>
-      <span>Trigger progressive steps if needed.</span>
-    </div>
-  </li>
-</ul>
-
-  </div>
-</section>
-
-<section id="visual" class="section section-alt">
-  <div class="container visual-grid">
-    <div class="card">
-      <h3>Trip Planner (Demo)</h3>
-      <input placeholder="Intent declaration" />
-      <input type="datetime-local" />
-      <input type="datetime-local" />
-      <select>
-        <option>Every 60 minutes</option>
-        <option>Every 45 minutes</option>
-        <option>Every 30 minutes</option>
-      </select>
-      <input placeholder="Emergency contact" />
-      <button class="btn btn-primary btn-block">Start Trip (Demo)</button>
-      <br><br>
-      <a class="btn btn-secondary btn-block"
-         href="./assets/maps/rattlesnake-ridge-demo.geojson"
-         download>
-         Download Demo Trail Map
+  <!-- Header -->
+  <header class="site-header" data-elevate="false">
+    <div class="container header-inner">
+      <a class="brand" href="#home" aria-label="RidgeRelay home" style="text-decoration:none;color:inherit;">
+        <strong>RidgeRelay</strong>
+        <span class="brand-sub">Outdoor safety system (concept)</span>
       </a>
+
+      <!-- Desktop nav -->
+      <nav class="nav-desktop" aria-label="Primary navigation">
+        <a href="#overview">Overview</a>
+        <a href="#how">How it works</a>
+        <a href="#visual">Visual example</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+
+      <!-- Mobile menu button (JS controls this) -->
+      <button
+        class="btn btn-ghost"
+        type="button"
+        id="menuBtn"
+        aria-label="Open menu"
+        aria-controls="mobileDrawer"
+        aria-expanded="false"
+        style="padding:10px 12px;"
+      >
+        Menu
+      </button>
     </div>
 
-    <div class="card">
-      <h3>Map Preview</h3>
-      <div id="map" style="height:400px;"></div>
+    <!-- Mobile drawer -->
+    <div id="mobileDrawer" hidden style="border-top:1px solid rgba(15,23,42,0.10);background:rgba(255,255,255,0.92);backdrop-filter:blur(10px);">
+      <div class="container" style="padding:14px 24px 18px 24px;">
+        <nav aria-label="Mobile navigation" style="display:grid;gap:10px;">
+          <a href="#overview" class="btn btn-secondary">Overview</a>
+          <a href="#how" class="btn btn-secondary">How it works</a>
+          <a href="#visual" class="btn btn-secondary">Visual example</a>
+          <a href="#about" class="btn btn-secondary">About</a>
+          <a href="#contact" class="btn btn-primary">Contact</a>
+        </nav>
+      </div>
     </div>
-  </div>
-</section>
+  </header>
 
-<section id="about" class="section">
-  <div class="container">
-    <h2>About</h2>
-    <p>
-      RidgeRelay is an academic prototype exploring intent-aware outdoor safety
-      UX patterns using static hosting and open-source tools.
-    </p>
-  </div>
-</section>
+  <main id="main">
+    <!-- HERO -->
+    <section id="home" class="section hero" aria-label="Home">
+      <div class="container hero-grid">
+        <div>
+          <p style="margin:0 0 10px 0;color:rgba(15,23,42,0.72);font-weight:700;letter-spacing:-0.01em;">
+            Low / no-cell recreation
+          </p>
 
-<section id="contact" class="section section-alt">
-  <div class="container">
-    <h2>Contact</h2>
-    <input placeholder="Name" />
-    <input placeholder="Email" />
-    <textarea placeholder="Message"></textarea>
-    <button class="btn btn-primary btn-block">Send (Demo)</button>
-  </div>
-</section>
+          <h1 class="hero-title">
+            RidgeRelay
+            <span class="hero-accent">Plan smart. Return safe.</span>
+          </h1>
 
-</main>
+          <p class="hero-lede">
+            A calm, safety-first planning flow that helps you set expectations, share guardrails,
+            and keep people informed when your signal disappears.
+          </p>
 
-<footer class="site-footer">
-  <div class="container">
-    RidgeRelay Concept — University Project
-  </div>
-</footer>
+          <div class="hero-cta-row">
+            <a class="btn btn-primary" href="#visual">Start Trip (Demo)</a>
+            <a class="btn btn-secondary" href="#how">See how it works</a>
+          </div>
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="./js/main.js"></script>
+          <div style="margin-top:18px;display:flex;flex-wrap:wrap;gap:10px;">
+            <span style="padding:8px 10px;border-radius:999px;background:rgba(249,115,22,0.12);color:#9a3412;font-weight:800;font-size:0.9rem;">Intent</span>
+            <span style="padding:8px 10px;border-radius:999px;background:rgba(15,23,42,0.05);color:rgba(15,23,42,0.78);font-weight:800;font-size:0.9rem;">Check-ins</span>
+            <span style="padding:8px 10px;border-radius:999px;background:rgba(15,23,42,0.05);color:rgba(15,23,42,0.78);font-weight:800;font-size:0.9rem;">Escalation</span>
+          </div>
+        </div>
 
+        <aside class="card card--glass" aria-label="Trust summary">
+          <h3 style="margin-top:0;">Designed for clarity</h3>
+          <p style="margin-bottom:16px;">
+            RidgeRelay is intentionally not “social.” It’s a focused safety companion built around planning
+            and predictable escalation — so people know when to worry, and what to do next.
+          </p>
+
+          <div style="display:grid;gap:10px;">
+            <div style="padding:12px 14px;border:1px solid rgba(15,23,42,0.10);border-radius:16px;background:rgba(255,255,255,0.75);">
+              <strong style="display:block;margin-bottom:4px;">Community updates (preview)</strong>
+              <span style="color:rgba(15,23,42,0.70);">Small, useful notes — no feed, no pressure.</span>
+            </div>
+            <div style="padding:12px 14px;border:1px solid rgba(15,23,42,0.10);border-radius:16px;background:rgba(255,255,255,0.75);">
+              <strong style="display:block;margin-bottom:4px;">Static + privacy-first</strong>
+              <span style="color:rgba(15,23,42,0.70);">Prototype sends nothing anywhere (GitHub Pages).</span>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- OVERVIEW -->
+    <section id="overview" class="section section-alt" aria-label="Overview">
+      <div class="container" style="display:grid;gap:32px;">
+        <div style="max-width:70ch;">
+          <h2 style="margin-top:0;">Overview</h2>
+          <p>
+            Out here, your phone can go from “fine” to “no service” in minutes. That’s normal —
+            but it makes it harder for others to know your plan, your boundaries, and when to worry.
+          </p>
+          <p>
+            RidgeRelay is a concept for a lightweight outdoor safety system built around planning:
+            intent, timing, and check-in rhythm. If check-ins stop, escalation follows clear steps.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3 style="margin-top:0;">What RidgeRelay prioritizes</h3>
+          <ul style="margin:0;padding-left:18px;color:rgba(15,23,42,0.78);">
+            <li><strong>Planning</strong> over posting</li>
+            <li><strong>Clarity</strong> over complexity</li>
+            <li><strong>Trust</strong> through predictable steps</li>
+            <li><strong>Offline-aware</strong> mindset (concept)</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section id="how" class="section" aria-label="How it works">
+      <div class="container">
+        <h2 style="margin-top:0;">How it works</h2>
+        <p style="max-width:70ch;">
+          A simple 4-step flow — built to feel calm under stress.
+        </p>
+
+        <!-- Icon steps (matches upgraded CSS classes) -->
+        <ul class="steps" aria-label="Four-step flow">
+          <li class="step-item">
+            <div class="step-icon" aria-hidden="true">🧭</div>
+            <div>
+              <strong>Plan</strong>
+              <span>Declare intent, start time, and expected return.</span>
+            </div>
+          </li>
+
+          <li class="step-item">
+            <div class="step-icon" aria-hidden="true">🧱</div>
+            <div>
+              <strong>Guardrails</strong>
+              <span>Set boundaries so someone else understands the plan.</span>
+            </div>
+          </li>
+
+          <li class="step-item">
+            <div class="step-icon" aria-hidden="true">⏱️</div>
+            <div>
+              <strong>Check-ins</strong>
+              <span>Choose a cadence that matches conditions.</span>
+            </div>
+          </li>
+
+          <li class="step-item">
+            <div class="step-icon" aria-hidden="true">🚨</div>
+            <div>
+              <strong>Escalation</strong>
+              <span>Progressive steps if you miss check-ins — no surprises.</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- VISUAL EXAMPLE -->
+    <section id="visual" class="section section-alt" aria-label="Visual example">
+      <div class="container">
+        <h2 style="margin-top:0;">Visual example</h2>
+        <p style="max-width:80ch;">
+          Demo plan + trail map preview for <strong>Rattlesnake Ridge / Rattlesnake Ledge, WA</strong>.
+        </p>
+
+        <div class="visual-grid" style="margin-top:22px;">
+          <!-- Planner -->
+          <section class="card" aria-label="Trip planner demo">
+            <h3 style="margin-top:0;">Trip Planner (Demo)</h3>
+            <p style="margin-bottom:16px;">Non-functional UI — designed to feel real.</p>
+
+            <!-- These IDs match your main.js demo logic -->
+            <div style="display:grid;gap:14px;">
+              <div>
+                <label for="intent" style="display:block;font-weight:800;margin-bottom:6px;">Intent declaration</label>
+                <textarea id="intent" rows="3" placeholder="Example: Day hike to Rattlesnake Ledge. Stay on main trail. Turn around if weather shifts."></textarea>
+              </div>
+
+              <div>
+                <label for="startTime" style="display:block;font-weight:800;margin-bottom:6px;">Start time</label>
+                <input id="startTime" type="datetime-local" />
+              </div>
+
+              <div>
+                <label for="returnTime" style="display:block;font-weight:800;margin-bottom:6px;">Expected return</label>
+                <input id="returnTime" type="datetime-local" />
+              </div>
+
+              <div>
+                <label for="cadence" style="display:block;font-weight:800;margin-bottom:6px;">Check-in cadence</label>
+                <select id="cadence">
+                  <option value="30">Every 30 minutes</option>
+                  <option value="45">Every 45 minutes</option>
+                  <option value="60" selected>Every 60 minutes</option>
+                  <option value="90">Every 90 minutes</option>
+                </select>
+              </div>
+
+              <div>
+                <label for="emergency" style="display:block;font-weight:800;margin-bottom:6px;">Emergency contact</label>
+                <input id="emergency" type="text" placeholder="Name + phone/email" />
+              </div>
+
+              <button class="btn btn-primary btn-block" type="button" id="startTripBtn">
+                Start Trip (Demo)
+              </button>
+
+              <div id="demoStatus" aria-live="polite" style="padding:12px 14px;border-radius:16px;border:1px solid rgba(15,23,42,0.10);background:rgba(255,255,255,0.78);color:rgba(15,23,42,0.75);min-height:44px;">
+                <!-- JS writes status here -->
+              </div>
+
+              <a class="btn btn-secondary btn-block"
+                 href="./assets/maps/rattlesnake-ridge-demo.geojson"
+                 download="rattlesnake-ridge-demo.geojson">
+                Download Demo Trail Map
+              </a>
+
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                <a class="btn btn-ghost"
+                   href="https://maps.app.goo.gl/r79LstcUM4UWg4s27"
+                   target="_blank" rel="noopener noreferrer">
+                  View on Google Maps
+                </a>
+                <a class="btn btn-ghost"
+                   href="https://www.alltrails.com/trail/us/washington/rattlesnake-ledge"
+                   target="_blank" rel="noopener noreferrer">
+                  View on AllTrails
+                </a>
+              </div>
+            </div>
+          </section>
+
+          <!-- Map -->
+          <section class="card card--glass" aria-label="Map preview">
+            <h3 style="margin-top:0;">Map Preview</h3>
+            <p style="margin-bottom:14px;">OpenStreetMap + Leaflet (local GeoJSON overlay).</p>
+
+            <div id="map" style="height:420px;"></div>
+
+            <p style="margin-top:12px;margin-bottom:0;font-size:0.92rem;color:rgba(15,23,42,0.68);">
+              Map data © OpenStreetMap contributors. Demo trail line is illustrative only.
+            </p>
+          </section>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="section" aria-label="About">
+      <div class="container" style="max-width:80ch;">
+        <h2 style="margin-top:0;">About</h2>
+        <p>
+          RidgeRelay is a concept / school project prototype exploring safety-first planning UX for low/no-cell recreation.
+          This site is static (GitHub Pages) and uses open-source tools (Leaflet + OpenStreetMap).
+        </p>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="section section-alt" aria-label="Contact">
+      <div class="container" style="display:grid;gap:22px;max-width:920px;">
+        <div style="max-width:70ch;">
+          <h2 style="margin-top:0;">Contact</h2>
+          <p>Want to share feedback on the concept? Send a note (demo form) or email directly.</p>
+        </div>
+
+        <div style="display:grid;gap:18px;">
+          <section class="card" aria-label="Contact form">
+            <h3 style="margin-top:0;">Message (Demo)</h3>
+
+            <div style="display:grid;gap:14px;">
+              <div>
+                <label for="name" style="display:block;font-weight:800;margin-bottom:6px;">Name</label>
+                <input id="name" type="text" placeholder="Your name" autocomplete="name" />
+              </div>
+              <div>
+                <label for="email" style="display:block;font-weight:800;margin-bottom:6px;">Email</label>
+                <input id="email" type="email" placeholder="you@example.com" autocomplete="email" />
+              </div>
+              <div>
+                <label for="message" style="display:block;font-weight:800;margin-bottom:6px;">Message</label>
+                <textarea id="message" rows="5" placeholder="What would make this more trustworthy or useful?"></textarea>
+              </div>
+
+              <button class="btn btn-primary btn-block" type="button" id="contactBtn">
+                Send (Demo)
+              </button>
+
+              <div id="contactStatus" aria-live="polite" style="padding:12px 14px;border-radius:16px;border:1px solid rgba(15,23,42,0.10);background:rgba(255,255,255,0.78);color:rgba(15,23,42,0.75);min-height:44px;">
+                <!-- JS writes status here -->
+              </div>
+
+              <a class="btn btn-secondary btn-block"
+                 href="mailto:hello@ridgerelay.example?subject=RidgeRelay%20Feedback">
+                Email RidgeRelay
+              </a>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" aria-label="Footer">
+    <div class="container">
+      RidgeRelay Concept — University Project
+    </div>
+  </footer>
+
+  <!-- Leaflet JS -->
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""
+  ></script>
+
+  <!-- Your JS -->
+  <script src="./js/main.js"></script>
 </body>
 </html>
