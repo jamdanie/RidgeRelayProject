@@ -6,7 +6,7 @@
    - Engagement hooks: Save/Heart + browse cards
    - Safety remains the purpose (not social-first)
    - No backend required (localStorage only)
-   ========================================================= */
+   ========================================================= */ 
 
 "use strict";
 
