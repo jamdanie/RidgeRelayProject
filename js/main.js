@@ -1,752 +1,296 @@
-/* ==========================================================================
-   RidgeRelay — main.js (v4)
-   - Sticky header elevation
-   - Mobile drawer nav (accessible)
-   - Tabs (planner)
-   - Dropdown tools close behavior
-   - Leaflet map + local GeoJSON overlay + toggles
-   - Live summary + gentle risk meter
-   - Save/Load plan (localStorage)
-   - Copy share text + download plan + print
-   - Pets: include pet in share + lost pet report + photo preview (local only)
-   - FAQ search
-   - Toast + back-to-top
-   ========================================================================== */
+/* =========================================================
+   RidgeRelay — Demo App Logic (GitHub Pages Friendly)
+   ---------------------------------------------------------
+   Goals:
+   - Familiar Explore/Saved/Plan/Safety structure
+   - Engagement hooks: Save/Heart + browse cards
+   - Safety remains the purpose (not social-first)
+   - No backend required (localStorage only)
+   ========================================================= */
 
-const DEMO = {
-  trailName: "Rattlesnake Ridge / Rattlesnake Ledge, WA (Demo)",
-  googleMaps: "https://maps.app.goo.gl/r79LstcUM4UWg4s27",
-  allTrails: "https://www.alltrails.com/trail/us/washington/rattlesnake-ledge",
-  geojsonUrl: "./assets/maps/rattlesnake-ridge-demo.geojson",
-  // Map default center (approx Rattlesnake Ledge area)
-  defaultView: { lat: 47.485, lng: -121.786, zoom: 12 }
-};
+"use strict";
 
-const STORAGE_KEYS = {
-  plan: "ridgerelay_demo_plan_v4",
-  petReport: "ridgerelay_demo_pet_report_v4"
-};
+/* -----------------------------
+   Demo Data (replace later)
+----------------------------- */
+const TRAILS = [
+  { id: "t1", name: "Rattlesnake Ledge (Demo)", difficulty: "moderate", distance: "4.0 mi", elevation: "1,160 ft", signal: "mixed", area: "WA" },
+  { id: "t2", name: "Point Defiance Loop (Demo)", difficulty: "easy", distance: "5.0 mi", elevation: "350 ft", signal: "good", area: "Tacoma" },
+  { id: "t3", name: "Mailbox Peak (Demo)", difficulty: "hard", distance: "9.4 mi", elevation: "4,000 ft", signal: "low-signal", area: "WA" },
+  { id: "t4", name: "Snow Lake (Demo)", difficulty: "moderate", distance: "7.2 mi", elevation: "1,800 ft", signal: "mixed", area: "WA" },
+  { id: "t5", name: "Tolmie Peak (Demo)", difficulty: "moderate", distance: "5.6 mi", elevation: "1,500 ft", signal: "low-signal", area: "Rainier" },
+  { id: "t6", name: "Discovery Park Loop (Demo)", difficulty: "easy", distance: "2.8 mi", elevation: "250 ft", signal: "good", area: "Seattle" },
+];
 
-function $(sel) { return document.querySelector(sel); }
-function $all(sel) { return Array.from(document.querySelectorAll(sel)); }
+const LS_SAVED = "rr_saved_trails";
 
-function toast(msg) {
-  const el = $("#toast");
-  if (!el) return;
-  el.textContent = msg;
-  el.classList.add("is-visible");
-  window.clearTimeout(toast._t);
-  toast._t = window.setTimeout(() => el.classList.remove("is-visible"), 2200);
+/* -----------------------------
+   Helpers
+----------------------------- */
+function $(sel){ return document.querySelector(sel); }
+function $all(sel){ return document.querySelectorAll(sel); }
+
+function getSavedSet(){
+  try {
+    const raw = localStorage.getItem(LS_SAVED);
+    const arr = raw ? JSON.parse(raw) : [];
+    return new Set(arr);
+  } catch {
+    return new Set();
+  }
 }
-
-function prettyDate(value) {
-  if (!value) return "—";
-  const d = new Date(value);
-  if (Number.isNaN(d.getTime())) return "—";
-  return d.toLocaleString(undefined, {
-    weekday: "short",
-    month: "short",
-    day: "numeric",
-    hour: "numeric",
-    minute: "2-digit",
-  });
-}
-
-function escapeHtml(str) {
-  return String(str)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
+function setSavedSet(set){
+  localStorage.setItem(LS_SAVED, JSON.stringify([...set]));
 }
 
 /* -----------------------------
-   Sticky header elevation
+   Navigation (screens)
 ----------------------------- */
-(function headerElevation() {
-  const header = $(".site-header");
-  if (!header) return;
+const screens = $all(".rr-screen");
+const navButtons = $all("[data-nav]");
 
-  const onScroll = () => {
-    const elevated = window.scrollY > 8;
-    header.setAttribute("data-elevate", elevated ? "true" : "false");
-  };
+function showScreen(id){
+  screens.forEach(s => s.classList.remove("show"));
+  const target = document.getElementById(id);
+  if (target) target.classList.add("show");
 
-  onScroll();
-  window.addEventListener("scroll", onScroll, { passive: true });
-})();
+  // Sidebar active
+  $all(".rr-navitem").forEach(btn=>{
+    btn.classList.toggle("active", btn.dataset.nav === id);
+  });
+
+  // Bottom nav active
+  $all(".rr-tab").forEach(btn=>{
+    btn.classList.toggle("active", btn.dataset.nav === id);
+  });
+
+  // When entering Saved, refresh it
+  if (id === "screen-saved") renderSaved();
+}
+
+navButtons.forEach(btn=>{
+  btn.addEventListener("click", ()=> showScreen(btn.dataset.nav));
+});
 
 /* -----------------------------
-   Mobile drawer menu
+   Render Trails
 ----------------------------- */
-(function mobileMenu() {
-  const btn = $("#menuBtn");
-  const drawer = $("#mobileDrawer");
-  if (!btn || !drawer) return;
+function trailCard(trail, savedSet){
+  const isSaved = savedSet.has(trail.id);
 
-  const links = drawer.querySelectorAll("a");
+  const el = document.createElement("div");
+  el.className = "rr-card";
 
-  function openDrawer() {
-    drawer.hidden = false;
-    btn.setAttribute("aria-expanded", "true");
-    btn.setAttribute("aria-label", "Close menu");
-  }
+  el.innerHTML = `
+    <div class="rr-row">
+      <div>
+        <h3>${trail.name}</h3>
+        <div class="rr-muted">${trail.area} • Signal: ${trail.signal}</div>
+      </div>
+      <button class="rr-heart ${isSaved ? "on" : ""}" data-heart="${trail.id}" aria-label="Save trail">
+        ${isSaved ? "♥" : "♡"}
+      </button>
+    </div>
 
-  function closeDrawer() {
-    drawer.hidden = true;
-    btn.setAttribute("aria-expanded", "false");
-    btn.setAttribute("aria-label", "Open menu");
-  }
+    <div class="rr-trailmeta">
+      <span>Difficulty: <strong>${trail.difficulty}</strong></span>
+      <span>Distance: <strong>${trail.distance}</strong></span>
+      <span>Gain: <strong>${trail.elevation}</strong></span>
+    </div>
 
-  btn.addEventListener("click", () => {
-    const isOpen = btn.getAttribute("aria-expanded") === "true";
-    isOpen ? closeDrawer() : openDrawer();
-  });
+    <div class="rr-actions">
+      <button class="rr-btn rr-btn-ghost" data-view="${trail.id}">Details</button>
+      <button class="rr-btn rr-btn-primary" data-plan="${trail.id}">Plan</button>
+    </div>
+  `;
 
-  links.forEach(a => a.addEventListener("click", closeDrawer));
+  return el;
+}
 
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") closeDrawer();
-  });
+function renderTrails(list){
+  const grid = $("#trailGrid");
+  if (!grid) return;
 
-  window.addEventListener("resize", () => {
-    // Drawer is always mobile style here, but prevent stuck open on wide layouts
-    if (window.innerWidth >= 980) closeDrawer();
-  });
-})();
+  const saved = getSavedSet();
+  grid.innerHTML = "";
+  list.forEach(t => grid.appendChild(trailCard(t, saved)));
 
-/* -----------------------------
-   Tabs (planner)
------------------------------ */
-(function tabs() {
-  const tabBtns = $all(".tab");
-  const panels = $all(".panel");
-  if (!tabBtns.length || !panels.length) return;
-
-  function activate(name) {
-    tabBtns.forEach(b => {
-      const active = b.dataset.tab === name;
-      b.classList.toggle("is-active", active);
-      b.setAttribute("aria-selected", active ? "true" : "false");
-      if (active) b.focus({ preventScroll: true });
-    });
-
-    panels.forEach(p => p.classList.toggle("is-active", p.id === `panel-${name}`));
-  }
-
-  tabBtns.forEach(btn => {
-    btn.addEventListener("click", () => activate(btn.dataset.tab));
-    btn.addEventListener("keydown", (e) => {
-      // Basic arrow nav between tabs
-      const idx = tabBtns.indexOf(btn);
-      if (e.key === "ArrowRight") tabBtns[(idx + 1) % tabBtns.length].click();
-      if (e.key === "ArrowLeft") tabBtns[(idx - 1 + tabBtns.length) % tabBtns.length].click();
+  // Hook hearts
+  $all("[data-heart]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const id = btn.getAttribute("data-heart");
+      const set = getSavedSet();
+      if (set.has(id)) set.delete(id);
+      else set.add(id);
+      setSavedSet(set);
+      renderTrails(list); // re-render quickly for demo
     });
   });
-})();
 
-/* -----------------------------
-   Dropdown tools: close on outside click / Escape
------------------------------ */
-(function dropdownClose() {
-  const dd = $("#toolsDropdown");
-  if (!dd) return;
-
-  document.addEventListener("click", (e) => {
-    if (!dd.open) return;
-    if (!dd.contains(e.target)) dd.open = false;
+  // Hook plan buttons
+  $all("[data-plan]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const id = btn.getAttribute("data-plan");
+      const trail = TRAILS.find(t => t.id === id);
+      hydratePlan(trail);
+      showScreen("screen-plan");
+    });
   });
 
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && dd.open) dd.open = false;
+  // “Details” placeholder (for later)
+  $all("[data-view]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const id = btn.getAttribute("data-view");
+      alert(`Demo: Trail details for ${id}.\nNext step: add a real details page layout like AllTrails.`);
+    });
   });
-})();
+}
+
+function renderSaved(){
+  const grid = $("#savedGrid");
+  if (!grid) return;
+
+  const saved = getSavedSet();
+  const savedTrails = TRAILS.filter(t => saved.has(t.id));
+
+  grid.innerHTML = "";
+  if (savedTrails.length === 0){
+    const empty = document.createElement("div");
+    empty.className = "rr-card";
+    empty.innerHTML = `<h3>No saved trails yet</h3><p class="rr-muted">Heart a trail in Explore to add it here.</p>`;
+    grid.appendChild(empty);
+    return;
+  }
+
+  savedTrails.forEach(t => grid.appendChild(trailCard(t, saved)));
+
+  // Re-bind hearts within saved view
+  $all("[data-heart]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const id = btn.getAttribute("data-heart");
+      const set = getSavedSet();
+      if (set.has(id)) set.delete(id);
+      else set.add(id);
+      setSavedSet(set);
+      renderSaved();
+    });
+  });
+
+  // Plan buttons
+  $all("[data-plan]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const id = btn.getAttribute("data-plan");
+      const trail = TRAILS.find(t => t.id === id);
+      hydratePlan(trail);
+      showScreen("screen-plan");
+    });
+  });
+}
 
 /* -----------------------------
-   Defaults + live summary + risk meter + share text
+   Plan Screen hydration
 ----------------------------- */
-function getPlan() {
-  return {
-    trailName: $("#trailName")?.value || DEMO.trailName,
-    intent: $("#intent")?.value?.trim() || "",
-    startTime: $("#startTime")?.value || "",
-    returnTime: $("#returnTime")?.value || "",
-    cadence: $("#cadence")?.value || "60",
-    emergency: $("#emergency")?.value?.trim() || "",
-    vehicle: $("#vehicle")?.value?.trim() || "",
-    partySize: $("#partySize")?.value || "",
-    weatherRisk: $("#weatherRisk")?.value || "",
-    daylight: $("#daylight")?.value || "",
-    gearNotes: $("#gearNotes")?.value?.trim() || "",
-    readiness: {
-      water: $("#chkWater")?.checked || false,
-      layers: $("#chkLayers")?.checked || false,
-      light: $("#chkLight")?.checked || false,
-      nav: $("#chkNav")?.checked || false,
-      battery: $("#chkBattery")?.checked || false,
-      aid: $("#chkAid")?.checked || false,
-      turn: $("#chkTurn")?.checked || false,
-    },
-    pet: {
-      name: $("#petName")?.value?.trim() || "",
-      type: $("#petType")?.value || "",
-      desc: $("#petDesc")?.value?.trim() || "",
-      includeInShare: $("#includePetInShare")?.checked || false
-    }
-  };
+function hydratePlan(trail){
+  const select = $("#trailSelect");
+  if (!select) return;
+
+  select.innerHTML = "";
+  TRAILS.forEach(t=>{
+    const opt = document.createElement("option");
+    opt.value = t.id;
+    opt.textContent = t.name;
+    select.appendChild(opt);
+  });
+
+  if (trail) select.value = trail.id;
 }
 
-function setPlan(p) {
-  if ($("#trailName")) $("#trailName").value = p.trailName ?? DEMO.trailName;
-  if ($("#intent")) $("#intent").value = p.intent ?? "";
-  if ($("#startTime")) $("#startTime").value = p.startTime ?? "";
-  if ($("#returnTime")) $("#returnTime").value = p.returnTime ?? "";
-  if ($("#cadence")) $("#cadence").value = p.cadence ?? "60";
-  if ($("#emergency")) $("#emergency").value = p.emergency ?? "";
+/* -----------------------------
+   Filters + search (demo)
+----------------------------- */
+let activeFilter = "all";
 
-  if ($("#vehicle")) $("#vehicle").value = p.vehicle ?? "";
-  if ($("#partySize")) $("#partySize").value = p.partySize ?? "2";
-  if ($("#weatherRisk")) $("#weatherRisk").value = p.weatherRisk ?? "low";
-  if ($("#daylight")) $("#daylight").value = p.daylight ?? "plenty";
-  if ($("#gearNotes")) $("#gearNotes").value = p.gearNotes ?? "";
+function applyFilter(){
+  let list = [...TRAILS];
 
-  const r = p.readiness || {};
-  if ($("#chkWater")) $("#chkWater").checked = !!r.water;
-  if ($("#chkLayers")) $("#chkLayers").checked = !!r.layers;
-  if ($("#chkLight")) $("#chkLight").checked = !!r.light;
-  if ($("#chkNav")) $("#chkNav").checked = !!r.nav;
-  if ($("#chkBattery")) $("#chkBattery").checked = !!r.battery;
-  if ($("#chkAid")) $("#chkAid").checked = !!r.aid;
-  if ($("#chkTurn")) $("#chkTurn").checked = !!r.turn;
-
-  const pet = p.pet || {};
-  if ($("#petName")) $("#petName").value = pet.name ?? "";
-  if ($("#petType")) $("#petType").value = pet.type ?? "Dog";
-  if ($("#petDesc")) $("#petDesc").value = pet.desc ?? "";
-  if ($("#includePetInShare")) $("#includePetInShare").checked = !!pet.includeInShare;
-
-  refreshUI();
-}
-
-function defaultPlan() {
-  // Prefill: calm + realistic
-  return {
-    trailName: DEMO.trailName,
-    intent:
-      "Day hike to Rattlesnake Ledge. Staying on main trail. Turning around if weather shifts. Parking at the main lot.",
-    startTime: "",
-    returnTime: "",
-    cadence: "60",
-    emergency: "",
-    vehicle: "",
-    partySize: "2",
-    weatherRisk: "low",
-    daylight: "plenty",
-    gearNotes: "Headlamp, extra layer, water, basic first aid",
-    readiness: {
-      water: false, layers: false, light: false, nav: false, battery: false, aid: false, turn: false
-    },
-    pet: { name: "", type: "Dog", desc: "", includeInShare: false }
-  };
-}
-
-function computeRisk(plan) {
-  // Gentle and explainable: encourages completeness (not a safety authority)
-  let score = 0;
-
-  // Missing key planning fields
-  if (!plan.intent) score += 1;
-  if (!plan.emergency) score += 2;
-
-  // Check-in cadence: longer = higher risk
-  const cad = Number(plan.cadence || "60");
-  if (cad >= 90) score += 2;
-  else if (cad >= 60) score += 1;
-
-  // Duration: if both times present and long
-  if (plan.startTime && plan.returnTime) {
-    const a = new Date(plan.startTime).getTime();
-    const b = new Date(plan.returnTime).getTime();
-    if (!Number.isNaN(a) && !Number.isNaN(b) && b > a) {
-      const hrs = (b - a) / 36e5;
-      if (hrs >= 6) score += 2;
-      else if (hrs >= 4) score += 1;
+  if (activeFilter !== "all"){
+    if (activeFilter === "low-signal"){
+      list = list.filter(t => t.signal === "low-signal");
     } else {
-      score += 1; // bad time order
-    }
-  } else {
-    score += 1; // missing time completeness
-  }
-
-  // Readiness completeness
-  const readyCount = Object.values(plan.readiness || {}).filter(Boolean).length;
-  if (readyCount <= 2) score += 2;
-  else if (readyCount <= 4) score += 1;
-
-  // Optional: weather risk + daylight
-  if (plan.weatherRisk === "high") score += 2;
-  else if (plan.weatherRisk === "med") score += 1;
-
-  if (plan.daylight === "low") score += 2;
-  else if (plan.daylight === "tight") score += 1;
-
-  // Clamp + label
-  if (score <= 3) return { level: "low", label: "Risk: Low (demo)" };
-  if (score <= 7) return { level: "med", label: "Risk: Medium (demo)" };
-  return { level: "high", label: "Risk: High (demo)" };
-}
-
-function buildShareText(plan) {
-  const start = prettyDate(plan.startTime);
-  const ret = prettyDate(plan.returnTime);
-  const cadenceLabel = plan.cadence ? `Every ${plan.cadence} minutes` : "—";
-
-  const lines = [];
-  lines.push("RidgeRelay Trip Plan (Demo)");
-  lines.push(`Trail: ${plan.trailName}`);
-  lines.push(`Start: ${start}`);
-  lines.push(`Expected return: ${ret}`);
-  lines.push(`Check-ins: ${cadenceLabel}`);
-  lines.push(`Emergency contact: ${plan.emergency || "—"}`);
-  lines.push("");
-
-  lines.push("Intent:");
-  lines.push(plan.intent || "—");
-  lines.push("");
-
-  if (plan.vehicle) lines.push(`Vehicle/Plate: ${plan.vehicle}`);
-  if (plan.partySize) lines.push(`Party size: ${plan.partySize}`);
-  if (plan.gearNotes) lines.push(`Gear notes: ${plan.gearNotes}`);
-  lines.push("");
-
-  if (plan.pet?.includeInShare && (plan.pet.name || plan.pet.desc)) {
-    lines.push("Pet (optional):");
-    lines.push(`- ${plan.pet.type || "Pet"}: ${plan.pet.name || "—"}`);
-    lines.push(`- Description: ${plan.pet.desc || "—"}`);
-    lines.push("");
-  }
-
-  lines.push("References:");
-  lines.push(`Google Maps: ${DEMO.googleMaps}`);
-  lines.push(`AllTrails: ${DEMO.allTrails}`);
-  lines.push("");
-  lines.push("Prototype note: Static demo — no data sent anywhere.");
-
-  return lines.join("\n");
-}
-
-function refreshUI() {
-  const plan = getPlan();
-
-  // Summary
-  if ($("#sumTrail")) $("#sumTrail").textContent = plan.trailName || "—";
-  if ($("#sumStart")) $("#sumStart").textContent = prettyDate(plan.startTime);
-  if ($("#sumReturn")) $("#sumReturn").textContent = prettyDate(plan.returnTime);
-  if ($("#sumCadence")) $("#sumCadence").textContent = plan.cadence ? `Every ${plan.cadence} minutes` : "—";
-  if ($("#sumEmergency")) $("#sumEmergency").textContent = plan.emergency || "—";
-
-  const intentShort = plan.intent ? plan.intent.slice(0, 140) + (plan.intent.length > 140 ? "…" : "") : "—";
-  if ($("#sumIntent")) $("#sumIntent").textContent = intentShort;
-
-  // Risk
-  const risk = computeRisk(plan);
-  const badge = $("#riskBadge");
-  if (badge) {
-    badge.textContent = risk.label;
-    badge.classList.remove("low", "med", "high");
-    badge.classList.add(risk.level);
-  }
-
-  // Share
-  const share = $("#shareText");
-  if (share) share.value = buildShareText(plan);
-
-  // Pet report preview
-  refreshPetReportText();
-}
-
-function wireLiveUpdates() {
-  const ids = [
-    "#intent","#startTime","#returnTime","#cadence","#emergency",
-    "#vehicle","#partySize","#weatherRisk","#daylight","#gearNotes",
-    "#chkWater","#chkLayers","#chkLight","#chkNav","#chkBattery","#chkAid","#chkTurn",
-    "#petName","#petType","#petDesc","#includePetInShare",
-    "#seenDesc","#seenWhere","#seenTime"
-  ];
-  ids.forEach(sel => {
-    const el = $(sel);
-    if (!el) return;
-    el.addEventListener("input", refreshUI);
-    el.addEventListener("change", refreshUI);
-  });
-}
-
-/* -----------------------------
-   Demo interactions: Start Trip + Contact demo + Readiness all
------------------------------ */
-(function demoButtons() {
-  const startBtn = $("#startTripBtn");
-  const demoStatus = $("#demoStatus");
-
-  if (startBtn && demoStatus) {
-    startBtn.addEventListener("click", () => {
-      const plan = getPlan();
-      demoStatus.innerHTML = `
-        <strong>Demo started.</strong><br/>
-        <span>Trail:</span> ${escapeHtml(plan.trailName)}<br/>
-        <span>Start:</span> ${escapeHtml(prettyDate(plan.startTime))}<br/>
-        <span>Expected return:</span> ${escapeHtml(prettyDate(plan.returnTime))}<br/>
-        <span>Check-ins:</span> Every ${escapeHtml(String(plan.cadence))} minutes<br/>
-        <span>Emergency contact:</span> ${escapeHtml(plan.emergency || "—")}<br/>
-        <em>Prototype note:</em> No data is sent anywhere.
-      `;
-      toast("Demo started (no data sent).");
-    });
-  }
-
-  const contactBtn = $("#contactBtn");
-  const contactStatus = $("#contactStatus");
-  if (contactBtn && contactStatus) {
-    contactBtn.addEventListener("click", () => {
-      contactStatus.textContent = "Demo only — this site is static. Use the email button to send feedback.";
-      toast("Contact form is demo-only.");
-    });
-  }
-
-  const readyAll = $("#readyAllBtn");
-  if (readyAll) {
-    readyAll.addEventListener("click", () => {
-      ["#chkWater","#chkLayers","#chkLight","#chkNav","#chkBattery","#chkAid","#chkTurn"]
-        .forEach(id => { const el = $(id); if (el) el.checked = true; });
-      refreshUI();
-      toast("Marked all readiness items.");
-    });
-  }
-})();
-
-/* -----------------------------
-   Save / Load / Clear plan (localStorage)
------------------------------ */
-(function persistence() {
-  const saveBtn = $("#savePlanBtn");
-  const loadBtn = $("#loadPlanBtn");
-  const clearBtn = $("#clearPlanBtn");
-
-  if (saveBtn) {
-    saveBtn.addEventListener("click", () => {
-      const plan = getPlan();
-      localStorage.setItem(STORAGE_KEYS.plan, JSON.stringify(plan));
-      toast("Saved plan locally.");
-    });
-  }
-
-  if (loadBtn) {
-    loadBtn.addEventListener("click", () => {
-      const raw = localStorage.getItem(STORAGE_KEYS.plan);
-      if (!raw) return toast("No saved plan found.");
-      try {
-        setPlan(JSON.parse(raw));
-        toast("Loaded saved plan.");
-      } catch {
-        toast("Saved plan was invalid.");
-      }
-    });
-  }
-
-  if (clearBtn) {
-    clearBtn.addEventListener("click", () => {
-      localStorage.removeItem(STORAGE_KEYS.plan);
-      toast("Cleared saved plan.");
-    });
-  }
-})();
-
-/* -----------------------------
-   Download plan (.txt) + Print + Reset demo
------------------------------ */
-(function exports() {
-  const downloadBtn = $("#downloadPlanBtn");
-  const printBtn = $("#printPlanBtn");
-  const resetBtn = $("#resetDemoBtn");
-
-  if (downloadBtn) {
-    downloadBtn.addEventListener("click", () => {
-      const text = buildShareText(getPlan());
-      const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
-      const url = URL.createObjectURL(blob);
-
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "ridgerelay-demo-plan.txt";
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      URL.revokeObjectURL(url);
-
-      toast("Downloaded plan text.");
-    });
-  }
-
-  if (printBtn) {
-    printBtn.addEventListener("click", () => {
-      toast("Opening print dialog…");
-      window.print();
-    });
-  }
-
-  if (resetBtn) {
-    resetBtn.addEventListener("click", () => {
-      setPlan(defaultPlan());
-      toast("Reset demo defaults.");
-    });
-  }
-})();
-
-/* -----------------------------
-   Copy share text + refresh share
------------------------------ */
-(function share() {
-  const copyBtn = $("#copyShareBtn");
-  const refreshBtn = $("#refreshShareBtn");
-  const shareText = $("#shareText");
-
-  async function copyText(value) {
-    try {
-      await navigator.clipboard.writeText(value);
-      toast("Copied to clipboard.");
-    } catch {
-      // Fallback for older browsers
-      const t = document.createElement("textarea");
-      t.value = value;
-      document.body.appendChild(t);
-      t.select();
-      document.execCommand("copy");
-      t.remove();
-      toast("Copied (fallback).");
+      list = list.filter(t => t.difficulty === activeFilter);
     }
   }
 
-  if (copyBtn && shareText) {
-    copyBtn.addEventListener("click", () => copyText(shareText.value));
+  const q = ($("#searchInput")?.value || "").trim().toLowerCase();
+  if (q){
+    list = list.filter(t =>
+      t.name.toLowerCase().includes(q) ||
+      t.area.toLowerCase().includes(q)
+    );
   }
-  if (refreshBtn) {
-    refreshBtn.addEventListener("click", () => {
-      refreshUI();
-      toast("Refreshed share text.");
-    });
-  }
-})();
 
-/* -----------------------------
-   Pets: lost pet report + photo preview + save/copy
------------------------------ */
-function buildPetReportText() {
-  const desc = $("#seenDesc")?.value?.trim() || "—";
-  const where = $("#seenWhere")?.value?.trim() || "—";
-  const when = prettyDate($("#seenTime")?.value || "");
-
-  const lines = [];
-  lines.push("Lost Pet Seen (Demo Note)");
-  lines.push(`Trail: ${DEMO.trailName}`);
-  lines.push(`Where seen: ${where}`);
-  lines.push(`Approx time: ${when}`);
-  lines.push("");
-  lines.push("Description:");
-  lines.push(desc);
-  lines.push("");
-  lines.push("Prototype note: Saved locally only (no upload).");
-  return lines.join("\n");
+  renderTrails(list);
 }
 
-function refreshPetReportText() {
-  const box = $("#petReportText");
-  if (!box) return;
-  box.value = buildPetReportText();
-}
-
-(function petModule() {
-  const photo = $("#seenPhoto");
-  const preview = $("#photoPreview");
-
-  if (photo && preview) {
-    photo.addEventListener("change", () => {
-      preview.innerHTML = "";
-      const file = photo.files?.[0];
-      if (!file) return;
-
-      const img = document.createElement("img");
-      img.alt = "Selected pet photo preview (local only)";
-      img.src = URL.createObjectURL(file);
-      preview.appendChild(img);
-
-      const note = document.createElement("div");
-      note.className = "tiny";
-      note.textContent = "Preview only (not uploaded).";
-      preview.appendChild(note);
-
-      toast("Photo preview loaded.");
-    });
-  }
-
-  const saveBtn = $("#savePetReportBtn");
-  if (saveBtn) {
-    saveBtn.addEventListener("click", () => {
-      const data = {
-        seenDesc: $("#seenDesc")?.value || "",
-        seenWhere: $("#seenWhere")?.value || "",
-        seenTime: $("#seenTime")?.value || ""
-        // Photo is intentionally not stored (demo + privacy + simplicity)
-      };
-      localStorage.setItem(STORAGE_KEYS.petReport, JSON.stringify(data));
-      toast("Saved pet report locally.");
-    });
-  }
-
-  const copyBtn = $("#copyPetReportBtn");
-  if (copyBtn) {
-    copyBtn.addEventListener("click", async () => {
-      const txt = buildPetReportText();
-      try {
-        await navigator.clipboard.writeText(txt);
-        toast("Copied pet report text.");
-      } catch {
-        toast("Copy failed in this browser.");
-      }
-    });
-  }
-
-  // Load saved pet report on startup (if exists)
-  try {
-    const raw = localStorage.getItem(STORAGE_KEYS.petReport);
-    if (raw) {
-      const d = JSON.parse(raw);
-      if ($("#seenDesc")) $("#seenDesc").value = d.seenDesc || "";
-      if ($("#seenWhere")) $("#seenWhere").value = d.seenWhere || "";
-      if ($("#seenTime")) $("#seenTime").value = d.seenTime || "";
-    }
-  } catch { /* ignore */ }
-})();
-
-/* -----------------------------
-   FAQ search (filters <details>)
------------------------------ */
-(function faqSearch() {
-  const input = $("#faqSearch");
-  const list = $("#faqList");
-  if (!input || !list) return;
-
-  const items = Array.from(list.querySelectorAll(".faq-item"));
-
-  input.addEventListener("input", () => {
-    const q = input.value.trim().toLowerCase();
-    items.forEach(d => {
-      const text = d.textContent?.toLowerCase() || "";
-      d.style.display = text.includes(q) ? "" : "none";
-    });
+$all("[data-filter]").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    $all(".rr-chip").forEach(x => x.classList.remove("rr-chip-active"));
+    btn.classList.add("rr-chip-active");
+    activeFilter = btn.getAttribute("data-filter");
+    applyFilter();
   });
-})();
+});
+
+$("#btnSearch")?.addEventListener("click", applyFilter);
+$("#searchInput")?.addEventListener("keydown", (e)=>{
+  if (e.key === "Enter") applyFilter();
+});
 
 /* -----------------------------
-   Back-to-top button
+   Active Trip demo events
 ----------------------------- */
-(function backToTop() {
-  const btn = $("#toTopBtn");
-  if (!btn) return;
+const statusBadge = $("#statusBadge");
+const statusDetail = $("#statusDetail");
+const eventFeed = $("#eventFeed");
 
-  const onScroll = () => {
-    btn.classList.toggle("is-visible", window.scrollY > 600);
-  };
-
-  btn.addEventListener("click", () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  });
-
-  onScroll();
-  window.addEventListener("scroll", onScroll, { passive: true });
-})();
-
-/* -----------------------------
-   Leaflet map + GeoJSON overlay + toggles
------------------------------ */
-let rrMap = null;
-let rrTrailLayer = null;
-let rrTrailBounds = null;
-
-async function initMap() {
-  const mapEl = $("#map");
-  if (!mapEl || typeof L === "undefined") return;
-
-  rrMap = L.map("map", {
-    scrollWheelZoom: false,
-    tap: true
-  }).setView([DEMO.defaultView.lat, DEMO.defaultView.lng], DEMO.defaultView.zoom);
-
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    maxZoom: 19
-  }).addTo(rrMap);
-
-  // Load local GeoJSON
-  const res = await fetch(DEMO.geojsonUrl, { cache: "no-store" });
-  if (!res.ok) throw new Error(`GeoJSON fetch failed: ${res.status}`);
-  const data = await res.json();
-
-  rrTrailLayer = L.geoJSON(data, {
-    style: { weight: 4, opacity: 0.9 }
-  }).addTo(rrMap);
-
-  rrTrailBounds = rrTrailLayer.getBounds();
-  if (rrTrailBounds?.isValid()) rrMap.fitBounds(rrTrailBounds.pad(0.2));
-
-  // Quiet marker near trailhead (illustrative)
-  L.marker([47.4845, -121.7860]).addTo(rrMap)
-    .bindPopup("<strong>Demo trailhead</strong><br/>Rattlesnake Ledge area");
-
-  // Wire map toggles
-  const toggleTrail = $("#toggleTrail");
-  if (toggleTrail) {
-    toggleTrail.addEventListener("change", () => {
-      if (!rrMap || !rrTrailLayer) return;
-      if (toggleTrail.checked) rrTrailLayer.addTo(rrMap);
-      else rrMap.removeLayer(rrTrailLayer);
-      toast(toggleTrail.checked ? "Trail overlay on." : "Trail overlay off.");
-    });
-  }
-
-  const toggleScroll = $("#toggleScrollLock");
-  if (toggleScroll) {
-    toggleScroll.addEventListener("change", () => {
-      if (!rrMap) return;
-      if (toggleScroll.checked) rrMap.scrollWheelZoom.disable();
-      else rrMap.scrollWheelZoom.enable();
-      toast(toggleScroll.checked ? "Scroll zoom locked." : "Scroll zoom enabled.");
-    });
-  }
-
-  const recenterBtn = $("#recenterBtn");
-  if (recenterBtn) {
-    recenterBtn.addEventListener("click", () => {
-      if (!rrMap) return;
-      if (rrTrailBounds?.isValid()) rrMap.fitBounds(rrTrailBounds.pad(0.2));
-      else rrMap.setView([DEMO.defaultView.lat, DEMO.defaultView.lng], DEMO.defaultView.zoom);
-      toast("Re-centered map.");
-    });
-  }
+function logEvent(text){
+  if (!eventFeed) return;
+  const item = document.createElement("div");
+  item.className = "rr-feeditem";
+  item.innerHTML = `<span class="rr-time">Now</span> ${text}`;
+  eventFeed.prepend(item);
 }
 
-(async function boot() {
-  // Set demo defaults
-  setPlan(defaultPlan());
-  wireLiveUpdates();
-  refreshUI();
+$("#btnBoundary")?.addEventListener("click", ()=>{
+  statusBadge.textContent = "Deviation";
+  statusBadge.className = "rr-badge rr-badge-warn";
+  statusDetail.textContent = "Outside corridor. Intent confirmation requested (demo).";
+  logEvent("Deviation detected. User prompted: “Did you mean to leave your route?”");
+});
 
-  // Init map
-  try {
-    await initMap();
-  } catch (err) {
-    console.error(err);
-    toast("Map failed to load. Check GeoJSON path.");
-  }
-})();
+$("#btnInactivity")?.addEventListener("click", ()=>{
+  statusBadge.textContent = "Inactive";
+  statusBadge.className = "rr-badge rr-badge-warn";
+  statusDetail.textContent = "No movement detected. Check-in initiated (demo).";
+  logEvent("Inactivity threshold reached. Check-in prompt sent.");
+});
 
+$("#btnOffline")?.addEventListener("click", ()=>{
+  statusBadge.textContent = "Offline";
+  statusBadge.className = "rr-badge rr-badge-bad";
+  statusDetail.textContent = "Signal lost. Holding last known corridor segment (demo).";
+  logEvent("Signal lost. System shifts to low-power monitoring behavior.");
+});
+
+$("#btnSOS")?.addEventListener("click", ()=>{
+  statusBadge.textContent = "SOS";
+  statusBadge.className = "rr-badge rr-badge-bad";
+  statusDetail.textContent = "Emergency escalation initiated (demo).";
+  logEvent("SOS triggered. Escalation path would notify POC with last known data.");
+});
+
+/* -----------------------------
+   Init
+----------------------------- */
+hydratePlan(TRAILS[0]);
+renderTrails(TRAILS);
