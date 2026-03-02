@@ -1,757 +1,236 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <!--
-    RidgeRelay — Single-page concept (GitHub Pages)
-    Sweet-spot v4:
-    - Hamburger drawer nav
-    - Planner module w/ tabs + dropdown tools
-    - Live summary + gentle risk meter
-    - Leaflet + OSM + local GeoJSON overlay auto-load
-    - Demo locked to Rattlesnake Ridge / Ledge, WA
-  -->
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="RidgeRelay — Plan smart. Return safe. Safety-first planning for low/no-cell recreation (concept prototype)." />
-  <title>RidgeRelay — Plan smart. Return safe.</title>
-
-  <!-- Modern sans -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-  <!-- Leaflet CSS (open source) -->
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-    crossorigin=""
-  />
-
-  <link rel="stylesheet" href="./css/styles.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RidgeRelay — Explore (Prototype)</title>
+  <link rel="stylesheet" href="css/styles.css"/>
 </head>
 
 <body>
-  <!-- Skip link for keyboard users -->
-  <a class="skip-link" href="#main">Skip to main content</a>
+  <!-- Prototype Banner (always visible, non-alarming) -->
+  <div class="rr-banner" role="status" aria-live="polite">
+    <strong>Prototype:</strong> This is a concept demo (no live tracking, no real GPS, no dispatch).
+  </div>
 
-  <!-- Header -->
-  <header class="site-header" data-elevate="false">
-    <div class="container header-inner">
-      <a class="brand" href="#home" aria-label="RidgeRelay home">
-        <span class="brand-mark" aria-hidden="true">RR</span>
-        <span class="brand-text">
-          <span class="brand-name">RidgeRelay</span>
-          <span class="brand-sub">Outdoor safety planning (concept)</span>
-        </span>
-      </a>
-
-      <div class="header-actions">
-        <a class="btn btn-ghost btn-sm" href="#visual">Start Demo</a>
-
-        <!-- Hamburger / drawer menu -->
-        <button
-          class="menu-btn"
-          type="button"
-          id="menuBtn"
-          aria-label="Open menu"
-          aria-controls="mobileDrawer"
-          aria-expanded="false"
-        >
-          <span class="menu-icon" aria-hidden="true"></span>
-          <span class="menu-label">Menu</span>
-        </button>
+  <!-- Top Bar (AllTrails-like) -->
+  <header class="rr-topbar">
+    <div class="rr-brand">
+      <div class="rr-logo" aria-label="RidgeRelay logo">RR</div>
+      <div class="rr-brandtext">
+        <div class="rr-name">RidgeRelay</div>
+        <div class="rr-tag">Intent-aware safety for low-signal outdoor activity</div>
       </div>
     </div>
 
-    <!-- Drawer -->
-    <div class="drawer" id="mobileDrawer" hidden>
-      <div class="container drawer-inner">
-        <nav class="nav-mobile" aria-label="Site navigation">
-          <a class="drawer-link" href="#home">Home</a>
-          <a class="drawer-link" href="#overview">Overview</a>
-          <a class="drawer-link" href="#how">How it works</a>
-          <a class="drawer-link" href="#visual">Visual example</a>
-          <a class="drawer-link" href="#faq">FAQ</a>
-          <a class="drawer-link" href="#about">About</a>
-          <a class="drawer-link drawer-link-cta" href="#contact">Contact</a>
-        </nav>
-
-        <div class="drawer-note" role="note">
-          <strong>Prototype note:</strong> Static demo — no accounts, no tracking, no backend.
-        </div>
-      </div>
+    <div class="rr-top-actions">
+      <button class="rr-btn rr-btn-ghost" data-nav="screen-safety">Safety</button>
+      <button class="rr-btn rr-btn-primary" data-nav="screen-active">Active Trip</button>
     </div>
   </header>
 
-  <main id="main">
-    <!-- HERO -->
-    <section id="home" class="section hero" aria-label="Home">
-      <div class="container hero-grid">
-        <div class="hero-copy">
-          <div class="pill-row" aria-label="Badges">
-            <span class="pill pill-primary">Rattlesnake Ridge demo</span>
-            <span class="pill">Low / no-cell aware</span>
-            <span class="pill">Planning-first</span>
-          </div>
+  <!-- Main App -->
+  <main class="rr-shell">
 
-          <h1 class="hero-title">
-            RidgeRelay
-            <span class="hero-title-accent">Plan smart. Return safe.</span>
-          </h1>
+    <!-- Left sidebar (desktop) -->
+    <aside class="rr-sidebar">
+      <div class="rr-side-section">
+        <div class="rr-side-title">Browse</div>
 
-          <p class="hero-lede">
-            A calm, safety-first system for trips beyond coverage. Declare intent, set timing, choose check-ins —
-            and make escalation predictable when silence happens.
+        <button class="rr-navitem active" data-nav="screen-explore">Explore</button>
+        <button class="rr-navitem" data-nav="screen-saved">Saved</button>
+        <button class="rr-navitem" data-nav="screen-plan">Plan</button>
+        <button class="rr-navitem" data-nav="screen-safety">Safety Profile</button>
+        <button class="rr-navitem" data-nav="screen-faq">FAQ</button>
+      </div>
+
+      <div class="rr-divider"></div>
+
+      <div class="rr-side-section">
+        <div class="rr-side-title">Quick actions</div>
+        <button class="rr-btn rr-btn-block rr-btn-primary" data-nav="screen-plan">Plan a Trip</button>
+        <button class="rr-btn rr-btn-block rr-btn-ghost" data-nav="screen-active">Preview Active Trip</button>
+      </div>
+
+      <div class="rr-side-note">
+        <strong>Privacy-first:</strong> session-limited tracking (concept). Auto-ends when you finish or return.
+      </div>
+    </aside>
+
+    <!-- Content -->
+    <section class="rr-content">
+
+      <!-- SCREEN: EXPLORE -->
+      <section class="rr-screen show" id="screen-explore" aria-label="Explore">
+        <div class="rr-hero">
+          <h1>Find your next hike — with a safety layer.</h1>
+          <p>
+            Explore trails like AllTrails, then add an intent-based “flight plan” for low-signal confidence.
           </p>
 
-          <div class="hero-actions" role="group" aria-label="Primary actions">
-            <a class="btn btn-primary" href="#visual">Start Trip (Demo)</a>
-            <a class="btn btn-secondary" href="#how">See the flow</a>
+          <div class="rr-searchrow">
+            <label class="rr-sr-only" for="searchInput">Search trails</label>
+            <input id="searchInput" class="rr-search" placeholder="Search trails, parks, or regions (demo)" />
+            <button class="rr-btn rr-btn-primary" id="btnSearch">Search</button>
           </div>
 
-          <ul class="trust-bullets" aria-label="Trust points">
-            <li><span class="dot" aria-hidden="true"></span> Clear intent + return window</li>
-            <li><span class="dot" aria-hidden="true"></span> Check-ins that fit conditions</li>
-            <li><span class="dot" aria-hidden="true"></span> Predictable escalation steps</li>
-          </ul>
-        </div>
-
-        <aside class="hero-side" aria-label="Demo snapshot">
-          <div class="card card-glass">
-            <div class="card-header">
-              <h2 class="card-title">Why it feels calm</h2>
-              <p class="card-subtitle">
-                RidgeRelay is intentionally not a social feed. It’s a focused pre-trip tool: plan, confirm, share.
-              </p>
-            </div>
-
-            <div class="mini-panels">
-              <div class="mini-panel">
-                <div class="mini-panel-title">
-                  <span class="mini-icon" aria-hidden="true">🧭</span>
-                  <strong>Intent → clarity</strong>
-                </div>
-                <p>Help others understand your plan without guessing.</p>
-              </div>
-
-              <div class="mini-panel">
-                <div class="mini-panel-title">
-                  <span class="mini-icon" aria-hidden="true">⏱️</span>
-                  <strong>Check-ins → expectations</strong>
-                </div>
-                <p>Predictable rhythm reduces panic and false alarms.</p>
-              </div>
-
-              <div class="mini-panel">
-                <div class="mini-panel-title">
-                  <span class="mini-icon" aria-hidden="true">🗺️</span>
-                  <strong>Demo trail map</strong>
-                </div>
-                <p>Map loads a local GeoJSON overlay for the demo trail.</p>
-              </div>
-            </div>
-
-            <div class="callout" role="note">
-              <strong>Safety note:</strong> Always carry essentials and tell someone your plan. This is a concept prototype.
-            </div>
-          </div>
-        </aside>
-      </div>
-    </section>
-
-    <!-- OVERVIEW -->
-    <section id="overview" class="section section-alt" aria-label="Overview">
-      <div class="container split">
-        <div class="stack">
-          <h2 class="section-title">Overview</h2>
-          <p class="section-lede">
-            Out here, “no service” is normal. What matters is whether someone else knows your plan,
-            your boundaries, and when to worry.
-          </p>
-          <p class="section-body">
-            RidgeRelay is a concept for a lightweight safety system built around planning:
-            intent, timing, and check-ins. If check-ins stop, escalation follows clear steps —
-            starting with your contacts and only moving toward emergency support when needed.
-          </p>
-        </div>
-
-        <aside class="card" aria-label="What RidgeRelay prioritizes">
-          <h3 class="card-title">Priorities</h3>
-          <ul class="list">
-            <li><strong>Planning</strong> over posting</li>
-            <li><strong>Clarity</strong> over complexity</li>
-            <li><strong>Trust</strong> through predictable steps</li>
-            <li><strong>Static + auditable</strong> (prototype)</li>
-          </ul>
-          <div class="divider" aria-hidden="true"></div>
-          <div class="metrics" aria-label="Concept metrics">
-            <div class="metric">
-              <div class="metric-num">1</div>
-              <div class="metric-label">Demo trail</div>
-            </div>
-            <div class="metric">
-              <div class="metric-num">5</div>
-              <div class="metric-label">Planner tabs</div>
-            </div>
-            <div class="metric">
-              <div class="metric-num">0</div>
-              <div class="metric-label">Accounts</div>
-            </div>
-          </div>
-        </aside>
-      </div>
-    </section>
-
-    <!-- HOW IT WORKS -->
-    <section id="how" class="section" aria-label="How it works">
-      <div class="container">
-        <h2 class="section-title">How it works</h2>
-        <p class="section-lede">
-          A simple 4-step flow — built to stay understandable under stress.
-        </p>
-
-        <ul class="steps" aria-label="Four-step flow">
-          <li class="step-item">
-            <div class="step-icon" aria-hidden="true">🧭</div>
-            <div class="step-text">
-              <strong>Plan</strong>
-              <span>Declare intent, start time, return time, and emergency contact.</span>
-            </div>
-          </li>
-          <li class="step-item">
-            <div class="step-icon" aria-hidden="true">🧱</div>
-            <div class="step-text">
-              <strong>Guardrails</strong>
-              <span>Set boundaries so someone else understands the plan quickly.</span>
-            </div>
-          </li>
-          <li class="step-item">
-            <div class="step-icon" aria-hidden="true">⏱️</div>
-            <div class="step-text">
-              <strong>Check-ins</strong>
-              <span>Choose a cadence that matches conditions (30–90 minutes).</span>
-            </div>
-          </li>
-          <li class="step-item">
-            <div class="step-icon" aria-hidden="true">🚨</div>
-            <div class="step-text">
-              <strong>Escalation</strong>
-              <span>Progressive steps if you miss check-ins — no surprises, just clarity.</span>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- VISUAL EXAMPLE (PRODUCT MODULE) -->
-    <section id="visual" class="section section-alt" aria-label="Visual example">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <h2 class="section-title">Visual example</h2>
-            <p class="section-lede">
-              Demo plan + map preview for <strong>Rattlesnake Ridge / Rattlesnake Ledge, WA</strong>.
-              This prototype is locked to that trail for clarity and submission scope.
-            </p>
-          </div>
-
-          <div class="section-actions" aria-label="External references">
-            <a class="btn btn-ghost" href="https://maps.app.goo.gl/r79LstcUM4UWg4s27" target="_blank" rel="noopener noreferrer">
-              View on Google Maps
-            </a>
-            <a class="btn btn-ghost" href="https://www.alltrails.com/trail/us/washington/rattlesnake-ledge" target="_blank" rel="noopener noreferrer">
-              View on AllTrails
-            </a>
+          <div class="rr-filters">
+            <button class="rr-chip rr-chip-active" data-filter="all">All</button>
+            <button class="rr-chip" data-filter="easy">Easy</button>
+            <button class="rr-chip" data-filter="moderate">Moderate</button>
+            <button class="rr-chip" data-filter="hard">Hard</button>
+            <button class="rr-chip" data-filter="low-signal">Low Signal Risk</button>
           </div>
         </div>
 
-        <div class="visual-grid">
-          <!-- Planner module -->
-          <section class="card planner" aria-label="Trip planner module">
-            <div class="planner-top">
-              <div>
-                <h3 class="card-title">Trip Planner (Demo)</h3>
-                <p class="card-subtitle">Feels real. Stays static. Nothing is sent anywhere.</p>
-              </div>
-
-              <div class="planner-tools">
-                <!-- dropdown for less clutter -->
-                <details class="dropdown" id="toolsDropdown">
-                  <summary class="btn btn-secondary btn-sm">Tools</summary>
-                  <div class="dropdown-panel" role="menu" aria-label="Planner tools">
-                    <button class="btn btn-ghost btn-sm btn-block" type="button" id="savePlanBtn">Save plan (Local)</button>
-                    <button class="btn btn-ghost btn-sm btn-block" type="button" id="loadPlanBtn">Load last plan</button>
-                    <button class="btn btn-ghost btn-sm btn-block" type="button" id="clearPlanBtn">Clear saved plan</button>
-                    <div class="dropdown-divider" aria-hidden="true"></div>
-                    <button class="btn btn-ghost btn-sm btn-block" type="button" id="downloadPlanBtn">Download plan (.txt)</button>
-                    <button class="btn btn-ghost btn-sm btn-block" type="button" id="printPlanBtn">Print plan</button>
-                    <div class="dropdown-divider" aria-hidden="true"></div>
-                    <button class="btn btn-ghost btn-sm btn-block" type="button" id="resetDemoBtn">Reset demo defaults</button>
-                  </div>
-                </details>
-              </div>
-            </div>
-
-            <!-- Tabs -->
-            <div class="tabs" role="tablist" aria-label="Planner tabs">
-              <button class="tab is-active" role="tab" aria-selected="true" aria-controls="panel-plan" id="tab-plan" data-tab="plan">Plan</button>
-              <button class="tab" role="tab" aria-selected="false" aria-controls="panel-ready" id="tab-ready" data-tab="ready">Readiness</button>
-              <button class="tab" role="tab" aria-selected="false" aria-controls="panel-escalation" id="tab-escalation" data-tab="escalation">Escalation</button>
-              <button class="tab" role="tab" aria-selected="false" aria-controls="panel-share" id="tab-share" data-tab="share">Share</button>
-              <button class="tab" role="tab" aria-selected="false" aria-controls="panel-pets" id="tab-pets" data-tab="pets">Pets</button>
-            </div>
-
-            <div class="panels">
-              <!-- PLAN -->
-              <div class="panel is-active" role="tabpanel" id="panel-plan" aria-labelledby="tab-plan">
-                <form class="form" aria-label="Plan form">
-                  <div class="field">
-                    <label for="trailName">Trail (Demo)</label>
-                    <input id="trailName" name="trailName" type="text" readonly />
-                    <p class="hint">This prototype is locked to the Rattlesnake Ridge / Ledge demo.</p>
-                  </div>
-
-                  <div class="field">
-                    <label for="intent">Intent declaration</label>
-                    <textarea id="intent" name="intent" rows="3"
-                      placeholder="Example: Day hike to Rattlesnake Ledge. Staying on main trail. Turning around if weather shifts."></textarea>
-                    <p class="hint">Be specific enough that someone else can understand your plan quickly.</p>
-                  </div>
-
-                  <div class="grid-2">
-                    <div class="field">
-                      <label for="startTime">Start time</label>
-                      <input id="startTime" name="startTime" type="datetime-local" />
-                    </div>
-                    <div class="field">
-                      <label for="returnTime">Expected return</label>
-                      <input id="returnTime" name="returnTime" type="datetime-local" />
-                    </div>
-                  </div>
-
-                  <div class="grid-2">
-                    <div class="field">
-                      <label for="cadence">Check-in cadence</label>
-                      <select id="cadence" name="cadence">
-                        <option value="30">Every 30 minutes</option>
-                        <option value="45">Every 45 minutes</option>
-                        <option value="60" selected>Every 60 minutes</option>
-                        <option value="90">Every 90 minutes</option>
-                      </select>
-                      <p class="hint">Shorter cadence for winter, storms, or solo hikes.</p>
-                    </div>
-
-                    <div class="field">
-                      <label for="emergency">Emergency contact</label>
-                      <input id="emergency" name="emergency" type="text" placeholder="Name + phone/email" />
-                      <p class="hint">First person notified if you miss check-ins.</p>
-                    </div>
-                  </div>
-
-                  <details class="adv" id="advancedDetails">
-                    <summary>Optional trip notes</summary>
-                    <div class="adv-inner">
-                      <div class="grid-2">
-                        <div class="field">
-                          <label for="vehicle">Vehicle / plate</label>
-                          <input id="vehicle" name="vehicle" type="text" placeholder="Example: Gray Subaru Outback, WA ABC123" />
-                        </div>
-                        <div class="field">
-                          <label for="partySize">Party size</label>
-                          <select id="partySize" name="partySize">
-                            <option value="1">Solo</option>
-                            <option value="2" selected>2</option>
-                            <option value="3">3</option>
-                            <option value="4+">4+</option>
-                          </select>
-                        </div>
-                      </div>
-
-                      <div class="grid-2">
-                        <div class="field">
-                          <label for="weatherRisk">Weather risk (demo)</label>
-                          <select id="weatherRisk" name="weatherRisk">
-                            <option value="low" selected>Low</option>
-                            <option value="med">Medium</option>
-                            <option value="high">High</option>
-                          </select>
-                        </div>
-                        <div class="field">
-                          <label for="daylight">Daylight remaining (demo)</label>
-                          <select id="daylight" name="daylight">
-                            <option value="plenty" selected>Plenty</option>
-                            <option value="tight">Tight</option>
-                            <option value="low">Low</option>
-                          </select>
-                        </div>
-                      </div>
-
-                      <div class="field">
-                        <label for="gearNotes">Gear notes</label>
-                        <textarea id="gearNotes" name="gearNotes" rows="2" placeholder="Example: microspikes, extra layers, headlamp, first aid"></textarea>
-                      </div>
-                    </div>
-                  </details>
-
-                  <button class="btn btn-primary btn-block" type="button" id="startTripBtn">
-                    Start Trip (Demo)
-                  </button>
-
-                  <div class="status" id="demoStatus" aria-live="polite"></div>
-
-                  <a class="btn btn-secondary btn-block"
-                     href="./assets/maps/rattlesnake-ridge-demo.geojson"
-                     download="rattlesnake-ridge-demo.geojson">
-                    Download Demo Trail Map
-                  </a>
-                </form>
-              </div>
-
-              <!-- READINESS -->
-              <div class="panel" role="tabpanel" id="panel-ready" aria-labelledby="tab-ready">
-                <div class="panel-head">
-                  <h4 class="panel-title">Trip readiness (demo)</h4>
-                  <button class="btn btn-secondary btn-sm" type="button" id="readyAllBtn">Mark all ready</button>
-                </div>
-
-                <p class="hint">A calm checklist for essentials. Not judgment — just clarity.</p>
-
-                <div class="checklist" role="group" aria-label="Readiness checklist">
-                  <label class="check"><input type="checkbox" id="chkWater" /><span>Water</span></label>
-                  <label class="check"><input type="checkbox" id="chkLayers" /><span>Layers / rain protection</span></label>
-                  <label class="check"><input type="checkbox" id="chkLight" /><span>Headlamp / light</span></label>
-                  <label class="check"><input type="checkbox" id="chkNav" /><span>Navigation (map/compass)</span></label>
-                  <label class="check"><input type="checkbox" id="chkBattery" /><span>Battery / power bank</span></label>
-                  <label class="check"><input type="checkbox" id="chkAid" /><span>First aid</span></label>
-                  <label class="check"><input type="checkbox" id="chkTurn" /><span>Turnaround decision set</span></label>
-                </div>
-              </div>
-
-              <!-- ESCALATION -->
-              <div class="panel" role="tabpanel" id="panel-escalation" aria-labelledby="tab-escalation">
-                <h4 class="panel-title">Escalation timeline (concept)</h4>
-                <p class="hint">A demo visualization to make expectations predictable.</p>
-
-                <div class="timeline" aria-label="Escalation timeline">
-                  <div class="t-item"><div class="t-dot" aria-hidden="true"></div><div class="t-body"><strong>T+0</strong><span>Missed check-in → gentle nudge / verify plan.</span></div></div>
-                  <div class="t-item"><div class="t-dot" aria-hidden="true"></div><div class="t-body"><strong>T+30</strong><span>Notify emergency contact with your shared plan.</span></div></div>
-                  <div class="t-item"><div class="t-dot" aria-hidden="true"></div><div class="t-body"><strong>T+90</strong><span>Notify secondary contact (optional) if no confirmation.</span></div></div>
-                  <div class="t-item"><div class="t-dot t-dot-warn" aria-hidden="true"></div><div class="t-body"><strong>T+180</strong><span>Escalate to emergency services (concept) with last known info.</span></div></div>
-                </div>
-
-                <details class="adv">
-                  <summary>Why this reduces panic</summary>
-                  <div class="adv-inner">
-                    <p class="hint">
-                      When escalation steps are agreed ahead of time, people worry less early and act faster when it matters.
-                      This demo reduces “guessing” under stress.
-                    </p>
-                  </div>
-                </details>
-              </div>
-
-              <!-- SHARE -->
-              <div class="panel" role="tabpanel" id="panel-share" aria-labelledby="tab-share">
-                <h4 class="panel-title">Share plan (demo)</h4>
-                <p class="hint">Generates a message you can copy and send. No accounts required.</p>
-
-                <div class="share-box">
-                  <label for="shareText" class="sr-only">Share text</label>
-                  <textarea id="shareText" rows="8" readonly></textarea>
-
-                  <div class="share-actions">
-                    <button class="btn btn-primary btn-sm" type="button" id="copyShareBtn">Copy share text</button>
-                    <button class="btn btn-secondary btn-sm" type="button" id="refreshShareBtn">Refresh from plan</button>
-                  </div>
-
-                  <p class="hint">Includes demo trail name + times + cadence + emergency contact + reference links.</p>
-                </div>
-              </div>
-
-              <!-- PETS -->
-              <div class="panel" role="tabpanel" id="panel-pets" aria-labelledby="tab-pets">
-                <h4 class="panel-title">Pets (demo)</h4>
-                <p class="hint">Optional: include pet info in your share plan, and record a “lost pet seen” note locally.</p>
-
-                <details class="adv" open>
-                  <summary>Do you have a pet?</summary>
-                  <div class="adv-inner">
-                    <div class="grid-2">
-                      <div class="field">
-                        <label for="petName">Pet name</label>
-                        <input id="petName" type="text" placeholder="Example: Luna" />
-                      </div>
-                      <div class="field">
-                        <label for="petType">Type</label>
-                        <select id="petType">
-                          <option value="Dog" selected>Dog</option>
-                          <option value="Cat">Cat</option>
-                          <option value="Other">Other</option>
-                        </select>
-                      </div>
-                    </div>
-
-                    <div class="field">
-                      <label for="petDesc">Description</label>
-                      <input id="petDesc" type="text" placeholder="Color / markings / collar" />
-                    </div>
-
-                    <label class="check">
-                      <input type="checkbox" id="includePetInShare" />
-                      <span>Include pet info in share plan</span>
-                    </label>
-                  </div>
-                </details>
-
-                <details class="adv">
-                  <summary>Lost pet seen on trail (record + copy)</summary>
-                  <div class="adv-inner">
-                    <div class="field">
-                      <label for="seenDesc">Description</label>
-                      <textarea id="seenDesc" rows="3" placeholder="Describe the pet: color, size, collar, tags, behavior"></textarea>
-                    </div>
-
-                    <div class="grid-2">
-                      <div class="field">
-                        <label for="seenWhere">Where seen</label>
-                        <input id="seenWhere" type="text" placeholder="Trailhead / landmark / mile marker" />
-                      </div>
-                      <div class="field">
-                        <label for="seenTime">Approx time seen</label>
-                        <input id="seenTime" type="datetime-local" />
-                      </div>
-                    </div>
-
-                    <div class="field">
-                      <label for="seenPhoto">Photo (optional, local preview only)</label>
-                      <input id="seenPhoto" type="file" accept="image/*" />
-                      <div class="photo-preview" id="photoPreview" aria-live="polite"></div>
-                      <p class="hint">This stays on your device in this demo (no upload).</p>
-                    </div>
-
-                    <div class="share-actions">
-                      <button class="btn btn-secondary btn-sm" type="button" id="savePetReportBtn">Save report (Local)</button>
-                      <button class="btn btn-primary btn-sm" type="button" id="copyPetReportBtn">Copy report text</button>
-                    </div>
-
-                    <textarea id="petReportText" rows="6" readonly></textarea>
-                  </div>
-                </details>
-              </div>
-            </div>
-          </section>
-
-          <!-- Map + Summary -->
-          <section class="card map-card" aria-label="Map and live summary">
-            <div class="card-header">
-              <h3 class="card-title">Rattlesnake demo map</h3>
-              <p class="card-subtitle">OpenStreetMap + Leaflet (local GeoJSON overlay).</p>
-            </div>
-
-            <div class="map-controls" aria-label="Map controls">
-              <label class="toggle"><input type="checkbox" id="toggleTrail" checked /><span>Show demo trail line</span></label>
-              <label class="toggle"><input type="checkbox" id="toggleScrollLock" checked /><span>Lock scroll zoom</span></label>
-              <button class="btn btn-ghost btn-sm" type="button" id="recenterBtn">Re-center</button>
-            </div>
-
-            <div class="map" id="map" role="application" aria-label="Map showing demo trail"></div>
-
-            <div class="divider" aria-hidden="true"></div>
-
-            <div class="summary" aria-label="Planning summary">
-              <div class="summary-head">
-                <strong>Planning summary</strong>
-                <span class="badge" id="riskBadge">Risk: —</span>
-              </div>
-
-              <dl class="summary-grid">
-                <div><dt>Trail</dt><dd id="sumTrail">—</dd></div>
-                <div><dt>Start</dt><dd id="sumStart">—</dd></div>
-                <div><dt>Return</dt><dd id="sumReturn">—</dd></div>
-                <div><dt>Check-ins</dt><dd id="sumCadence">—</dd></div>
-                <div class="sum-wide"><dt>Emergency</dt><dd id="sumEmergency">—</dd></div>
-                <div class="sum-wide"><dt>Intent</dt><dd id="sumIntent">—</dd></div>
-              </dl>
-
-              <p class="hint">Risk meter is a gentle demo indicator (not authoritative). It encourages completeness.</p>
-            </div>
-
-            <p class="tiny map-foot">
-              Map data © OpenStreetMap contributors. Demo trail line is illustrative only. Scroll zoom locked by default.
-            </p>
-          </section>
+        <!-- Featured -->
+        <div class="rr-sectionhead">
+          <h2>Featured near you (demo)</h2>
+          <p>Tap a trail to view details, save it, or plan a safety session.</p>
         </div>
-      </div>
-    </section>
 
-    <!-- FAQ -->
-    <section id="faq" class="section" aria-label="FAQ">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <h2 class="section-title">FAQ</h2>
-            <p class="section-lede">Short answers, clear expectations.</p>
+        <div class="rr-grid" id="trailGrid">
+          <!-- Cards injected by app.js -->
+        </div>
+      </section>
+
+      <!-- SCREEN: SAVED -->
+      <section class="rr-screen" id="screen-saved" aria-label="Saved Trails">
+        <div class="rr-sectionhead">
+          <h2>Saved</h2>
+          <p>Your wishlist for planning later (stored locally in your browser).</p>
+        </div>
+
+        <div class="rr-grid" id="savedGrid"></div>
+      </section>
+
+      <!-- SCREEN: PLAN -->
+      <section class="rr-screen" id="screen-plan" aria-label="Plan a Trip">
+        <div class="rr-sectionhead">
+          <h2>Plan a Trip (wireframe)</h2>
+          <p>Declare intent to reduce false alarms and make escalation predictable.</p>
+        </div>
+
+        <div class="rr-card">
+          <div class="rr-formrow">
+            <label>Trail</label>
+            <select id="trailSelect"></select>
           </div>
 
-          <div class="faq-search">
-            <label class="sr-only" for="faqSearch">Search FAQ</label>
-            <input id="faqSearch" type="text" placeholder="Search FAQ..." />
+          <div class="rr-formgrid">
+            <div class="rr-formrow">
+              <label>Trail Estimated Time</label>
+              <input type="text" value="2h 30m" />
+            </div>
+            <div class="rr-formrow">
+              <label>Your Anticipated Time</label>
+              <input type="text" value="3h 15m" />
+            </div>
+          </div>
+
+          <div class="rr-formrow">
+            <label>Planned Stops</label>
+            <div class="rr-pillrow">
+              <span class="rr-pill">Rest</span>
+              <span class="rr-pill">Photography</span>
+              <span class="rr-pill">Wildlife</span>
+              <button class="rr-pill rr-pill-add" type="button">+ Add</button>
+            </div>
+          </div>
+
+          <div class="rr-actions">
+            <button class="rr-btn rr-btn-ghost" data-nav="screen-explore">Back</button>
+            <button class="rr-btn rr-btn-primary" data-nav="screen-active">Start (Demo)</button>
           </div>
         </div>
+      </section>
 
-        <div class="faq" id="faqList">
-          <details class="faq-item">
-            <summary>Does RidgeRelay track me?</summary>
-            <div class="faq-body">
-              No. This prototype is a static GitHub Pages site. It doesn’t create accounts and doesn’t send data anywhere.
-            </div>
-          </details>
-
-          <details class="faq-item">
-            <summary>What happens if I lose service?</summary>
-            <div class="faq-body">
-              The concept focuses on what you can set before you lose signal: intent, timing, check-ins, and escalation expectations.
-              Offline features are future scope.
-            </div>
-          </details>
-
-          <details class="faq-item">
-            <summary>How is this different from AllTrails or Google Maps?</summary>
-            <div class="faq-body">
-              Those tools help you navigate. RidgeRelay focuses on safety planning and escalation clarity: who’s notified, when, and with what information.
-            </div>
-          </details>
-
-          <details class="faq-item">
-            <summary>Is the demo trail line accurate?</summary>
-            <div class="faq-body">
-              It’s illustrative only. The GeoJSON line exists to demonstrate loading a local trail overlay on the Leaflet map.
-            </div>
-          </details>
-
-          <details class="faq-item">
-            <summary>What is “lost pet seen on trail” for?</summary>
-            <div class="faq-body">
-              It’s an optional utility: record details and copy/share them quickly. In this demo it saves locally only (no uploads, no feed).
-            </div>
-          </details>
-
-          <details class="faq-item">
-            <summary>Can I save my plan?</summary>
-            <div class="faq-body">
-              Yes (demo): “Save plan (Local)” uses your browser’s localStorage. It’s stored on your device only.
-            </div>
-          </details>
-        </div>
-      </div>
-    </section>
-
-    <!-- ABOUT -->
-    <section id="about" class="section section-alt" aria-label="About">
-      <div class="container split">
-        <div class="stack">
-          <h2 class="section-title">About</h2>
-          <p class="section-lede">
-            RidgeRelay is a concept / school project prototype focused on safety-first planning UX.
-          </p>
-          <p class="section-body">
-            This site demonstrates a calm planning flow using static hosting and open-source tools (Leaflet + OpenStreetMap).
-            The demo is intentionally scoped to a single trail to keep it clear, testable, and submission-ready.
-          </p>
+      <!-- SCREEN: SAFETY -->
+      <section class="rr-screen" id="screen-safety" aria-label="Safety Profile">
+        <div class="rr-sectionhead">
+          <h2>Safety Profile (wireframe)</h2>
+          <p>Emergency info is opt-in and only shared during escalation (concept).</p>
         </div>
 
-        <aside class="card card-glass" aria-label="Prototype scope">
-          <h3 class="card-title">Prototype scope</h3>
-          <ul class="list">
-            <li>Single-page concept</li>
-            <li>Planner module + map</li>
-            <li>Local demo GeoJSON overlay</li>
-            <li>Local-only save/copy tools</li>
-            <li>No backend, no accounts</li>
-          </ul>
-        </aside>
-      </div>
-    </section>
-
-    <!-- CONTACT -->
-    <section id="contact" class="section" aria-label="Contact">
-      <div class="container">
-        <h2 class="section-title">Contact</h2>
-        <p class="section-lede">Want to share feedback on the concept?</p>
-
-        <div class="contact-grid">
-          <form class="card" aria-label="Contact form">
-            <div class="card-header">
-              <h3 class="card-title">Message (Demo)</h3>
-              <p class="card-subtitle">Static hosting — this form doesn’t submit. Use email instead.</p>
+        <div class="rr-card">
+          <div class="rr-formgrid">
+            <div class="rr-formrow">
+              <label>Primary Contact</label>
+              <input type="text" value="Alex — (555) 555-5555" />
             </div>
-
-            <div class="form">
-              <div class="grid-2">
-                <div class="field">
-                  <label for="name">Name</label>
-                  <input id="name" name="name" type="text" autocomplete="name" placeholder="Your name" />
-                </div>
-
-                <div class="field">
-                  <label for="email">Email</label>
-                  <input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" />
-                </div>
-              </div>
-
-              <div class="field">
-                <label for="message">Message</label>
-                <textarea id="message" name="message" rows="5" placeholder="What would make RidgeRelay more trustworthy or useful?"></textarea>
-              </div>
-
-              <button class="btn btn-primary btn-block" type="button" id="contactBtn">Send (Demo)</button>
-              <div class="status" id="contactStatus" aria-live="polite"></div>
-
-              <a class="btn btn-secondary btn-block" href="mailto:hello@ridgerelay.example?subject=RidgeRelay%20Feedback">
-                Email RidgeRelay
-              </a>
+            <div class="rr-formrow">
+              <label>Vehicle / Trailhead Notes</label>
+              <input type="text" value="Blue Subaru — Lot A" />
             </div>
-          </form>
+          </div>
 
-          <aside class="card card-glass" aria-label="Contact guidance">
-            <div class="card-header">
-              <h3 class="card-title">What feedback helps most</h3>
-              <p class="card-subtitle">If you’re reviewing this for a class, these notes are gold.</p>
-            </div>
+          <div class="rr-callout">
+            <strong>Session trust model:</strong> tracking is temporary and auto-ends when you finish or return.
+          </div>
 
-            <ul class="list">
-              <li>Does the planner feel calm and “real”?</li>
-              <li>Is escalation easy to understand?</li>
-              <li>Does the UI reduce clutter (menu + dropdown tools)?</li>
-              <li>What would increase trust for actual use?</li>
-            </ul>
-          </aside>
+          <div class="rr-actions">
+            <button class="rr-btn rr-btn-ghost" data-nav="screen-explore">Back</button>
+            <button class="rr-btn rr-btn-primary" data-nav="screen-plan">Plan a Trip</button>
+          </div>
         </div>
-      </div>
+      </section>
+
+      <!-- SCREEN: ACTIVE -->
+      <section class="rr-screen" id="screen-active" aria-label="Active Trip">
+        <div class="rr-sectionhead">
+          <h2>Active Trip (demo)</h2>
+          <p>Simulated safety events — no real GPS.</p>
+        </div>
+
+        <div class="rr-card">
+          <div class="rr-status">
+            <span class="rr-badge rr-badge-ok" id="statusBadge">On Route</span>
+            <span class="rr-muted" id="statusDetail">Pings adapting to signal & battery.</span>
+          </div>
+
+          <div class="rr-actions">
+            <button class="rr-btn rr-btn-ghost" id="btnBoundary">Simulate Deviation</button>
+            <button class="rr-btn rr-btn-ghost" id="btnInactivity">Simulate Inactivity</button>
+            <button class="rr-btn rr-btn-ghost" id="btnOffline">Simulate Lost Signal</button>
+            <button class="rr-btn rr-btn-danger" id="btnSOS">SOS</button>
+          </div>
+
+          <div class="rr-feed" id="eventFeed">
+            <div class="rr-feeditem"><span class="rr-time">Now</span> Trip started (demo). Monitoring enabled for this session.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN: FAQ -->
+      <section class="rr-screen" id="screen-faq" aria-label="FAQ">
+        <div class="rr-sectionhead">
+          <h2>FAQ</h2>
+          <p>Short answers that reduce confusion and build trust.</p>
+        </div>
+
+        <div class="rr-card">
+          <h3>Is this real tracking?</h3>
+          <p class="rr-muted">No — this is a prototype. Buttons simulate states to demonstrate intent-aware safety UX.</p>
+
+          <h3>Does RidgeRelay replace AllTrails?</h3>
+          <p class="rr-muted">No — it complements trail discovery with an optional safety layer for low/no-signal scenarios.</p>
+
+          <h3>Do I have to do extra steps to stop tracking?</h3>
+          <p class="rr-muted">In the concept, no — the session auto-ends when you finish or return, and you get a clear confirmation.</p>
+        </div>
+      </section>
+
     </section>
   </main>
 
-  <footer class="site-footer" aria-label="Footer">
-    <div class="container footer-inner">
-      <p class="tiny">RidgeRelay is a prototype concept. Always follow trail guidance and carry essentials.</p>
-      <a class="tiny" href="#home">Back to top ↑</a>
-    </div>
-  </footer>
+  <!-- Mobile Bottom Nav (familiar, engaging, not “social-first”) -->
+  <nav class="rr-bottomnav" aria-label="Bottom Navigation">
+    <button class="rr-tab active" data-nav="screen-explore">Explore</button>
+    <button class="rr-tab" data-nav="screen-saved">Saved</button>
+    <button class="rr-tab" data-nav="screen-plan">Plan</button>
+    <button class="rr-tab" data-nav="screen-safety">Safety</button>
+  </nav>
 
-  <!-- Toast -->
-  <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
-
-  <!-- Back-to-top floating -->
-  <button class="to-top" id="toTopBtn" type="button" aria-label="Back to top">↑</button>
-
-  <!-- Leaflet JS -->
-  <script
-    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-    crossorigin=""
-  ></script>
-
-  <script src="./js/main.js"></script>
+  <script src="js/main.js"></script>
 </body>
 </html>
