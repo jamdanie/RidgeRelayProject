@@ -1,236 +1,773 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>RidgeRelay — Explore (Prototype)</title>
-  <link rel="stylesheet" href="css/styles.css"/> 
+  <!--
+    RidgeRelay — Static GitHub Pages friendly
+    - No build step
+    - Accessible, mobile-first
+    - Inspired by AllTrails / Fi / modern product landing pages (no copied code/assets)
+  -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="color-scheme" content="dark light" />
+  <title>RidgeRelay — Find your next hike, with a safety layer</title>
+  <meta name="description" content="Explore trails and add an intent-based safety session for low-signal confidence. Privacy-first, session-limited, transparent escalation." />
+
+  <link rel="stylesheet" href="styles.css" />
 </head>
 
 <body>
-  <!-- Prototype Banner (always visible, non-alarming) -->
-  <div class="rr-banner" role="status" aria-live="polite">
-    <strong>Prototype:</strong> This is a concept demo (no live tracking, no real GPS, no dispatch).
+  <!-- =========================
+       1) Sticky prototype banner
+       ========================= -->
+  <div class="proto-banner" role="region" aria-label="Prototype banner">
+    <div class="container proto-banner__inner">
+      <p class="proto-banner__marquee" aria-label="Prototype disclaimer">
+        <span class="proto-banner__track" aria-hidden="true">
+          Prototype: concept demo (no live tracking, no real GPS, no dispatch). &nbsp;•&nbsp;
+          Prototype: concept demo (no live tracking, no real GPS, no dispatch). &nbsp;•&nbsp;
+          Prototype: concept demo (no live tracking, no real GPS, no dispatch). &nbsp;•&nbsp;
+          Prototype: concept demo (no live tracking, no real GPS, no dispatch). &nbsp;•&nbsp;
+        </span>
+        <span class="sr-only">
+          Prototype: concept demo (no live tracking, no real GPS, no dispatch).
+        </span>
+      </p>
+
+      <button class="linklike proto-banner__link" type="button" data-open-disclaimer>
+        Learn more
+        <span class="sr-only">about the safety disclaimer</span>
+      </button>
+    </div>
   </div>
 
-  <!-- Top Bar (AllTrails-like) -->
-  <header class="rr-topbar">
-    <div class="rr-brand">
-      <div class="rr-logo" aria-label="RidgeRelay logo">RR</div>
-      <div class="rr-brandtext">
-        <div class="rr-name">RidgeRelay</div>
-        <div class="rr-tag">Intent-aware safety for low-signal outdoor activity</div>
-      </div>
-    </div>
+  <!-- =========================
+       2) Sticky header (condenses on scroll)
+       ========================= -->
+  <header class="site-header" data-header>
+    <div class="container header__inner">
+      <a class="brand" href="#top" aria-label="RidgeRelay home">
+        <!-- RR logo mark (simple inline SVG, consistent stroke) -->
+        <span class="brand__mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 18V6h7a4 4 0 0 1 0 8H4" />
+            <path d="M11 14l4 4" />
+            <path d="M13 10h3a4 4 0 0 1 0 8h-3V6h3a4 4 0 0 1 0 8h-3" opacity=".0"/>
+            <path d="M13 6h3a4 4 0 0 1 0 8h-3" />
+            <path d="M13 14h3" />
+          </svg>
+        </span>
+        <span class="brand__word">
+          <span class="brand__name">RidgeRelay</span>
+          <span class="brand__tag">Safety-first trail planning</span>
+        </span>
+      </a>
 
-    <div class="rr-top-actions">
-      <button class="rr-btn rr-btn-ghost" data-nav="screen-safety">Safety</button>
-      <button class="rr-btn rr-btn-primary" data-nav="screen-active">Active Trip</button>
+      <!-- Desktop nav -->
+      <nav class="nav nav--desktop" aria-label="Primary navigation">
+        <div class="nav__group">
+          <button class="nav__trigger" type="button"
+            aria-expanded="false"
+            aria-controls="menu-explore"
+            data-mega-trigger="explore">
+            Explore
+            <svg class="icon icon--chev" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+
+          <div class="mega" id="menu-explore" role="region" aria-label="Explore menu" data-mega="explore">
+            <div class="mega__panel">
+              <p class="mega__title">Explore</p>
+              <div class="mega__cards">
+                <a class="mega-card" href="#featured">
+                  <span class="mega-card__icon" aria-hidden="true">
+                    <!-- mountain -->
+                    <svg viewBox="0 0 24 24" class="icon" aria-hidden="true">
+                      <path d="M3 19l7-12 4 7 2-3 5 8H3z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </span>
+                  <span class="mega-card__text">
+                    <span class="mega-card__label">Featured</span>
+                    <span class="mega-card__desc">Popular WA trails + demos</span>
+                  </span>
+                </a>
+
+                <a class="mega-card" href="#browse">
+                  <span class="mega-card__icon" aria-hidden="true">
+                    <!-- compass -->
+                    <svg viewBox="0 0 24 24" class="icon" aria-hidden="true">
+                      <path d="M12 21a9 9 0 1 1 0-18 9 9 0 0 1 0 18z" fill="none" stroke="currentColor" stroke-width="1.8"/>
+                      <path d="M14.5 9.5l-1.8 5.2-5.2 1.8 1.8-5.2 5.2-1.8z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                    </svg>
+                  </span>
+                  <span class="mega-card__text">
+                    <span class="mega-card__label">Browse</span>
+                    <span class="mega-card__desc">Filter by activity</span>
+                  </span>
+                </a>
+
+                <a class="mega-card" href="#community">
+                  <span class="mega-card__icon" aria-hidden="true">
+                    <!-- gallery -->
+                    <svg viewBox="0 0 24 24" class="icon" aria-hidden="true">
+                      <path d="M4 6h16v12H4z" fill="none" stroke="currentColor" stroke-width="1.8"/>
+                      <path d="M8 14l2-2 3 3 2-2 3 3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M8.5 10.5h.01" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+                    </svg>
+                  </span>
+                  <span class="mega-card__text">
+                    <span class="mega-card__label">Community</span>
+                    <span class="mega-card__desc">Share moments, not pins</span>
+                  </span>
+                </a>
+
+                <a class="mega-card" href="#gear">
+                  <span class="mega-card__icon" aria-hidden="true">
+                    <!-- backpack -->
+                    <svg viewBox="0 0 24 24" class="icon" aria-hidden="true">
+                      <path d="M8 7a4 4 0 0 1 8 0" fill="none" stroke="currentColor" stroke-width="1.8"/>
+                      <path d="M7 8h10a2 2 0 0 1 2 2v10H5V10a2 2 0 0 1 2-2z" fill="none" stroke="currentColor" stroke-width="1.8"/>
+                      <path d="M9 12h6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                    </svg>
+                  </span>
+                  <span class="mega-card__text">
+                    <span class="mega-card__label">Gear</span>
+                    <span class="mega-card__desc">Demo shop cards</span>
+                  </span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="nav__group">
+          <button class="nav__trigger" type="button"
+            aria-expanded="false"
+            aria-controls="menu-app"
+            data-mega-trigger="app">
+            The App
+            <svg class="icon icon--chev" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+
+          <div class="mega" id="menu-app" role="region" aria-label="The App menu" data-mega="app">
+            <div class="mega__panel">
+              <p class="mega__title">The App</p>
+              <div class="mega__cards">
+                <a class="mega-card" href="#how">
+                  <span class="mega-card__icon" aria-hidden="true">
+                    <!-- checklist -->
+                    <svg viewBox="0 0 24 24" class="icon" aria-hidden="true">
+                      <path d="M9 6h12M9 12h12M9 18h12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                      <path d="M3 6l1.5 1.5L7 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M3 12l1.5 1.5L7 11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M3 18l1.5 1.5L7 17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </span>
+                  <span class="mega-card__text">
+                    <span class="mega-card__label">Plan</span>
+                    <span class="mega-card__desc">Intent-based safety session</span>
+                  </span>
+                </a>
+
+                <a class="mega-card" href="#plan">
+                  <span class="mega-card__icon" aria-hidden="true">
+                    <!-- shield -->
+                    <svg viewBox="0 0 24 24" class="icon" aria-hidden="true">
+                      <path d="M12 3l8 4v6c0 5-3.5 8.5-8 8.5S4 18 4 13V7l8-4z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                      <path d="M9 12l2 2 4-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </span>
+                  <span class="mega-card__text">
+                    <span class="mega-card__label">Safety Profile</span>
+                    <span class="mega-card__desc">Private escalation details</span>
+                  </span>
+                </a>
+
+                <a class="mega-card" href="#weather">
+                  <span class="mega-card__icon" aria-hidden="true">
+                    <!-- cloud -->
+                    <svg viewBox="0 0 24 24" class="icon" aria-hidden="true">
+                      <path d="M7 18h10a4 4 0 0 0 0-8 5 5 0 0 0-9.7 1.5A3.5 3.5 0 0 0 7 18z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                    </svg>
+                  </span>
+                  <span class="mega-card__text">
+                    <span class="mega-card__label">Weather demo</span>
+                    <span class="mega-card__desc">Mock forecast + risk hint</span>
+                  </span>
+                </a>
+
+                <a class="mega-card" href="#faq">
+                  <span class="mega-card__icon" aria-hidden="true">
+                    <!-- help -->
+                    <svg viewBox="0 0 24 24" class="icon" aria-hidden="true">
+                      <path d="M12 21a9 9 0 1 1 0-18 9 9 0 0 1 0 18z" fill="none" stroke="currentColor" stroke-width="1.8"/>
+                      <path d="M9.5 9a2.5 2.5 0 1 1 3.3 2.3c-.9.3-1.3.8-1.3 1.7v.7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                      <path d="M12 17h.01" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+                    </svg>
+                  </span>
+                  <span class="mega-card__text">
+                    <span class="mega-card__label">FAQ</span>
+                    <span class="mega-card__desc">What this demo is / isn’t</span>
+                  </span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <a class="nav__link" href="#demo">Demo</a>
+        <a class="nav__link" href="#privacy">Privacy</a>
+      </nav>
+
+      <div class="header__actions">
+        <button class="btn btn--ghost icon-btn" type="button" aria-label="Log in (demo)">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4z" fill="none" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M4 21a8 8 0 0 1 16 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+          <span class="hide-sm">Log in</span>
+        </button>
+
+        <!-- Mobile hamburger -->
+        <button class="btn btn--ghost icon-btn nav-toggle" type="button"
+          aria-label="Open menu"
+          aria-controls="mobileNav"
+          aria-expanded="false"
+          data-mobile-open>
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M5 7h14M5 12h14M5 17h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
     </div>
   </header>
 
-  <!-- Main App -->
-  <main class="rr-shell">
-
-    <!-- Left sidebar (desktop) -->
-    <aside class="rr-sidebar">
-      <div class="rr-side-section">
-        <div class="rr-side-title">Browse</div>
-
-        <button class="rr-navitem active" data-nav="screen-explore">Explore</button>
-        <button class="rr-navitem" data-nav="screen-saved">Saved</button>
-        <button class="rr-navitem" data-nav="screen-plan">Plan</button>
-        <button class="rr-navitem" data-nav="screen-safety">Safety Profile</button>
-        <button class="rr-navitem" data-nav="screen-faq">FAQ</button>
+  <!-- Mobile nav drawer (focus trap + ESC) -->
+  <aside class="mobile-drawer" id="mobileNav" aria-hidden="true" data-mobile-drawer>
+    <div class="mobile-drawer__backdrop" data-mobile-close tabindex="-1" aria-hidden="true"></div>
+    <div class="mobile-drawer__panel" role="dialog" aria-modal="true" aria-label="Menu">
+      <div class="mobile-drawer__top">
+        <span class="mobile-drawer__brand">Menu</span>
+        <button class="icon-btn btn btn--ghost" type="button" data-mobile-close aria-label="Close menu">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </button>
       </div>
 
-      <div class="rr-divider"></div>
+      <nav class="mobile-nav" aria-label="Mobile navigation">
+        <a href="#featured" class="mobile-nav__link" data-mobile-link>Featured</a>
+        <a href="#browse" class="mobile-nav__link" data-mobile-link>Browse</a>
+        <a href="#how" class="mobile-nav__link" data-mobile-link>How it works</a>
+        <a href="#plan" class="mobile-nav__link" data-mobile-link>Plan</a>
+        <a href="#community" class="mobile-nav__link" data-mobile-link>Community</a>
+        <a href="#gear" class="mobile-nav__link" data-mobile-link>Gear</a>
+        <a href="#faq" class="mobile-nav__link" data-mobile-link>FAQ</a>
 
-      <div class="rr-side-section">
-        <div class="rr-side-title">Quick actions</div>
-        <button class="rr-btn rr-btn-block rr-btn-primary" data-nav="screen-plan">Plan a Trip</button>
-        <button class="rr-btn rr-btn-block rr-btn-ghost" data-nav="screen-active">Preview Active Trip</button>
+        <button class="btn btn--primary mobile-nav__cta" type="button" data-open-disclaimer>
+          Safety Disclaimer
+        </button>
+      </nav>
+
+      <!-- FUTURE HOOKS:
+        - Auth: route Log in to a real OAuth flow
+        - Saved: show account-synced saved list when logged in
+        - Offline: expose offline download settings
+      -->
+    </div>
+  </aside>
+
+  <main id="top">
+    <!-- =========================
+         3) Hero: carousel + search
+         ========================= -->
+    <section class="hero" aria-label="Hero">
+      <div class="hero__media" data-carousel>
+        <!-- Rolling images (local paths; ok if missing — JS swaps in an SVG placeholder) -->
+        <div class="carousel" role="region" aria-roledescription="carousel" aria-label="Scenic hero carousel">
+          <div class="carousel__viewport" data-carousel-viewport>
+            <figure class="carousel__slide is-active" data-slide>
+              <img class="carousel__img" src="assets/img/hero/washington-01.jpg" alt="Forest trail in Washington State" loading="eager" />
+            </figure>
+            <figure class="carousel__slide" data-slide>
+              <img class="carousel__img" src="assets/img/hero/washington-02.jpg" alt="Mountain ridgeline at sunrise" loading="lazy" />
+            </figure>
+            <figure class="carousel__slide" data-slide>
+              <img class="carousel__img" src="assets/img/hero/washington-03.jpg" alt="Waterfall and mossy rocks" loading="lazy" />
+            </figure>
+            <figure class="carousel__slide" data-slide>
+              <img class="carousel__img" src="assets/img/hero/washington-04.jpg" alt="Lake with evergreen reflections" loading="lazy" />
+            </figure>
+          </div>
+
+          <div class="carousel__overlay">
+            <div class="container hero__content">
+              <p class="kicker">Privacy-first • Session-limited • Transparent escalation</p>
+              <h1 class="hero__title">Find your next hike — <span class="accent">with a safety layer</span>.</h1>
+
+              <form class="hero-search" role="search" aria-label="Trail search (demo)" data-search-form>
+                <label class="sr-only" for="searchInput">Search by city, park, or trail name</label>
+                <div class="hero-search__bar">
+                  <span class="hero-search__icon" aria-hidden="true">
+                    <!-- search -->
+                    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M10.5 18a7.5 7.5 0 1 1 5.3-12.8A7.5 7.5 0 0 1 10.5 18z" fill="none" stroke="currentColor" stroke-width="1.8"/>
+                      <path d="M16.5 16.5L21 21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                    </svg>
+                  </span>
+                  <input id="searchInput" name="q" type="search" autocomplete="off"
+                    placeholder="Search by city, park, or trail name"
+                    data-search-input />
+                  <button class="btn btn--primary" type="submit">Search</button>
+                </div>
+                <p class="hero__subtext">
+                  Explore like AllTrails, then add an intent-based flight plan for low-signal confidence.
+                </p>
+              </form>
+
+              <div class="hero__ctas">
+                <a class="btn btn--ghost" href="#featured">See featured WA trails</a>
+                <a class="btn btn--ghost" href="#how">How it works</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="carousel__controls container" aria-label="Carousel controls">
+            <button class="icon-btn btn btn--ghost" type="button" data-carousel-prev aria-label="Previous slide">
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+
+            <div class="carousel__dots" role="tablist" aria-label="Select slide">
+              <!-- JS will populate dots to match slides -->
+            </div>
+
+            <button class="icon-btn btn btn--ghost" type="button" data-carousel-next aria-label="Next slide">
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================
+         4) Featured near you
+         ========================= -->
+    <section class="section" id="featured" aria-label="Featured trails near you">
+      <div class="container section__head">
+        <h2 class="section__title">Featured near you <span class="muted">(Washington)</span></h2>
+        <p class="section__desc">Demo cards — search, filter, save, and open the trail drawer for a mocked weather panel.</p>
       </div>
 
-      <div class="rr-side-note">
-        <strong>Privacy-first:</strong> session-limited tracking (concept). Auto-ends when you finish or return.
+      <div class="container toolbar" id="demo">
+        <div class="chips" role="group" aria-label="Activity filters" data-activity-chips>
+          <!-- JS populates activity chips (including “All”) -->
+        </div>
+
+        <div class="toolbar__right">
+          <button class="btn btn--ghost" type="button" data-show-saved>
+            <span class="btn__icon" aria-hidden="true">
+              <!-- heart -->
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 21s-7-4.4-9.5-8.2C.7 9.7 2.4 6.5 6 6.1c1.8-.2 3.1.7 4 1.8.9-1.1 2.2-2 4-1.8 3.6.4 5.3 3.6 3.5 6.7C19 16.6 12 21 12 21z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            Saved
+          </button>
+        </div>
       </div>
-    </aside>
 
-    <!-- Content -->
-    <section class="rr-content">
+      <div class="container grid">
+        <div class="trail-grid" aria-live="polite" aria-busy="false" data-trail-grid></div>
+      </div>
 
-      <!-- SCREEN: EXPLORE -->
-      <section class="rr-screen show" id="screen-explore" aria-label="Explore">
-        <div class="rr-hero">
-          <h1>Find your next hike — with a safety layer.</h1>
-          <p>
-            Explore trails like AllTrails, then add an intent-based “flight plan” for low-signal confidence.
+      <div class="container saved" hidden data-saved-panel>
+        <div class="saved__head">
+          <h3 class="saved__title">Saved trails</h3>
+          <button class="btn btn--ghost" type="button" data-close-saved>Close</button>
+        </div>
+        <div class="saved__grid" data-saved-grid></div>
+      </div>
+    </section>
+
+    <!-- =========================
+         5) How it works
+         ========================= -->
+    <section class="section section--alt" id="how" aria-label="How RidgeRelay works">
+      <div class="container section__head">
+        <h2 class="section__title">How RidgeRelay works</h2>
+        <p class="section__desc">Safety-first flows that stay calm, private, and session-limited.</p>
+      </div>
+
+      <div class="container steps">
+        <article class="step">
+          <h3 class="step__title">1) Declare intent</h3>
+          <p class="step__text">Start a safety session with your plan: who, where, and when you’ll be back.</p>
+        </article>
+
+        <article class="step">
+          <h3 class="step__title">2) Guardrails</h3>
+          <p class="step__text">Set boundaries and expectations (time windows, check-ins, and low-signal awareness).</p>
+        </article>
+
+        <article class="step">
+          <h3 class="step__title">3) Nudges</h3>
+          <p class="step__text">Helpful prompts before anything escalates — designed to reduce false alarms.</p>
+        </article>
+
+        <article class="step">
+          <h3 class="step__title">4) Escalate only if needed</h3>
+          <p class="step__text">If the session goes quiet past your rules, RidgeRelay can notify trusted contacts.</p>
+        </article>
+      </div>
+
+      <!-- FUTURE HOOKS:
+        - Replace step copy with content from PROJECT_BRIEF / DIFFERENTIATION.md
+        - Add a short timeline animation (respect reduced motion)
+        - Add “See the policy” links (Privacy/Terms)
+      -->
+    </section>
+
+    <!-- =========================
+         6) Browse by activity
+         ========================= -->
+    <section class="section" id="browse" aria-label="Browse by activity">
+      <div class="container section__head">
+        <h2 class="section__title">Browse by activity</h2>
+        <p class="section__desc">Click an activity to filter the Featured trails above.</p>
+      </div>
+
+      <div class="container activity-grid" data-activity-cards>
+        <!-- JS populates -->
+      </div>
+    </section>
+
+    <!-- =========================
+         7) Plan with friends (demo UI)
+         ========================= -->
+    <section class="section section--alt" id="plan" aria-label="Plan with friends">
+      <div class="container section__head">
+        <h2 class="section__title">Plan with friends</h2>
+        <p class="section__desc">A tiny demo form. Private fields are clearly labeled and not shared publicly.</p>
+      </div>
+
+      <div class="container plan">
+        <form class="card form" data-plan-form>
+          <fieldset class="form__group">
+            <legend class="form__legend">Trip type</legend>
+            <label class="radio">
+              <input type="radio" name="party" value="solo" checked />
+              <span>Solo</span>
+            </label>
+            <label class="radio">
+              <input type="radio" name="party" value="group" />
+              <span>Group</span>
+            </label>
+            <label class="radio">
+              <input type="checkbox" name="dog" />
+              <span>With dog</span>
+            </label>
+          </fieldset>
+
+          <div class="form__group">
+            <label class="form__label" for="contactPrivate">
+              Emergency contact <span class="pill pill--private">PRIVATE</span>
+            </label>
+            <input class="input" id="contactPrivate" type="text" placeholder="Name + phone (demo)" />
+            <p class="form__hint">Not shared publicly — only disclosed during escalation.</p>
+          </div>
+
+          <div class="form__actions">
+            <button class="btn btn--primary" type="button" data-plan-submit>Save (demo)</button>
+            <button class="btn btn--ghost" type="button" data-open-disclaimer>Safety disclaimer</button>
+          </div>
+
+          <p class="form__status" role="status" aria-live="polite" data-plan-status></p>
+        </form>
+
+        <aside class="card plan__copy">
+          <h3 class="card__title">Why this matters</h3>
+          <p class="muted">
+            RidgeRelay is designed to keep your “shareable” experience separate from sensitive details.
+            Your safety session data is scoped to the session and used only when needed.
           </p>
+        </aside>
+      </div>
+    </section>
 
-          <div class="rr-searchrow">
-            <label class="rr-sr-only" for="searchInput">Search trails</label>
-            <input id="searchInput" class="rr-search" placeholder="Search trails, parks, or regions (demo)" />
-            <button class="rr-btn rr-btn-primary" id="btnSearch">Search</button>
-          </div>
+    <!-- =========================
+         8) Community gallery demo
+         ========================= -->
+    <section class="section" id="community" aria-label="Community gallery">
+      <div class="container section__head">
+        <h2 class="section__title">Share your adventure</h2>
+        <p class="section__desc">Demo upload stored locally. Share the moment, not your precise location.</p>
+      </div>
 
-          <div class="rr-filters">
-            <button class="rr-chip rr-chip-active" data-filter="all">All</button>
-            <button class="rr-chip" data-filter="easy">Easy</button>
-            <button class="rr-chip" data-filter="moderate">Moderate</button>
-            <button class="rr-chip" data-filter="hard">Hard</button>
-            <button class="rr-chip" data-filter="low-signal">Low Signal Risk</button>
-          </div>
+      <div class="container community">
+        <div class="card upload">
+          <h3 class="card__title">Upload a photo (demo)</h3>
+          <p class="muted">Saved only in your browser (localStorage). No network upload.</p>
+
+          <label class="btn btn--ghost file-btn">
+            <input type="file" accept="image/*" class="sr-only" data-photo-input />
+            Choose photo
+          </label>
+
+          <button class="btn btn--ghost" type="button" data-clear-photos>Clear gallery</button>
+
+          <p class="upload__status" role="status" aria-live="polite" data-photo-status></p>
         </div>
 
-        <!-- Featured -->
-        <div class="rr-sectionhead">
-          <h2>Featured near you (demo)</h2>
-          <p>Tap a trail to view details, save it, or plan a safety session.</p>
+        <div class="card gallery">
+          <h3 class="card__title">Gallery</h3>
+          <div class="gallery__grid" data-gallery-grid aria-live="polite"></div>
         </div>
+      </div>
+    </section>
 
-        <div class="rr-grid" id="trailGrid">
-          <!-- Cards injected by app.js -->
-        </div>
-      </section>
+    <!-- =========================
+         9) Gear up
+         ========================= -->
+    <section class="section section--alt" id="gear" aria-label="Gear up">
+      <div class="container section__head">
+        <h2 class="section__title">Gear up</h2>
+        <p class="section__desc">Demo product cards — placeholders for later integrations.</p>
+      </div>
 
-      <!-- SCREEN: SAVED -->
-      <section class="rr-screen" id="screen-saved" aria-label="Saved Trails">
-        <div class="rr-sectionhead">
-          <h2>Saved</h2>
-          <p>Your wishlist for planning later (stored locally in your browser).</p>
-        </div>
+      <div class="container gear-grid">
+        <article class="card product">
+          <div class="product__img" aria-hidden="true"></div>
+          <h3 class="card__title">Emergency bivy (demo)</h3>
+          <p class="muted">Compact warmth layer for unexpected delays.</p>
+          <button class="btn btn--ghost" type="button">Shop (demo)</button>
+        </article>
 
-        <div class="rr-grid" id="savedGrid"></div>
-      </section>
+        <article class="card product">
+          <div class="product__img" aria-hidden="true"></div>
+          <h3 class="card__title">Headlamp + spare battery</h3>
+          <p class="muted">Because “just one more mile” happens.</p>
+          <button class="btn btn--ghost" type="button">Shop (demo)</button>
+        </article>
 
-      <!-- SCREEN: PLAN -->
-      <section class="rr-screen" id="screen-plan" aria-label="Plan a Trip">
-        <div class="rr-sectionhead">
-          <h2>Plan a Trip (wireframe)</h2>
-          <p>Declare intent to reduce false alarms and make escalation predictable.</p>
-        </div>
+        <article class="card product">
+          <div class="product__img" aria-hidden="true"></div>
+          <h3 class="card__title">Water filter (demo)</h3>
+          <p class="muted">A tiny upgrade with big confidence.</p>
+          <button class="btn btn--ghost" type="button">Shop (demo)</button>
+        </article>
 
-        <div class="rr-card">
-          <div class="rr-formrow">
-            <label>Trail</label>
-            <select id="trailSelect"></select>
-          </div>
+        <article class="card product">
+          <div class="product__img" aria-hidden="true"></div>
+          <h3 class="card__title">Offline map kit (demo)</h3>
+          <p class="muted">Print + backup nav basics.</p>
+          <button class="btn btn--ghost" type="button">Shop (demo)</button>
+        </article>
+      </div>
+    </section>
 
-          <div class="rr-formgrid">
-            <div class="rr-formrow">
-              <label>Trail Estimated Time</label>
-              <input type="text" value="2h 30m" />
-            </div>
-            <div class="rr-formrow">
-              <label>Your Anticipated Time</label>
-              <input type="text" value="3h 15m" />
-            </div>
-          </div>
+    <!-- =========================
+         FAQ + Privacy anchors
+         ========================= -->
+    <section class="section" id="faq" aria-label="FAQ">
+      <div class="container section__head">
+        <h2 class="section__title">FAQ</h2>
+        <p class="section__desc">Short answers for the prototype.</p>
+      </div>
 
-          <div class="rr-formrow">
-            <label>Planned Stops</label>
-            <div class="rr-pillrow">
-              <span class="rr-pill">Rest</span>
-              <span class="rr-pill">Photography</span>
-              <span class="rr-pill">Wildlife</span>
-              <button class="rr-pill rr-pill-add" type="button">+ Add</button>
-            </div>
-          </div>
+      <div class="container faq">
+        <details class="card details">
+          <summary>Is this live tracking?</summary>
+          <p>No. This is a concept demo: no real GPS, no dispatch, no live monitoring.</p>
+        </details>
 
-          <div class="rr-actions">
-            <button class="rr-btn rr-btn-ghost" data-nav="screen-explore">Back</button>
-            <button class="rr-btn rr-btn-primary" data-nav="screen-active">Start (Demo)</button>
-          </div>
-        </div>
-      </section>
+        <details class="card details" id="privacy">
+          <summary>What does “privacy-first” mean here?</summary>
+          <p>Session-limited data, clear boundaries, and “share only when needed” escalation design.</p>
+        </details>
 
-      <!-- SCREEN: SAFETY -->
-      <section class="rr-screen" id="screen-safety" aria-label="Safety Profile">
-        <div class="rr-sectionhead">
-          <h2>Safety Profile (wireframe)</h2>
-          <p>Emergency info is opt-in and only shared during escalation (concept).</p>
-        </div>
-
-        <div class="rr-card">
-          <div class="rr-formgrid">
-            <div class="rr-formrow">
-              <label>Primary Contact</label>
-              <input type="text" value="Alex — (555) 555-5555" />
-            </div>
-            <div class="rr-formrow">
-              <label>Vehicle / Trailhead Notes</label>
-              <input type="text" value="Blue Subaru — Lot A" />
-            </div>
-          </div>
-
-          <div class="rr-callout">
-            <strong>Session trust model:</strong> tracking is temporary and auto-ends when you finish or return.
-          </div>
-
-          <div class="rr-actions">
-            <button class="rr-btn rr-btn-ghost" data-nav="screen-explore">Back</button>
-            <button class="rr-btn rr-btn-primary" data-nav="screen-plan">Plan a Trip</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- SCREEN: ACTIVE -->
-      <section class="rr-screen" id="screen-active" aria-label="Active Trip">
-        <div class="rr-sectionhead">
-          <h2>Active Trip (demo)</h2>
-          <p>Simulated safety events — no real GPS.</p>
-        </div>
-
-        <div class="rr-card">
-          <div class="rr-status">
-            <span class="rr-badge rr-badge-ok" id="statusBadge">On Route</span>
-            <span class="rr-muted" id="statusDetail">Pings adapting to signal & battery.</span>
-          </div>
-
-          <div class="rr-actions">
-            <button class="rr-btn rr-btn-ghost" id="btnBoundary">Simulate Deviation</button>
-            <button class="rr-btn rr-btn-ghost" id="btnInactivity">Simulate Inactivity</button>
-            <button class="rr-btn rr-btn-ghost" id="btnOffline">Simulate Lost Signal</button>
-            <button class="rr-btn rr-btn-danger" id="btnSOS">SOS</button>
-          </div>
-
-          <div class="rr-feed" id="eventFeed">
-            <div class="rr-feeditem"><span class="rr-time">Now</span> Trip started (demo). Monitoring enabled for this session.</div>
-          </div>
-        </div>
-      </section>
-
-      <!-- SCREEN: FAQ -->
-      <section class="rr-screen" id="screen-faq" aria-label="FAQ">
-        <div class="rr-sectionhead">
-          <h2>FAQ</h2>
-          <p>Short answers that reduce confusion and build trust.</p>
-        </div>
-
-        <div class="rr-card">
-          <h3>Is this real tracking?</h3>
-          <p class="rr-muted">No — this is a prototype. Buttons simulate states to demonstrate intent-aware safety UX.</p>
-
-          <h3>Does RidgeRelay replace AllTrails?</h3>
-          <p class="rr-muted">No — it complements trail discovery with an optional safety layer for low/no-signal scenarios.</p>
-
-          <h3>Do I have to do extra steps to stop tracking?</h3>
-          <p class="rr-muted">In the concept, no — the session auto-ends when you finish or return, and you get a clear confirmation.</p>
-        </div>
-      </section>
-
+        <details class="card details">
+          <summary>Can I use this in the backcountry today?</summary>
+          <p>Not yet. Treat this as a UI prototype to communicate the concept and flow.</p>
+        </details>
+      </div>
     </section>
   </main>
 
-  <!-- Mobile Bottom Nav (familiar, engaging, not “social-first”) -->
-  <nav class="rr-bottomnav" aria-label="Bottom Navigation">
-    <button class="rr-tab active" data-nav="screen-explore">Explore</button>
-    <button class="rr-tab" data-nav="screen-saved">Saved</button>
-    <button class="rr-tab" data-nav="screen-plan">Plan</button>
-    <button class="rr-tab" data-nav="screen-safety">Safety</button>
-  </nav>
+  <!-- =========================
+       10) Footer
+       ========================= -->
+  <footer class="footer" aria-label="Footer">
+    <div class="container footer__grid">
+      <div class="footer__brand">
+        <div class="footer__logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 18V6h7a4 4 0 0 1 0 8H4" />
+            <path d="M11 14l4 4" />
+            <path d="M13 6h3a4 4 0 0 1 0 8h-3" />
+            <path d="M13 14h3" />
+          </svg>
+        </div>
+        <p class="footer__copy">© 2026 RidgeRelay</p>
+        <p class="muted">Prototype UI • Static GitHub Pages • No live services</p>
+      </div>
 
-  <script src="js/main.js"></script>
+      <div class="footer__col">
+        <h3 class="footer__title">Subscribe (demo)</h3>
+        <form class="subscribe" data-subscribe-form>
+          <label class="sr-only" for="subEmail">Email</label>
+          <input id="subEmail" class="input" type="email" placeholder="you@example.com" />
+          <button class="btn btn--primary" type="submit">Join</button>
+        </form>
+
+        <div class="store-badges" aria-label="Store badges (placeholders)">
+          <button class="badge" type="button" aria-label="App Store (placeholder)">App Store</button>
+          <button class="badge" type="button" aria-label="Google Play (placeholder)">Google Play</button>
+        </div>
+      </div>
+
+      <div class="footer__col">
+        <h3 class="footer__title">Links</h3>
+        <ul class="footer__links">
+          <li><a href="#top">About</a></li>
+          <li><a href="#demo">Demo</a></li>
+          <li><a href="#privacy">Privacy</a></li>
+          <li><a href="#faq">Terms</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#faq">Accessibility</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__col">
+        <h3 class="footer__title">Social</h3>
+        <div class="social" aria-label="Social links (placeholders)">
+          <!-- Instagram -->
+          <a class="social__btn" href="#" aria-label="Instagram (placeholder)">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4z" fill="none" stroke="currentColor" stroke-width="1.8"/>
+              <path d="M12 17a5 5 0 1 0-5-5 5 5 0 0 0 5 5z" fill="none" stroke="currentColor" stroke-width="1.8"/>
+              <path d="M17.5 6.5h.01" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/>
+            </svg>
+          </a>
+          <!-- X -->
+          <a class="social__btn" href="#" aria-label="X (placeholder)">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 19L19 5M7 5h5l5 14h-5L7 5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+          <!-- TikTok -->
+          <a class="social__btn" href="#" aria-label="TikTok (placeholder)">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M14 5v10a4 4 0 1 1-4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M14 5c1.2 2.5 3 4 5 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </a>
+          <!-- Pinterest -->
+          <a class="social__btn" href="#" aria-label="Pinterest (placeholder)">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 21a9 9 0 1 1 0-18 9 9 0 0 1 0 18z" fill="none" stroke="currentColor" stroke-width="1.8"/>
+              <path d="M10.5 18l1.3-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              <path d="M9 10.8c0-2 1.5-3.8 4.1-3.8 2.1 0 3.3 1.2 3.3 2.8 0 2.1-1.2 3.6-3 3.6-1 0-1.8-.6-1.6-1.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+          <!-- Facebook -->
+          <a class="social__btn" href="#" aria-label="Facebook (placeholder)">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M14 8h2V5h-2a4 4 0 0 0-4 4v3H8v3h2v6h3v-6h2.2l.8-3H13V9a1 1 0 0 1 1-1z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- =========================
+       Safety Disclaimer modal
+       ========================= -->
+  <div class="modal" hidden data-modal="disclaimer" aria-hidden="true">
+    <div class="modal__backdrop" data-modal-close tabindex="-1" aria-hidden="true"></div>
+    <div class="modal__panel" role="dialog" aria-modal="true" aria-label="Safety disclaimer">
+      <div class="modal__top">
+        <h2 class="modal__title">Safety disclaimer (prototype)</h2>
+        <button class="icon-btn btn btn--ghost" type="button" data-modal-close aria-label="Close disclaimer">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal__content">
+        <p><strong>This is a concept demo</strong> — no live tracking, no real GPS, no dispatch, no guarantee of safety outcomes.</p>
+        <ul>
+          <li>Always carry essentials and plan conservatively.</li>
+          <li>Conditions can change fast (weather, terrain, daylight).</li>
+          <li>In an emergency, contact local emergency services.</li>
+        </ul>
+        <p class="muted">
+          FUTURE HOOK: Load the short disclaimer from <code>DISCLAIMER.md</code> or a dedicated JSON file.
+        </p>
+      </div>
+
+      <div class="modal__actions">
+        <button class="btn btn--primary" type="button" data-modal-close>Got it</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================
+       Trail detail drawer/modal
+       ========================= -->
+  <div class="drawer" hidden data-drawer aria-hidden="true">
+    <div class="drawer__backdrop" data-drawer-close tabindex="-1" aria-hidden="true"></div>
+    <div class="drawer__panel" role="dialog" aria-modal="true" aria-label="Trail details">
+      <div class="drawer__top">
+        <div>
+          <h2 class="drawer__title" data-drawer-title>Trail</h2>
+          <p class="drawer__meta" data-drawer-meta></p>
+        </div>
+        <button class="icon-btn btn btn--ghost" type="button" data-drawer-close aria-label="Close trail details">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="drawer__content">
+        <div class="photo-strip" aria-label="Trail photos (placeholders)" data-photo-strip></div>
+
+        <div class="drawer__actions">
+          <button class="btn btn--primary" type="button" data-plan-session>Plan a Safety Session</button>
+          <button class="btn btn--ghost" type="button" data-drawer-heart>
+            <span class="btn__icon" aria-hidden="true">
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 21s-7-4.4-9.5-8.2C.7 9.7 2.4 6.5 6 6.1c1.8-.2 3.1.7 4 1.8.9-1.1 2.2-2 4-1.8 3.6.4 5.3 3.6 3.5 6.7C19 16.6 12 21 12 21z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            Add to Wishlist
+          </button>
+        </div>
+
+        <section class="card weather" id="weather" aria-label="Weather demo panel">
+          <h3 class="card__title">Weather (demo)</h3>
+          <p class="muted">Mock forecast loaded from <code>/assets/data/weather_demo.json</code>.</p>
+          <div class="weather__grid" data-weather-grid></div>
+          <p class="weather__hint" data-weather-hint></p>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================
+       Dev overlay (never intercept clicks)
+       ========================= -->
+  <div class="dev-grid" hidden data-dev-grid aria-hidden="true"></div>
+
+  <script src="app.js" defer></script>
 </body>
 </html>
