@@ -387,17 +387,6 @@
       keywords: ["north bend", "rattlesnake lake", "issaquah", "snoqualmie"]
     },
     {
-      id: "twin-falls",
-      name: "Twin Falls",
-      location: "North Bend, WA",
-      activity: ["Hiking", "Dog-friendly"],
-      distanceMi: 2.6,
-      elevationFt: 500,
-      difficulty: "Easy",
-      img: "assets/img/trails/twin-falls.png",
-      keywords: ["north bend", "snoqualmie", "waterfall"]
-    },
-    {
       id: "snow-lake",
       name: "Snow Lake",
       location: "Alpine Lakes Wilderness, WA",
