@@ -372,7 +372,7 @@
       distanceMi: 4.2,
       elevationFt: 1200,
       difficulty: "Moderate",
-      img: "assets/img/trails/bridal-veil-falls.jpg",
+      img: "assets/img/trails/bridal-veil-falls.png",
       keywords: ["index", "skykomish", "waterfall", "snohomish"]
     },
     {
@@ -383,7 +383,7 @@
       distanceMi: 4.0,
       elevationFt: 1160,
       difficulty: "Moderate",
-      img: "assets/img/trails/rattlesnake-ledge.jpg",
+      img: "assets/img/trails/rattlesnake-ledge.png",
       keywords: ["north bend", "rattlesnake lake", "issaquah", "snoqualmie"]
     },
     {
@@ -394,7 +394,7 @@
       distanceMi: 2.6,
       elevationFt: 500,
       difficulty: "Easy",
-      img: "assets/img/trails/twin-falls.jpg",
+      img: "assets/img/trails/twin-falls.png",
       keywords: ["north bend", "snoqualmie", "waterfall"]
     },
     {
@@ -405,7 +405,7 @@
       distanceMi: 7.2,
       elevationFt: 1800,
       difficulty: "Moderate",
-      img: "assets/img/trails/snow-lake.jpg",
+      img: "assets/img/trails/snow-lake.png",
       keywords: ["alpine lakes", "snoqualmie pass", "lake"]
     },
     {
@@ -416,7 +416,7 @@
       distanceMi: 7.9,
       elevationFt: 3150,
       difficulty: "Hard",
-      img: "assets/img/trails/mount-si.jpg",
+      img: "assets/img/trails/mount-si.png",
       keywords: ["north bend", "snoqualmie", "peak"]
     },
     {
@@ -427,7 +427,7 @@
       distanceMi: 5.6,
       elevationFt: 1300,
       difficulty: "Moderate",
-      img: "assets/img/trails/wallace-falls.jpg",
+      img: "assets/img/trails/wallace-falls.png",
       keywords: ["gold bar", "waterfall", "snohomish"]
     },
   ];
@@ -612,21 +612,25 @@
     ACTIVITIES.forEach(a => chipsHost.appendChild(makeChip(a.key, a.label)));
 
     function makeChip(key, label) {
-      const btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = "chip";
-      btn.textContent = label;
-      btn.setAttribute("aria-pressed", String(key === state.activity));
-      btn.addEventListener("click", () => setActivity(key));
-      return btn;
-    }
+  const btn = document.createElement("button");
+  btn.type = "button";
+  btn.className = "chip";
+  btn.textContent = label;
+
+  // ✅ Store the real key on the element (so labels can change later)
+  btn.dataset.activity = key;
+
+  btn.setAttribute("aria-pressed", String(key === state.activity));
+  btn.addEventListener("click", () => setActivity(key));
+  return btn;
+}
 
     function renderChipStates() {
-      $$("button.chip", chipsHost).forEach(btn => {
-        const key = btn.textContent === "All" ? "All" : btn.textContent;
-        btn.setAttribute("aria-pressed", String(key === state.activity));
-      });
-    }
+  $$("button.chip", chipsHost).forEach(btn => {
+    const key = btn.dataset.activity || "All";
+    btn.setAttribute("aria-pressed", String(key === state.activity));
+  });
+}
 
     function setActivity(key) {
       state.activity = key;
