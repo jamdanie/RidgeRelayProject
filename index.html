@@ -13,7 +13,7 @@
   <title>RidgeRelay — Find your next hike, with a safety layer</title>
   <meta name="description" content="Explore trails and add an intent-based safety session for low-signal confidence. Privacy-first, session-limited, transparent escalation." />
 
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="css/styles.css" />
 </head>
 
 <body>
@@ -288,20 +288,35 @@
       <div class="hero__media" data-carousel>
         <!-- Rolling images (local paths; ok if missing — JS swaps in an SVG placeholder) -->
         <div class="carousel" role="region" aria-roledescription="carousel" aria-label="Scenic hero carousel">
-          <div class="carousel__viewport" data-carousel-viewport>
-            <figure class="carousel__slide is-active" data-slide>
-              <img class="carousel__img" src="assets/img/hero/washington-01.jpg" alt="Forest trail in Washington State" loading="eager" />
-            </figure>
-            <figure class="carousel__slide" data-slide>
-              <img class="carousel__img" src="assets/img/hero/washington-02.jpg" alt="Mountain ridgeline at sunrise" loading="lazy" />
-            </figure>
-            <figure class="carousel__slide" data-slide>
-              <img class="carousel__img" src="assets/img/hero/washington-03.jpg" alt="Waterfall and mossy rocks" loading="lazy" />
-            </figure>
-            <figure class="carousel__slide" data-slide>
-              <img class="carousel__img" src="assets/img/hero/washington-04.jpg" alt="Lake with evergreen reflections" loading="lazy" />
-            </figure>
-          </div>
+<div class="carousel__viewport" data-carousel-viewport>
+  <figure class="carousel__slide is-active" data-slide>
+    <img class="carousel__img"
+         src="assets/img/hero/angels-landing.png"
+         alt="Ridgeline view"
+         loading="eager" />
+  </figure>
+
+  <figure class="carousel__slide" data-slide>
+    <img class="carousel__img"
+         src="assets/img/hero/evergreen-forest-ridge.png"
+         alt="Evergreen forest ridge"
+         loading="lazy" />
+  </figure>
+
+  <figure class="carousel__slide" data-slide>
+    <img class="carousel__img"
+         src="assets/img/hero/lake.png"
+         alt="Lake with evergreen reflections"
+         loading="lazy" />
+  </figure>
+
+  <figure class="carousel__slide" data-slide>
+    <img class="carousel__img"
+         src="assets/img/hero/waterfall-trail.png"
+         alt="Waterfall trail"
+         loading="lazy" />
+  </figure>
+</div>
 
           <div class="carousel__overlay">
             <div class="container hero__content">
@@ -755,7 +770,7 @@
 
         <section class="card weather" id="weather" aria-label="Weather demo panel">
           <h3 class="card__title">Weather (demo)</h3>
-          <p class="muted">Mock forecast loaded from <code>/assets/data/weather_demo.json</code>.</p>
+          <p class="muted">Mock forecast loaded from <code>assets/data/weather_demo.json</code>.</p>
           <div class="weather__grid" data-weather-grid></div>
           <p class="weather__hint" data-weather-hint></p>
         </section>
@@ -768,6 +783,6 @@
        ========================= -->
   <div class="dev-grid" hidden data-dev-grid aria-hidden="true"></div>
 
-  <script src="app.js" defer></script>
+  <script src="js/main.js" defer></script>
 </body>
 </html>
