@@ -318,9 +318,6 @@
         - Saved: show account-synced saved list when logged in
         - Offline: expose offline download settings
       -->
-    </div>
-  </aside>
-
   <main id="top">
     <!-- =========================
          3) Hero: carousel + search
@@ -329,7 +326,6 @@
       <div class="hero__media" data-carousel>
         <!-- Rolling images (local paths; ok if missing — JS swaps in an SVG placeholder) -->
         <div class="carousel" role="region" aria-roledescription="carousel" aria-label="Scenic hero carousel">
-<div class="carousel__viewport" data-carousel-viewport>
  
  <div class="carousel__viewport" data-carousel-viewport>
   <figure class="carousel__slide is-active" data-slide>
@@ -1194,53 +1190,6 @@
       </div>
     </div>
   </div>
-
-  <!-- =========================
-     Trail detail drawer
-     ========================= -->
-<div class="drawer" hidden data-drawer aria-hidden="true">
-  <div class="drawer__backdrop" data-drawer-close tabindex="-1" aria-hidden="true"></div>
-
-  <div class="drawer__panel" role="dialog" aria-modal="true" aria-label="Trail details">
-    <div class="drawer__top">
-      <div>
-        <h2 class="drawer__title" data-drawer-title>Trail</h2>
-        <p class="drawer__meta" data-drawer-meta></p>
-      </div>
-
-      <button class="icon-btn btn btn--ghost" type="button" data-drawer-close aria-label="Close trail details">
-        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-        </svg>
-      </button>
-    </div>
-
-    <div class="drawer__content">
-      <div class="photo-strip" aria-label="Trail photos (placeholders)" data-photo-strip></div>
-
-      <div class="drawer__actions">
-        <button class="btn btn--primary" type="button" data-plan-session>Plan a Safety Session</button>
-
-        <button class="btn btn--ghost" type="button" data-drawer-heart>
-          <span class="btn__icon" aria-hidden="true">
-            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M12 21s-7-4.4-9.5-8.2C.7 9.7 2.4 6.5 6 6.1c1.8-.2 3.1.7 4 1.8.9-1.1 2.2-2 4-1.8 3.6.4 5.3 3.6 3.5 6.7C19 16.6 12 21 12 21z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
-            </svg>
-          </span>
-          Add to Wishlist
-        </button>
-      </div>
-
-      <section class="card weather" id="weather" aria-label="Trail conditions preview">
-        <h3 class="card__title">Trail conditions preview</h3>
-        <p class="muted">Mock forecast for this selected trail.</p>
-
-        <div class="weather__grid" data-weather-grid></div>
-        <p class="weather__hint" data-weather-hint></p>
-      </section>
-    </div>
-  </div>
-</div>
 
   <!-- =========================
        Dev overlay (never intercept clicks)
