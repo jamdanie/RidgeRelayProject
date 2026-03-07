@@ -159,22 +159,33 @@ code{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liber
   min-width: 0;
   overflow:hidden;
 }
+
+.proto-banner__rail{
+  display:flex;
+  width:max-content;
+  min-width:100%;
+  white-space:nowrap;
+  will-change:transform;
+  animation: marquee 18s linear infinite;
+}
+
 .proto-banner__track{
-  display:inline-block;
-  white-space: nowrap;
-  will-change: transform;
-  animation: marquee 16s linear infinite;
+  flex:0 0 auto;
+  padding-right: 24px;
   color: color-mix(in oklab, var(--text), var(--muted) 40%);
   font-weight: 600;
   letter-spacing: .2px;
 }
+
 @keyframes marquee{
   from{ transform: translateX(0); }
   to{ transform: translateX(-50%); }
 }
+
 @media (prefers-reduced-motion: reduce){
   .proto-banner__track{ animation: none; }
 }
+
 .linklike{
   background: transparent;
   border: none;
@@ -204,12 +215,12 @@ code{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liber
   justify-content: space-between;
   gap: 18px;
   padding: 14px 0;
-  transition: padding 160ms var(--ease), box-shadow 160ms var(--ease);
+  transition: box-shadow 160ms var(--ease);
   flex-wrap: nowrap;
 }
 
 .site-header.is-condensed .header__inner{
-  padding: 8px 0;
+  padding: 14px 0;
 }
 .site-header.is-condensed{
   box-shadow: 0 8px 22px rgba(0,0,0,.18);
