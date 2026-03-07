@@ -4,8 +4,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="color-scheme" content="dark light" />
-  <title>About RidgeRelay — Intent-Aware Outdoor Safety</title>
-  <meta name="description" content="Learn about the RidgeRelay concept, prototype scope, design constraints, and future direction." />
+  <title>Safety Model — RidgeRelay</title>
+  <meta name="description" content="Explore RidgeRelay's intent-based safety model, guardrails, and progressive escalation workflow." />
 
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -20,9 +20,7 @@
 </head>
 
 <body>
-  <!-- =========================
-       1) Sticky prototype banner
-       ========================= -->
+  <!-- Prototype banner -->
   <div class="proto-banner" role="region" aria-label="Prototype banner">
     <div class="container proto-banner__inner">
       <p class="proto-banner__marquee" aria-label="Prototype disclaimer">
@@ -31,13 +29,11 @@
             Prototype: concept demo (no live tracking, no real GPS, no dispatch). &nbsp;•&nbsp;
             Prototype: concept demo (no live tracking, no real GPS, no dispatch). &nbsp;•&nbsp;
           </span>
-
           <span class="proto-banner__track">
             Prototype: concept demo (no live tracking, no real GPS, no dispatch). &nbsp;•&nbsp;
             Prototype: concept demo (no live tracking, no real GPS, no dispatch). &nbsp;•&nbsp;
           </span>
         </span>
-
         <span class="sr-only">
           Prototype: concept demo (no live tracking, no real GPS, no dispatch).
         </span>
@@ -50,22 +46,18 @@
     </div>
   </div>
 
-  <!-- =========================
-       2) Header
-       ========================= -->
+  <!-- Header -->
   <header class="site-header" data-header>
     <div class="container header__inner">
-
       <a class="brand brand--wordmark" href="index.html#top" aria-label="RidgeRelay home">
         <img class="brand__wordmark" src="assets/img/brand/rr-logo.png" alt="RidgeRelay">
       </a>
 
-      <!-- Desktop nav -->
-    <nav class="nav nav--desktop" aria-label="Primary navigation">
+      <nav class="nav nav--desktop" aria-label="Primary navigation">
   <a class="nav__link" href="index.html#demo">Demo</a>
   <a class="nav__link" href="index.html#privacy">Privacy</a>
-  <a class="nav__link" href="about.html" aria-current="page">About</a>
-  <a class="nav__link" href="safety.html">Safety</a>
+  <a class="nav__link" href="about.html">About</a>
+  <a class="nav__link" href="safety.html" aria-current="page">Safety</a>
 </nav>
 
       <div class="header__actions">
@@ -92,9 +84,7 @@
     </div>
   </header>
 
-  <!-- =========================
-       3) Mobile nav drawer
-       ========================= -->
+  <!-- Mobile drawer -->
   <aside class="mobile-drawer" id="mobileNav" aria-hidden="true" data-mobile-drawer>
     <div class="mobile-drawer__backdrop" data-mobile-close tabindex="-1" aria-hidden="true"></div>
 
@@ -122,33 +112,9 @@
         </div>
 
         <nav class="mobile-nav" aria-label="Mobile navigation">
-          <a href="index.html#featured" class="mobile-nav__card mobile-nav__card--image" data-mobile-link>
-            <img src="assets/img/hero/mobile-menu/menu-featured.jpg" alt="Featured trails preview" class="mobile-nav__card-img">
-            <div class="mobile-nav__card-overlay">
-              <span class="mobile-nav__card-title">Featured trails</span>
-              <span class="mobile-nav__card-desc">Popular Washington hikes and scenic routes</span>
-            </div>
-          </a>
-
-          <a href="index.html#gear" class="mobile-nav__card mobile-nav__card--image" data-mobile-link>
-            <img src="assets/img/hero/mobile-menu/menu-safety.jpg" alt="Safety essentials preview" class="mobile-nav__card-img">
-            <div class="mobile-nav__card-overlay">
-              <span class="mobile-nav__card-title">Safety essentials</span>
-              <span class="mobile-nav__card-desc">Quick videos for trail prep, gear, and essentials</span>
-            </div>
-          </a>
-
-          <a href="index.html#browse" class="mobile-nav__card mobile-nav__card--image" data-mobile-link>
-            <img src="assets/img/hero/mobile-menu/menu-browse.jpg" alt="Browse activities preview" class="mobile-nav__card-img">
-            <div class="mobile-nav__card-overlay">
-              <span class="mobile-nav__card-title">Browse activities</span>
-              <span class="mobile-nav__card-desc">Filter by hiking, running, backpacking, and more</span>
-            </div>
-          </a>
-
-          <a href="index.html#how" class="mobile-nav__card" data-mobile-link>
-            <span class="mobile-nav__card-title">How it works</span>
-            <span class="mobile-nav__card-desc">See how RidgeRelay supports safer outdoor trips</span>
+          <a href="index.html#featured" class="mobile-nav__card" data-mobile-link>
+            <span class="mobile-nav__card-title">Featured trails</span>
+            <span class="mobile-nav__card-desc">Browse the main demo experience</span>
           </a>
 
           <a href="about.html" class="mobile-nav__card" data-mobile-link>
@@ -156,9 +122,14 @@
             <span class="mobile-nav__card-desc">Concept, constraints, and future direction</span>
           </a>
 
+          <a href="safety.html" class="mobile-nav__card" data-mobile-link>
+            <span class="mobile-nav__card-title">Safety model</span>
+            <span class="mobile-nav__card-desc">Intent, guardrails, and escalation logic</span>
+          </a>
+
           <a href="index.html#faq" class="mobile-nav__card" data-mobile-link>
             <span class="mobile-nav__card-title">FAQ</span>
-            <span class="mobile-nav__card-desc">What this demo is, how it works, and what’s next</span>
+            <span class="mobile-nav__card-desc">What this demo is and what it is not</span>
           </a>
 
           <div class="mobile-nav__actions">
@@ -171,127 +142,162 @@
     </div>
   </aside>
 
-  <!-- =========================
-       4) About content
-       ========================= -->
   <main id="top">
-    <section class="section section--alt" aria-label="About RidgeRelay">
+    <section class="section section--alt" aria-label="Safety model overview">
       <div class="container section__head">
-        <h1 class="section__title">About RidgeRelay</h1>
+        <h1 class="section__title">RidgeRelay Safety Model</h1>
         <p class="section__desc">
-          Intent-aware outdoor safety planning for low-signal environments.
+          A calm, structured approach to trip intent, guardrails, and escalation.
         </p>
       </div>
 
       <div class="container" style="display:grid; gap:16px;">
         <article class="card" style="padding:20px;">
-          <h2 class="card__title">What RidgeRelay is</h2>
-          <p class="muted">
-            RidgeRelay is a conceptual outdoor safety planning interface designed for environments where
-            cellular connectivity may be limited or unavailable.
+  <h2 class="card__title">Why this matters</h2>
+  <p class="muted">
+    Outdoor trips often become harder to interpret once someone is overdue, off route, or out of service.
+    RidgeRelay is designed around the idea that better trip context can reduce uncertainty before a situation becomes urgent.
+  </p>
+  <p class="muted">
+    Instead of depending only on live tracking, RidgeRelay could help define expected route areas,
+    turnaround windows, parking details, and other context that gives trusted contacts a clearer starting point.
+  </p>
+</article>
+      </div>
+    </section>
+
+    <section class="section" aria-label="Interactive escalation timeline">
+      <div class="container section__head">
+        <h2 class="section__title">Interactive escalation flow</h2>
+        <p class="section__desc">
+          This prototype demonstrates how RidgeRelay could move from planning to escalation in a structured way.
+        </p>
+      </div>
+
+      <div class="container safety-model">
+        <div class="safety-model__steps" role="tablist" aria-label="Escalation steps">
+          <button class="safety-step is-active"
+                  type="button"
+                  role="tab"
+                  aria-selected="true"
+                  data-safety-step
+                  data-title="1. Declare intent"
+                 data-copy="The trip begins with a clear plan: destination, expected route area, return window, parking location, 
+                 and key trip notes. The goal is to create a useful safety baseline before connectivity is lost."
+                  data-tag="Planning">
+            <span class="safety-step__num">1</span>
+            <span class="safety-step__text">
+              <span class="safety-step__label">Declare intent</span>
+              <span class="safety-step__meta">Planning</span>
+            </span>
+          </button>
+
+          <button class="safety-step"
+                  type="button"
+                  role="tab"
+                  aria-selected="false"
+                  data-safety-step
+                  data-title="2. Establish guardrails"
+                data-copy="Users define expected timing, route boundaries, and acceptable movement corridors. 
+                These guardrails reduce guesswork and make it easier to recognize when a trip may be outside normal expectations."
+                    data-tag="Boundaries">
+            <span class="safety-step__num">2</span>
+            <span class="safety-step__text">
+              <span class="safety-step__label">Establish guardrails</span>
+              <span class="safety-step__meta">Boundaries</span>
+            </span>
+          </button>
+
+          <button class="safety-step"
+                  type="button"
+                  role="tab"
+                  aria-selected="false"
+                  data-safety-step
+                  data-title="3. Missed check-in"
+                    data-copy="If a return window or check-in is missed, the system should first treat it as uncertainty rather than immediate emergency. This stage is meant to prompt awareness while preserving time for harmless delays or slow progress."
+                  data-tag="Nudge">
+            <span class="safety-step__num">3</span>
+            <span class="safety-step__text">
+              <span class="safety-step__label">Missed check-in</span>
+              <span class="safety-step__meta">Nudge</span>
+            </span>
+          </button>
+
+          <button class="safety-step"
+                  type="button"
+                  role="tab"
+                  aria-selected="false"
+                  data-safety-step
+                  data-title="4. Contact notification"
+                    data-copy="If the trip remains unresolved beyond the agreed conditions, a trusted contact could receive the relevant context: trail name, route area, parking notes, expected timing, and important trip details such as whether a dog was with the hiker."
+                  data-tag="Notify">
+            <span class="safety-step__num">4</span>
+            <span class="safety-step__text">
+              <span class="safety-step__label">Contact notification</span>
+              <span class="safety-step__meta">Notify</span>
+            </span>
+          </button>
+
+          <button class="safety-step"
+                  type="button"
+                  role="tab"
+                  aria-selected="false"
+                  data-safety-step
+                  data-title="5. Escalate only if needed"
+                    data-copy="Only after earlier stages fail would the workflow move toward emergency escalation. The intent is to avoid alarm fatigue while still preserving critical context that could help in a real search, such as last known route area, planned turnaround point, or missing dog information."
+            <span class="safety-step__num">5</span>
+            <span class="safety-step__text">
+              <span class="safety-step__label">Escalate only if needed</span>
+              <span class="safety-step__meta">Escalation</span>
+            </span>
+          </button>
+        </div>
+
+        <article class="card safety-panel" role="tabpanel" aria-live="polite">
+          <p class="safety-panel__tag" id="safetyTag">Planning</p>
+          <h3 class="card__title" id="safetyTitle">1. Declare intent</h3>
+          <p class="muted safety-panel__copy" id="safetyCopy">
+            The trip begins with a clear plan: destination, expected route, return window, and key context.
+            The goal is to externalize assumptions before connectivity is lost.
           </p>
-          <p class="muted">
-            Instead of relying on continuous GPS tracking or emergency alerts, RidgeRelay explores a different idea:
-            <strong style="color:var(--text)">plan intent before going offline.</strong>
-          </p>
+
+          <div class="safety-panel__callout">
+  <strong>Prototype note:</strong>
+  This page demonstrates the safety logic and interaction model only. It does not provide live tracking,
+  real notifications, dispatching, or search-and-rescue functionality.
+</div>
         </article>
+      </div>
+    </section>
+
+    <article class="card" style="padding:20px;">
+  <h2 class="card__title">How boundaries could improve safety</h2>
+  <p class="muted">
+    A useful safety system does not always need constant tracking. In many cases, a defined route area,
+    turnaround point, expected return window, and parking location may already provide enough structure to
+    reduce uncertainty when a trip runs late.
+  </p>
+  <p class="muted">
+    RidgeRelay explores how these boundaries could help trusted contacts better understand where to start looking,
+    what the user planned to do, and whether the situation appears routine or concerning.
+  </p>
+</article>
 
         <article class="card" style="padding:20px;">
-          <h2 class="card__title">What this prototype demonstrates</h2>
-          <ul class="muted" style="margin:0; padding-left:18px; display:grid; gap:8px;">
-            <li>Featured trail explorer with activity filtering</li>
-            <li>Trail detail drawer with photos, weather preview, and route preview</li>
-            <li>Leaflet + GeoJSON trail map rendering</li>
-            <li>Mobile-first navigation and responsive layout</li>
-            <li>Quick safety guide videos</li>
-            <li>LocalStorage-based wishlist and demo account behavior</li>
-          </ul>
-        </article>
-
-        <article class="card" style="padding:20px;">
-          <h2 class="card__title">What RidgeRelay intends to become</h2>
-          <p class="muted">
-            The long-term RidgeRelay concept goes beyond a trail browser. It is intended to support
-            <strong style="color:var(--text)">intent-based safety sessions</strong> where users define:
-          </p>
-          <ul class="muted" style="margin:0; padding-left:18px; display:grid; gap:8px;">
-            <li>destination and route expectations</li>
-            <li>planned start and return windows</li>
-            <li>trusted contacts</li>
-            <li>guardrails for missed check-ins</li>
-            <li>structured escalation only when needed</li>
-          </ul>
-        </article>
-
-        <article class="card" style="padding:20px;">
-          <h2 class="card__title">Constraints in this class prototype</h2>
-          <ul class="muted" style="margin:0; padding-left:18px; display:grid; gap:8px;">
-            <li>No backend services</li>
-            <li>No live GPS tracking</li>
-            <li>No emergency dispatch integration</li>
-            <li>No cloud accounts or persistent server-side storage</li>
-            <li>Weather uses local JSON demo data</li>
-            <li>Built as a static frontend project for academic review</li>
-          </ul>
-        </article>
-
-        <article class="card" style="padding:20px;">
-          <h2 class="card__title">Design principles</h2>
-          <div style="display:grid; gap:14px;">
-            <div>
-              <h3 style="margin:0 0 6px;">Intent before interface</h3>
-              <p class="muted" style="margin:0;">
-                Users define trip expectations before entering low-connectivity areas, reducing ambiguity and improving shared awareness.
-              </p>
-            </div>
-
-            <div>
-              <h3 style="margin:0 0 6px;">Progressive disclosure</h3>
-              <p class="muted" style="margin:0;">
-                Trail cards provide a quick overview while the drawer reveals more detailed context like maps, weather, and photos only when needed.
-              </p>
-            </div>
-
-            <div>
-              <h3 style="margin:0 0 6px;">Calm interaction design</h3>
-              <p class="muted" style="margin:0;">
-                The interface avoids panic-driven design and instead uses restrained color, readable typography, and clear hierarchy.
-              </p>
-            </div>
-          </div>
-        </article>
-
-        <article class="card" style="padding:20px;">
-          <h2 class="card__title">Future improvements</h2>
-          <ul class="muted" style="margin:0; padding-left:18px; display:grid; gap:8px;">
-            <li>Offline map caching and downloadable route packs</li>
-            <li>Session-based planning workflow with saved trip history</li>
-            <li>Trusted contact setup and escalation configuration</li>
-            <li>Live weather integration through a secure API</li>
-            <li>Expanded trail datasets and hazard reporting</li>
-          </ul>
-        </article>
-
-        <article class="card" style="padding:20px;">
-          <h2 class="card__title">Important note</h2>
-          <p class="muted">
-            This is only a prototype and demonstrates a portion of the full RidgeRelay idea.
-            It is not an emergency service and should not be used as one.
-          </p>
-          <div style="margin-top:14px;">
-            <a class="btn btn--primary" href="index.html">Return to live demo</a>
-          </div>
-        </article>
+  <h2 class="card__title">Example scenarios RidgeRelay could support</h2>
+  <ul class="muted" style="margin:0; padding-left:18px; display:grid; gap:8px;">
+    <li>A hiker is overdue and a trusted contact needs trail, timing, and parking context</li>
+    <li>A user goes off the expected route corridor and may require follow-up</li>
+    <li>A dog goes missing during a trail session and route notes help narrow the search area</li>
+    <li>Private escalation notes provide clothing, vehicle, or trailhead details if needed</li>
+  </ul>
+</article>
       </div>
     </section>
   </main>
 
-  <!-- =========================
-       5) Footer
-       ========================= -->
   <footer class="footer" aria-label="Footer">
     <div class="container footer__grid">
-
       <div class="footer__brand">
         <img src="assets/img/brand/rr-logo.png" alt="RidgeRelay" class="footer__wordmark">
         <p class="muted">Prototype UI • No live services</p>
@@ -299,7 +305,6 @@
 
       <div class="footer__col">
         <h3 class="footer__title">Subscribe (demo)</h3>
-
         <form class="subscribe" data-subscribe-form>
           <input id="subEmail" class="input" type="email" placeholder="you@example.com" />
           <button class="btn btn--primary" type="submit">Join</button>
@@ -311,7 +316,7 @@
         </div>
       </div>
 
-      <div class="footer__col">
+        <div class="footer__col">
   <h3 class="footer__title">Links</h3>
   <ul class="footer__links">
     <li><a href="index.html#demo">Demo</a></li>
@@ -334,27 +339,23 @@
               <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/>
             </svg>
           </a>
-
           <a class="social__btn" href="#" aria-label="X">
             <svg class="icon" viewBox="0 0 24 24">
               <path d="M4 4l16 16M20 4L4 20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
             </svg>
           </a>
-
           <a class="social__btn" href="#" aria-label="TikTok">
             <svg class="icon" viewBox="0 0 24 24">
               <path d="M14 3v10.5a3.5 3.5 0 1 1-3-3.45" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
               <path d="M14 3c1.5 2 3.2 3 5 3" fill="none" stroke="currentColor" stroke-width="1.8"/>
             </svg>
           </a>
-
           <a class="social__btn" href="#" aria-label="Pinterest">
             <svg class="icon" viewBox="0 0 24 24">
               <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/>
               <path d="M12 8a3 3 0 0 1 2.5 4.5c-.4.7-1 1.1-1.8 1.1-.6 0-1.1-.3-1.3-.8" fill="none" stroke="currentColor" stroke-width="1.8"/>
             </svg>
           </a>
-
           <a class="social__btn" href="#" aria-label="Facebook">
             <svg class="icon" viewBox="0 0 24 24">
               <path d="M14 9h3V6h-3c-2 0-3 1-3 3v2H9v3h2v7h3v-7h2l1-3h-3V9c0-.6.4-1 1-1z" fill="currentColor"/>
@@ -370,20 +371,8 @@
           © 2026 RidgeRelay • Explore with confidence • @ridgerelay
         </p>
 
-        <div class="footer__policies">
-          <a href="index.html#privacy">Privacy</a>
-          <span>•</span>
-          <a href="index.html#faq">Terms</a>
-          <span>•</span>
-          <a href="index.html#faq">Cookies</a>
-        </div>
-      </div>
-    </div>
-  </footer>
-
-  <!-- =========================
-       Auth modal
-       ========================= -->
+      
+  <!-- Auth modal -->
   <div class="modal" hidden data-auth-modal aria-hidden="true">
     <div class="modal__backdrop" data-auth-close tabindex="-1" aria-hidden="true"></div>
 
@@ -434,9 +423,7 @@
     </div>
   </div>
 
-  <!-- =========================
-       Safety Disclaimer modal
-       ========================= -->
+  <!-- Safety Disclaimer modal -->
   <div class="modal" hidden data-modal="disclaimer" aria-hidden="true">
     <div class="modal__backdrop" data-modal-close tabindex="-1" aria-hidden="true"></div>
     <div class="modal__panel" role="dialog" aria-modal="true" aria-label="Safety disclaimer">
@@ -469,7 +456,7 @@
 
   <div class="dev-grid" hidden data-dev-grid aria-hidden="true"></div>
 
-<script src="https://forminit.com/sdk/v1/forminit.js"></script>
+  <script src="https://forminit.com/sdk/v1/forminit.js"></script>
 <script src="js/main.js" defer></script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 

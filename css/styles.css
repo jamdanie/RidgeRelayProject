@@ -1704,3 +1704,192 @@ code{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liber
     opacity: .25;
   }
 }
+
+/* ====== Safety page ====== */
+.safety-model{
+  display:grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+@media (min-width: 980px){
+  .safety-model{
+    grid-template-columns: 0.95fr 1.05fr;
+    align-items: start;
+  }
+}
+
+.safety-model__steps{
+  display:grid;
+  gap: 12px;
+}
+
+.safety-step{
+  display:flex;
+  align-items:center;
+  gap: 12px;
+  width: 100%;
+  text-align: left;
+  padding: 16px;
+  border-radius: 16px;
+  border: 1px solid var(--stroke);
+  background: color-mix(in oklab, var(--surface), white 4%);
+  color: var(--text);
+  cursor:pointer;
+  transition: transform 140ms var(--ease), background 140ms var(--ease), border-color 140ms var(--ease);
+}
+
+.safety-step:hover{
+  background: color-mix(in oklab, var(--surface), white 8%);
+  transform: translateY(-1px);
+}
+
+.safety-step.is-active{
+  border-color: color-mix(in oklab, var(--accent), black 18%);
+  background: color-mix(in oklab, var(--surface), white 10%);
+}
+
+.safety-step__num{
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  display:grid;
+  place-items:center;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-weight: 900;
+  flex: 0 0 auto;
+}
+
+.safety-step__text{
+  display:grid;
+  gap: 3px;
+}
+
+.safety-step__label{
+  font-weight: 900;
+  line-height: 1.1;
+}
+
+.safety-step__meta{
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.safety-panel{
+  padding: 20px;
+  position: sticky;
+  top: calc(var(--banner-h) + 92px);
+}
+
+.safety-panel__tag{
+  margin: 0 0 10px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height: 28px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid var(--stroke);
+  background: color-mix(in oklab, var(--surface-2), white 3%);
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.safety-panel__copy{
+  margin: 0;
+  line-height: 1.65;
+}
+
+.safety-panel__callout{
+  margin-top: 18px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid var(--stroke);
+  background: color-mix(in oklab, var(--surface-2), white 3%);
+  color: var(--muted);
+  font-weight: 650;
+}
+
+/* =====================================
+   Scroll reveal animation (IntersectionObserver)
+   Sections fade in when entering viewport
+   ===================================== */
+
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity .6s ease, transform .6s ease;
+}
+
+.fade-in.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* =====================================
+   Back to top button
+===================================== */
+
+.back-to-top {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+
+  width: 46px;
+  height: 46px;
+
+  border-radius: 50%;
+  border: none;
+
+  background: #f5ff00;
+  color: #000;
+
+  font-size: 20px;
+  font-weight: bold;
+
+  cursor: pointer;
+
+  opacity: 0;
+  pointer-events: none;
+
+  transition: opacity .3s ease, transform .3s ease;
+
+  z-index: 999;
+}
+
+.back-to-top:hover {
+  transform: translateY(-3px);
+}
+
+.back-to-top.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Skeleton loader */
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    #1e1f25 25%,
+    #2a2b31 37%,
+    #1e1f25 63%
+  );
+  background-size: 400% 100%;
+  animation: skeleton-loading 1.4s ease infinite;
+}
+
+@keyframes skeleton-loading {
+  0% { background-position: 100% 0 }
+  100% { background-position: 0 0 }
+}
+
+.skeleton-card {
+  height: 220px;
+  border-radius: 12px;
+}

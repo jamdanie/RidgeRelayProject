@@ -1211,6 +1211,7 @@ function boot() {
   setupDrawer();
   setupPlanSessionCTA();
   setupHowSteps();
+  setupSafetyModel();
   setupPlanFormIntegration();
   setupGallery();
   setupSubscribe();
@@ -1305,6 +1306,50 @@ function setupHowSteps() {
     });
   });
 }
+
+// ======================================================
+// Safety model interactive steps
+// ======================================================
+function setupSafetyModel() {
+  const steps = document.querySelectorAll("[data-safety-step]");
+  if (!steps.length) return;
+
+  const title = document.getElementById("safetyTitle");
+  const copy = document.getElementById("safetyCopy");
+  const tag = document.getElementById("safetyTag");
+
+  if (!title || !copy || !tag) return;
+
+  steps.forEach((step, index) => {
+    step.addEventListener("click", () => {
+      steps.forEach(s => {
+        s.classList.remove("is-active");
+        s.setAttribute("aria-selected", "false");
+      });
+
+      step.classList.add("is-active");
+      step.setAttribute("aria-selected", "true");
+
+      title.textContent = step.dataset.title || "";
+      copy.textContent = step.dataset.copy || "";
+      tag.textContent = step.dataset.tag || "";
+    });
+
+    step.addEventListener("keydown", (e) => {
+      if (e.key !== "ArrowDown" && e.key !== "ArrowUp") return;
+
+      e.preventDefault();
+      const nextIndex =
+        e.key === "ArrowDown"
+          ? (index + 1) % steps.length
+          : (index - 1 + steps.length) % steps.length;
+
+      steps[nextIndex].focus();
+      steps[nextIndex].click();
+    });
+  });
+}
+
 
 // ======================================================
 // Forminit: Plan a safety session
@@ -1579,6 +1624,61 @@ function setupWeatherDemoShortcut() {
       openDrawer("bridal-veil-falls-wa");
     }, 400);
   });
+}
+
+/* =====================================
+   Scroll reveal animation
+   Fades sections in when scrolling
+   ===================================== */
+
+const fadeItems = document.querySelectorAll(".section");
+
+if ("IntersectionObserver" in window) {
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("is-visible");
+      }
+    });
+  }, {
+    threshold: 0.2
+  });
+
+  fadeItems.forEach(el => {
+    el.classList.add("fade-in");
+    observer.observe(el);
+  });
+
+}
+
+/* =====================================
+   Back to top button
+===================================== */
+
+const backToTop = document.querySelector("[data-back-to-top]");
+
+if (backToTop) {
+
+  window.addEventListener("scroll", () => {
+
+    if (window.scrollY > 600) {
+      backToTop.classList.add("is-visible");
+    } else {
+      backToTop.classList.remove("is-visible");
+    }
+
+  });
+
+  backToTop.addEventListener("click", () => {
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+
+  });
+
 }
 
 boot();
