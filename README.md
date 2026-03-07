@@ -1,268 +1,248 @@
 ![RidgeRelay Demo](assets/img/demo/intent.png)
-RidgeRelay — Intent-Aware Outdoor Safety (Academic Prototype)
+Prototype Scope (What This Demo Includes)
 
-RidgeRelay is a conceptual outdoor safety planning interface designed for environments with limited or no cellular connectivity.
+This repository demonstrates a frontend-only prototype of the RidgeRelay concept.
+It focuses on user interface design and interaction patterns, rather than full system functionality.
 
-Instead of relying on continuous GPS tracking or emergency alerts, RidgeRelay explores a different idea:
+The prototype currently demonstrates:
 
-Plan intent before going offline.
+Trail discovery interface
 
-This prototype demonstrates how intent declaration, visual guardrails, and structured escalation logic can improve safety awareness for hikers, runners, and solo adventurers.
+Activity filtering
 
-This project was developed as part of the
-University of Washington Tacoma – T-INFO 230: Foundations of Web Development curriculum.
+Trail detail drawer
 
-Live Demo
+Photo gallery
 
-🔗 https://jamdanie.github.io/RidgeRelayProject
+Route preview maps (Leaflet + GeoJSON)
 
-What This Prototype Demonstrates
+Weather preview using mock JSON data
 
-The website simulates a lightweight outdoor planning platform using static frontend technologies only.
+LocalStorage-based wishlist system
 
-Core demo features include:
+Mobile-first responsive layout
 
-Featured Trail Explorer
+Accessibility-focused navigation patterns
 
-Interactive trail cards allow users to browse and open trail details.
+Progressive disclosure of trail information
 
-Each trail card shows:
+These components allow the interface and interaction model to be evaluated without requiring backend infrastructure or external services.
 
-Trail name and location
+What RidgeRelay Intends to Become
 
-Distance and elevation
+The long-term concept for RidgeRelay goes beyond a simple trail browser.
 
-Difficulty rating
+The intended system would focus on intent-aware outdoor safety planning, where users declare trip expectations before entering low-connectivity environments.
 
-Activity tags
+The broader vision includes:
 
-Save-to-wishlist functionality
+Intent-Based Safety Sessions
 
-Trail Detail Drawer
+Users declare:
 
-Selecting a trail opens a slide-in drawer that contains:
+destination
 
-Trail photo gallery
+expected route
 
-Weather preview (mock data from JSON)
+planned duration
 
-Route preview map using Leaflet + GeoJSON
+return expectations
 
-Save / wishlist actions
+emergency contact(s)
 
-Quick planning shortcut
+This information establishes a baseline expectation for trip progress.
 
-This interface demonstrates progressive disclosure, where detailed information appears only when needed.
+Guardrails Instead of Tracking
 
-Route Preview Map
+Rather than continuously monitoring location, RidgeRelay would rely on visual and temporal guardrails, such as:
 
-The drawer loads a route preview using:
+expected time windows
 
-Leaflet.js
+route boundaries
 
-OpenStreetMap tiles
+planned checkpoints
 
-GeoJSON trail routes
+This design prioritizes privacy and user autonomy, while still enabling safety planning.
 
-This provides a lightweight demonstration of offline-friendly mapping architecture.
+Structured Escalation Model
 
-Weather Preview (Mock Data)
+If a check-in or expected return window is missed, the system would escalate gradually:
 
-Weather information is loaded from:
+Missed check-in reminder
 
-assets/data/weather_demo.json
+Notification to designated contact
 
-This simulates how a backend API could provide:
+Secondary escalation
 
-daily forecasts
+Emergency escalation if necessary
 
-precipitation chance
+This structure reduces false alarms while still providing meaningful safety coverage.
 
-wind conditions
+Offline-Friendly Design
 
-temperature ranges
+The intended system is designed for environments where connectivity may be unreliable.
 
-The UI also generates a risk hint based on forecast conditions and trail difficulty.
+Future versions could incorporate:
 
-Mobile-First Interface
+offline map caching
 
-The site is designed for outdoor mobile usage, including:
+downloadable route data
 
-responsive layout
+delayed message syncing
 
-mobile drawer navigation
+pre-trip planning workflows
 
-scrollable activity filters
+Prototype Limitations
 
-touch-friendly controls
+This repository does not implement the full RidgeRelay system.
 
-Activity Filtering
+The current version intentionally omits:
 
-Users can filter trails by activity type:
+backend infrastructure
 
-Hiking
+authentication systems
 
-Trail Running
+real-time location tracking
 
-Backpacking
+real emergency dispatch integration
 
-Mountain Biking
+contact notification systems
 
-Overlanding
+persistent cloud data storage
 
-Dog-friendly
+Weather data is also mocked using local JSON rather than a live API.
 
-This demonstrates client-side filtering using vanilla JavaScript.
+These limitations were intentional to keep the project:
 
-Wishlist System (Local Storage)
+aligned with course requirements
 
-Users can save trails using the heart icon.
+deployable as a static site
 
-Saved trails are stored locally using:
+easy to review academically
 
-localStorage
+Design Constraints
 
-No accounts or servers are required.
+Several constraints guided this implementation.
 
-Why RidgeRelay Exists
+Academic Scope
 
-Many outdoor safety tools assume:
+This prototype was developed within the context of a university web development course, which emphasized:
 
-always-on GPS tracking
+semantic HTML
 
-reliable cellular connectivity
+responsive CSS
 
-complex setup during stressful situations
+modular JavaScript
 
-RidgeRelay explores a different model:
+accessible interaction patterns
 
-Declare intent before leaving service
+The focus was on frontend architecture and interface design rather than production-scale infrastructure.
 
-Establish expected return time
+Static Hosting
 
-Create structured escalation if a check-in is missed
+The site is deployed using GitHub Pages, which means:
 
-This shifts the focus from reactive emergency response to preventative planning and awareness.
+no server-side code
 
-Design Principles (HCI Focus)
+no database
 
-The interface follows several Human-Computer Interaction (HCI) principles.
+no server APIs
 
-Intent Before Interface
+All functionality is implemented entirely in the browser.
 
-Users define their trip expectations before entering low-signal environments.
+Privacy-First Demonstration
 
-This reduces ambiguity and supports shared situational awareness.
+To avoid collecting personal data or building account systems, the prototype uses:
 
-Progressive Disclosure
+LocalStorage for saved trails
 
-The interface reveals complexity only when necessary.
+local JSON files for demo data
 
-Example:
+This keeps the project transparent and easy to audit.
 
-Trail cards → quick overview
+Future Improvements
 
-Drawer → detailed information
+If the project were expanded beyond the prototype stage, the following areas would be explored.
 
-Map + weather → deeper context
+Backend Infrastructure
 
-Calm Interaction Design
+Possible additions:
 
-The UI avoids panic-driven patterns.
+trip session storage
 
-Instead it uses:
+user accounts
 
-clean typography
+encrypted contact information
 
-restrained color palette
+event logging for escalation triggers
 
-limited motion
+Offline Capability
 
-clear visual hierarchy
+Potential improvements:
 
-This supports low-stress decision making outdoors.
+offline map tile caching
 
-Constraint-Driven Design
+downloadable route packages
 
-This prototype intentionally avoids:
+pre-trip data synchronization
 
-backend services
+offline-first session workflows
 
-live GPS tracking
+Safety Session Workflow
 
-account systems
+A complete RidgeRelay system could include:
 
-real emergency dispatch features
+trip planning interface
 
-These constraints help emphasize planning clarity over technical complexity.
+route editing tools
 
-Tech Stack
+contact configuration
 
-The project is intentionally lightweight and frontend-only.
+automated check-in scheduling
 
-Technologies used:
+Expanded Trail Data
 
-HTML5
+Future versions could integrate:
 
-CSS3
+external trail databases
 
-Vanilla JavaScript
+user-contributed route data
 
-Leaflet.js (mapping)
+hazard reporting
 
-GeoJSON (trail route data)
+seasonal conditions
 
-GitHub Pages (deployment)
+Educational Value
 
-No frameworks or build tools were used.
+This project demonstrates several core web development concepts:
 
-Project Structure
-RidgeRelayProject
-│
-├── index.html
-├── css/
-│   └── styles.css
-├── js/
-│   └── main.js
-├── assets/
-│   ├── data/
-│   │   └── weather_demo.json
-│   ├── img/
-│   ├── maps/
-│   │   ├── bridal-veil-falls-wa.geojson
-│   │   └── rattlesnake-ledge.geojson
-│   └── video/
-├── favicon/
-└── README.md
-Educational Goals
+semantic HTML structure
 
-This project demonstrates:
-
-responsive web design
+responsive layout systems
 
 modular JavaScript architecture
 
-accessible semantic HTML
+client-side state management
 
-client-side data handling
+accessible navigation patterns
 
-human-centered interface design
+component-based UI thinking
 
-concept-to-prototype system thinking
+It also demonstrates concept-to-prototype system design, where a complex idea is translated into an interactive interface.
 
-Important Disclaimer
+Important Note
 
-RidgeRelay is a concept prototype only.
+RidgeRelay is not an emergency system and should not be used for real safety planning.
 
-It does not provide emergency services, GPS tracking, or real safety monitoring.
+This prototype exists solely to explore how interface design and structured planning workflows could improve outdoor safety awareness.
 
-The project exists solely to explore UX approaches to outdoor safety planning.
+Feedback and Discussion
 
-Feedback
+Ideas, critique, and discussion are welcome.
 
-If you found this concept interesting or useful, feel free to:
+Outdoor safety design is a complex and evolving space, and thoughtful feedback helps improve concepts like RidgeRelay.
 
-⭐ Star the repository
-💬 Share feedback or ideas
+If you found the project interesting, consider:
 
-Constructive discussion about outdoor safety design is always welcome.
+⭐ Starring the repository
+💬 Sharing feedback or suggestions
