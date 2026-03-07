@@ -928,9 +928,11 @@ async function renderTrailRouteMap(trail) {
       trailRouteMap.fitBounds(bounds, { padding: [18, 18] });
     }
 
-    setTimeout(() => {
-      trailRouteMap.invalidateSize();
-    }, 50);
+  requestAnimationFrame(() => {
+      setTimeout(() => {
+        trailRouteMap.invalidateSize();
+      }, 80);
+    });
 
   } catch (err) {
     mapEl.innerHTML = `<div style="padding:16px;color:var(--muted);font-weight:650;">Could not load route preview.</div>`;
@@ -1003,13 +1005,23 @@ updateDrawerHeart();
 window.__RR_DRAWER__?.open?.();
   }
 
- function updateDrawerHeart() {
+function updateDrawerHeart() {
   const btn = $("[data-drawer-heart]");
   if (!btn || !state.drawerTrailId) return;
+
   const isSaved = state.saved.has(state.drawerTrailId);
   btn.setAttribute("aria-pressed", String(isSaved));
   btn.querySelector(".btn__icon")?.setAttribute("aria-hidden", "true");
-  btn.lastChild.textContent = isSaved ? " Saved" : " Add to Wishlist";
+
+  const textNode = Array.from(btn.childNodes).find(
+    node => node.nodeType === Node.TEXT_NODE
+  );
+
+  if (textNode) {
+    textNode.textContent = isSaved ? " Saved" : " Add to Wishlist";
+  } else {
+    btn.append(document.createTextNode(isSaved ? " Saved" : " Add to Wishlist"));
+  }
 }
 
 // "Plan a Safety Session" CTA (demo)
@@ -1021,35 +1033,7 @@ function setupPlanSessionCTA() {
   });
 }
 
-  // ---------------------------
-  // Plan form demo: store locally
-  // ---------------------------
-  function setupPlanForm() {
-    const form = $("[data-plan-form]");
-    const status = $("[data-plan-status]");
-    const submit = $("[data-plan-submit]");
-    if (!form || !status || !submit) return;
-
-    submit.addEventListener("click", () => {
-      const party = form.querySelector('input[name="party"]:checked')?.value || "solo";
-      const dog = !!form.querySelector('input[name="dog"]')?.checked;
-      const contact = $("#contactPrivate")?.value?.trim() || "";
-
-      const payload = {
-        party,
-        dog,
-        contact,
-        savedAt: new Date().toISOString()
-      };
-
-      try {
-        localStorage.setItem(LS.plan, JSON.stringify(payload));
-        status.textContent = "Saved (demo). This info stays in your browser.";
-      } catch {
-        status.textContent = "Could not save (demo). Local storage may be disabled.";
-      }
-    });
-  }
+ 
 
   // ---------------------------
   // Community upload demo: localStorage gallery
@@ -1223,7 +1207,6 @@ function boot() {
   setupSavedPanel();
   setupDrawer();
   setupPlanSessionCTA();
-  setupPlanForm();
   setupHowSteps();
   setupPlanFormIntegration();
   setupGallery();
@@ -1235,29 +1218,8 @@ function boot() {
   renderTrails();
   setupFeaturedRowCarousel();
   renderSaved();
-
-  injectTrailCardHitStyle();
 }
 
-function injectTrailCardHitStyle() {
-  const style = document.createElement("style");
-  style.textContent = `
-    .trail-card__hit{
-      position:absolute; inset:0;
-      background: transparent;
-      border: none;
-      cursor:pointer;
-    }
-    .trail-card__hit:focus-visible{
-      outline: 3px solid color-mix(in oklab, var(--accent), white 10%);
-      outline-offset: -3px;
-      border-radius: var(--radius);
-    }
-    .trail-card .heart{ position: relative; z-index: 2; }
-    .trail-card a, .trail-card button, .trail-card input{ position: relative; z-index: 2; }
-  `;
-  document.head.appendChild(style);
-}
 
 function setupFeaturedRowCarousel() {
   const strip = document.querySelector("[data-trail-grid]");
