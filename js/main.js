@@ -27,17 +27,20 @@
 
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-  // ---------------------------
-  // Banner height -> header offset
-  // ---------------------------
-  function syncBannerHeightVar() {
-    const banner = $(".proto-banner");
-    if (!banner) return;
-    const h = Math.round(banner.getBoundingClientRect().height);
-    document.documentElement.style.setProperty("--banner-h", `${h}px`);
-  }
-  window.addEventListener("resize", syncBannerHeightVar, { passive: true });
+// ---------------------------
+// Banner height -> header offset
+// ---------------------------
+// NOTE: We set this once on load so the header starts in the right place,
+// but we do NOT keep updating it on resize (that caused the header to drift).
+function syncBannerHeightVar() {
+  const banner = $(".proto-banner");
+  if (!banner) return;
+  const h = Math.round(banner.getBoundingClientRect().height);
+  document.documentElement.style.setProperty("--banner-h", `${h}px`);
+}
 
+// Run once (do NOT attach resize listener)
+syncBannerHeightVar();
   // ---------------------------
   // Header condense on scroll
   // ---------------------------
@@ -364,28 +367,36 @@
   // Demo data (trails)
   // ---------------------------
   const TRAILS = [
-    {
-      id: "bridal-veil-falls-wa",
-      name: "Bridal Veil Falls",
-      location: "Index, WA",
-      activity: ["Hiking", "Dog-friendly"],
-      distanceMi: 4.2,
-      elevationFt: 1200,
-      difficulty: "Moderate",
-      img: "assets/img/trails/bridal-veil-falls.png",
-      keywords: ["index", "skykomish", "waterfall", "snohomish"]
-    },
-    {
-      id: "rattlesnake-ledge",
-      name: "Rattlesnake Ledge",
-      location: "North Bend, WA",
-      activity: ["Hiking", "Trail Running", "Dog-friendly"],
-      distanceMi: 4.0,
-      elevationFt: 1160,
-      difficulty: "Moderate",
-      img: "assets/img/trails/rattlesnake-ledge.png",
-      keywords: ["north bend", "rattlesnake lake", "issaquah", "snoqualmie"]
-    },
+  {
+    id: "bridal-veil-falls-wa",
+    name: "Bridal Veil Falls",
+    location: "Index, WA",
+    activity: ["Hiking", "Dog-friendly"],
+    distanceMi: 4.2,
+    elevationFt: 1200,
+    difficulty: "Moderate",
+    img: "assets/img/trails/bridal-veil-falls.png",
+    photos: [
+      "assets/img/trails/bridal-veil-falls-1.jpg",
+      "assets/img/trails/bridal-veil-falls-2.jpg",
+      "assets/img/trails/bridal-veil-falls-3.jpg",
+      "assets/img/trails/bridal-veil-falls-4.jpg"
+    ],
+    map: "assets/maps/bridal-veil-falls-wa.geojson",
+    keywords: ["index", "skykomish", "waterfall", "snohomish"]
+  },
+  {
+    id: "rattlesnake-ledge",
+    name: "Rattlesnake Ledge",
+    location: "North Bend, WA",
+    activity: ["Hiking", "Trail Running", "Dog-friendly"],
+    distanceMi: 4.0,
+    elevationFt: 1160,
+    difficulty: "Moderate",
+    img: "assets/img/trails/rattlesnake-ledge.png",
+    map: "assets/maps/rattlesnake-ledge.geojson",
+    keywords: ["north bend", "rattlesnake lake", "issaquah", "snoqualmie"]
+  },
     {
       id: "snow-lake",
       name: "Snow Lake",
@@ -398,16 +409,22 @@
       keywords: ["alpine lakes", "snoqualmie pass", "lake"]
     },
     {
-      id: "mount-si",
-      name: "Mount Si",
-      location: "North Bend, WA",
-      activity: ["Hiking", "Trail Running"],
-      distanceMi: 7.9,
-      elevationFt: 3150,
-      difficulty: "Hard",
-      img: "assets/img/trails/mount-si.png",
-      keywords: ["north bend", "snoqualmie", "peak"]
-    },
+  id: "mount-si",
+  name: "Mount Si",
+  location: "North Bend, WA",
+  activity: ["Hiking", "Trail Running"],
+  distanceMi: 7.9,
+  elevationFt: 3150,
+  difficulty: "Hard",
+  img: "assets/img/trails/mount-si.png",
+  photos: [
+    "assets/img/trails/mount-si-1.jpg",
+    "assets/img/trails/mount-si-2.jpg",
+    "assets/img/trails/mount-si-3.jpg",
+    "assets/img/trails/mount-si-4.jpg"
+  ],
+  keywords: ["north bend", "snoqualmie", "peak"]
+},
     {
       id: "wallace-falls",
       name: "Wallace Falls",
@@ -518,16 +535,21 @@
       </div>
     `;
 
-    // Click target: full card opens drawer (but keep buttons working)
-    const hit = $(".trail-card__hit", el);
-    hit.addEventListener("click", () => openDrawer(trail.id));
+   // Make the whole card clickable
+el.style.cursor = "pointer";
 
-    // Heart
-    const heartBtn = $("[data-heart]", el);
-    heartBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      toggleSaved(trail.id);
-    });
+el.addEventListener("click", (e) => {
+  // If the heart was clicked, don't open the drawer
+  if (e.target.closest("[data-heart]")) return;
+  openDrawer(trail.id);
+});
+
+// Heart
+const heartBtn = $("[data-heart]", el);
+heartBtn.addEventListener("click", (e) => {
+  e.stopPropagation();
+  toggleSaved(trail.id);
+});
 
     // Image fallback
     const img = $("img", el);
@@ -547,6 +569,9 @@
     grid.innerHTML = "";
 
     const filtered = TRAILS.filter(t => trailMatches(t, state.q, state.activity));
+
+    console.log("TRAILS:", TRAILS.length, "FILTERED:", filtered.length, "activity:", state.activity, "q:", state.q);
+
     if (filtered.length === 0) {
       const empty = document.createElement("div");
       empty.className = "card";
@@ -595,6 +620,38 @@
     const cardsHost = $("[data-activity-cards]");
     if (!chipsHost || !cardsHost) return;
 
+    // Icons for Browse-by-activity cards (inline SVG so no files needed)
+const ACTIVITY_ICONS = {
+  "Hiking": `<svg viewBox="0 0 24 24" class="icon" aria-hidden="true">
+    <path d="M4 19l7-12 4 7 2-3 5 8H3z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>`,
+  "Trail Running": `<svg viewBox="0 0 24 24" class="icon" aria-hidden="true">
+    <path d="M7 20l3-7 3 2 3-6 3 2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M6 9h4l2 2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M10 6h.01" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+  </svg>`,
+  "Backpacking": `<svg viewBox="0 0 24 24" class="icon" aria-hidden="true">
+    <path d="M8 7a4 4 0 0 1 8 0" fill="none" stroke="currentColor" stroke-width="1.8"/>
+    <path d="M7 8h10a2 2 0 0 1 2 2v10H5V10a2 2 0 0 1 2-2z" fill="none" stroke="currentColor" stroke-width="1.8"/>
+    <path d="M9 12h6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+  </svg>`,
+  "Mountain Biking": `<svg viewBox="0 0 24 24" class="icon" aria-hidden="true">
+    <path d="M7 18a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm10 0a3 3 0 1 1 0-6 3 3 0 0 1 0 6z" fill="none" stroke="currentColor" stroke-width="1.8"/>
+    <path d="M10 6h4l-2 4h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M9 16l3-6 5 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>`,
+  "Overlanding": `<svg viewBox="0 0 24 24" class="icon" aria-hidden="true">
+    <path d="M4 16l2-6h12l2 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+    <path d="M7 16v2M17 16v2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+    <path d="M7 10l2-3h6l2 3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>`,
+  "Dog-friendly": `<svg viewBox="0 0 24 24" class="icon" aria-hidden="true">
+    <path d="M6 14c0 2 2 4 6 4s6-2 6-4-2-4-6-4-6 2-6 4z" fill="none" stroke="currentColor" stroke-width="1.8"/>
+    <path d="M9 9l-1-2M15 9l1-2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+    <path d="M10 14h.01M14 14h.01" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+  </svg>`
+};
+
     const allBtn = makeChip("All", "All");
     chipsHost.appendChild(allBtn);
 
@@ -639,18 +696,44 @@
       }
     }
 
-    // Browse-by-activity round cards
-    cardsHost.innerHTML = "";
-    ACTIVITIES.forEach(a => {
-      const btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = "activity";
-      btn.dataset.activity = a.key;
-      btn.setAttribute("aria-pressed", "false");
-      btn.textContent = a.label;
-      btn.addEventListener("click", () => setActivity(a.key));
-      cardsHost.appendChild(btn);
-    });
+    // Browse-by-activity round cards (image thumbnails like AllTrails)
+cardsHost.innerHTML = "";
+
+function activityImgPath(key) {
+  // "Trail Running" -> "trail-running.png"
+  // "Dog-friendly"  -> "dog-friendly.png"
+  const slug = key.toLowerCase().replace(/\s+/g, "-");
+  return `assets/img/activities/${slug}.png`;
+}
+
+ACTIVITIES.forEach(a => {
+  const btn = document.createElement("button");
+  btn.type = "button";
+  btn.className = "activity";
+  btn.dataset.activity = a.key;
+  btn.setAttribute("aria-pressed", String(a.key === state.activity));
+
+  btn.innerHTML = `
+    <span class="activity__thumb" aria-hidden="true">
+      <img src="${activityImgPath(a.key)}" alt="" loading="lazy">
+    </span>
+    <span class="activity__label">${a.label}</span>
+  `;
+
+  // If an image is missing, fall back gracefully (don’t break the UI)
+  const img = btn.querySelector("img");
+  img.addEventListener("error", () => {
+    img.remove();
+    btn.querySelector(".activity__thumb").innerHTML = `
+      <svg viewBox="0 0 24 24" class="icon" aria-hidden="true">
+        <path d="M4 19l7-12 4 7 2-3 5 8H3z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    `;
+  }, { once: true });
+
+  btn.addEventListener("click", () => setActivity(a.key));
+  cardsHost.appendChild(btn);
+});
   }
 
   // ---------------------------
@@ -716,17 +799,20 @@
   // Drawer (trail details)
   // ---------------------------
   function setupDrawer() {
-    const drawer = $("[data-drawer]");
-    if (!drawer) return;
+  const drawer = $("[data-drawer]");
+  if (!drawer) return;
 
-    const panel = $(".drawer__panel", drawer);
-    const closeBtns = $$("[data-drawer-close]", drawer);
-    const heartBtn = $("[data-drawer-heart]", drawer);
+  const panel = $(".drawer__panel", drawer);
+  const closeBtns = $$("[data-drawer-close]", drawer);
+  const heartBtn = $("[data-drawer-heart]", drawer);
 
-    let untrap = null;
-    let lastFocus = null;
+  let untrap = null;
+  let lastFocus = null;
 
-    function close() {
+  function close() {
+    drawer.classList.remove("is-open");
+
+    setTimeout(() => {
       drawer.hidden = true;
       drawer.setAttribute("aria-hidden", "true");
       document.body.style.overflow = "";
@@ -734,29 +820,32 @@
       untrap = null;
       state.drawerTrailId = null;
       lastFocus?.focus?.();
-    }
+    }, 300);
+  }
 
-    function open() {
-      lastFocus = document.activeElement;
-      drawer.hidden = false;
-      drawer.setAttribute("aria-hidden", "false");
-      document.body.style.overflow = "hidden";
+  function open() {
+    lastFocus = document.activeElement;
+    drawer.hidden = false;
+    drawer.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
 
-      untrap = trapFocus(panel, { onClose: close });
-      (closeBtns[0] || panel).focus();
-    }
-
-    closeBtns.forEach(btn => btn.addEventListener("click", close));
-
-    // Drawer-level heart toggle
-    heartBtn?.addEventListener("click", () => {
-      if (!state.drawerTrailId) return;
-      toggleSaved(state.drawerTrailId);
+    requestAnimationFrame(() => {
+      drawer.classList.add("is-open");
     });
 
-    // Expose for openDrawer() below
-    window.__RR_DRAWER__ = { open, close };
+    untrap = trapFocus(panel, { onClose: close });
+    (closeBtns[0] || panel).focus();
   }
+
+  closeBtns.forEach(btn => btn.addEventListener("click", close));
+
+  heartBtn?.addEventListener("click", () => {
+    if (!state.drawerTrailId) return;
+    toggleSaved(state.drawerTrailId);
+  });
+
+  window.__RR_DRAWER__ = { open, close };
+}
 
   async function ensureWeatherLoaded() {
     if (state.weatherData) return state.weatherData;
@@ -790,6 +879,64 @@
     return `Low-signal risk hint: watch for ${tags.join(", ")}. Consider an earlier start + a backup exit plan.`;
   }
 
+let trailRouteMap = null;
+let trailRouteLayer = null;
+let trailBaseLayer = null;
+
+async function renderTrailRouteMap(trail) {
+  const mapEl = document.getElementById("trailRouteMap");
+  if (!mapEl) return;
+
+  if (!trail.map) {
+    mapEl.innerHTML = `<div style="padding:16px;color:var(--muted);font-weight:650;">Route preview unavailable for this trail.</div>`;
+    return;
+  }
+
+  try {
+    const res = await fetch(trail.map, { cache: "no-store" });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const geojson = await res.json();
+
+    if (!trailRouteMap) {
+      trailRouteMap = L.map(mapEl, {
+        zoomControl: false,
+        attributionControl: false
+      });
+
+      trailBaseLayer = L.tileLayer(
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        { maxZoom: 18 }
+      );
+
+      trailBaseLayer.addTo(trailRouteMap);
+    }
+
+    if (trailRouteLayer) {
+      trailRouteMap.removeLayer(trailRouteLayer);
+    }
+
+    trailRouteLayer = L.geoJSON(geojson, {
+      style: {
+        color: "#f7ff00",
+        weight: 4,
+        opacity: 0.95
+      }
+    }).addTo(trailRouteMap);
+
+    const bounds = trailRouteLayer.getBounds();
+    if (bounds.isValid()) {
+      trailRouteMap.fitBounds(bounds, { padding: [18, 18] });
+    }
+
+    setTimeout(() => {
+      trailRouteMap.invalidateSize();
+    }, 50);
+
+  } catch (err) {
+    mapEl.innerHTML = `<div style="padding:16px;color:var(--muted);font-weight:650;">Could not load route preview.</div>`;
+  }
+}
+
   async function openDrawer(trailId) {
     const trail = TRAILS.find(t => t.id === trailId);
     if (!trail) return;
@@ -800,17 +947,22 @@
     $("[data-drawer-title]")?.replaceChildren(document.createTextNode(trail.name));
     $("[data-drawer-meta]")?.replaceChildren(document.createTextNode(`${trail.location} • ${formatMeta(trail)}`));
 
-    // Photo strip placeholders (no images required)
-    const strip = $("[data-photo-strip]");
-    if (strip) {
-      strip.innerHTML = "";
-      for (let i = 0; i < 4; i++) {
-        const p = document.createElement("div");
-        p.className = "photo";
-        p.setAttribute("aria-label", `Placeholder photo ${i + 1}`);
-        strip.appendChild(p);
-      }
-    }
+const strip = $("[data-photo-strip]");
+if (strip) {
+  strip.innerHTML = "";
+
+  const photos = trail.photos ?? [trail.img];
+
+  photos.forEach((src, i) => {
+    const img = document.createElement("img");
+    img.src = src;
+    img.alt = `${trail.name} photo ${i+1}`;
+    img.loading = "lazy";
+    img.className = "photo";
+    strip.appendChild(img);
+  });
+}
+
 
     // Weather panel
     const weatherGrid = $("[data-weather-grid]");
@@ -821,48 +973,53 @@
     const demo = data.trails?.[trailId];
 
     if (!demo || !Array.isArray(demo.forecast)) {
-      if (weatherGrid) {
-        weatherGrid.innerHTML = `<div class="weather-row"><span>Weather demo unavailable</span><span class="muted">Check JSON path</span></div>`;
-      }
-      if (weatherHint) weatherHint.textContent = "Low-signal risk hint: unavailable (demo data missing).";
-    } else {
-      demo.forecast.slice(0, 4).forEach(day => {
-        const row = document.createElement("div");
-        row.className = "weather-row";
-        row.innerHTML = `
-          <span>${escapeHtml(day.day)} • ${escapeHtml(day.summary)}</span>
-          <span class="muted">${day.high_f}° / ${day.low_f}° • ${day.precip_chance}%</span>
-        `;
-        weatherGrid?.appendChild(row);
-      });
-      if (weatherHint) weatherHint.textContent = riskHintFromForecast(demo.forecast, trail);
-    }
+  if (weatherGrid) {
+    weatherGrid.innerHTML = `<div class="weather-row"><span>Weather demo unavailable</span><span class="muted">No matching trail forecast</span></div>`;
+  }
+  if (weatherHint) {
+    weatherHint.textContent = "Low-signal risk hint: unavailable (demo data missing).";
+  }
+} else {
+  if (weatherGrid) weatherGrid.innerHTML = "";
 
-    // Update drawer heart button state/label
-    updateDrawerHeart();
+  demo.forecast.slice(0, 4).forEach(day => {
+    const row = document.createElement("div");
+    row.className = "weather-row";
+    row.innerHTML = `
+      <span>${escapeHtml(day.day)} • ${escapeHtml(day.summary)}</span>
+      <span class="muted">${day.high_f}° / ${day.low_f}° • ${day.precip_chance}%</span>
+    `;
+    weatherGrid?.appendChild(row);
+  });
 
-    // Open with focus management
-    window.__RR_DRAWER__?.open?.();
+  if (weatherHint) {
+    weatherHint.textContent = riskHintFromForecast(demo.forecast, trail);
+  }
+}
+
+renderTrailRouteMap(trail);
+
+updateDrawerHeart();
+window.__RR_DRAWER__?.open?.();
   }
 
-  function updateDrawerHeart() {
-    const btn = $("[data-drawer-heart]");
-    if (!btn || !state.drawerTrailId) return;
-    const isSaved = state.saved.has(state.drawerTrailId);
-    btn.setAttribute("aria-pressed", String(isSaved));
-    btn.querySelector(".btn__icon")?.setAttribute("aria-hidden", "true");
-    btn.lastChild.textContent = isSaved ? " Saved" : " Add to Wishlist";
-  }
+ function updateDrawerHeart() {
+  const btn = $("[data-drawer-heart]");
+  if (!btn || !state.drawerTrailId) return;
+  const isSaved = state.saved.has(state.drawerTrailId);
+  btn.setAttribute("aria-pressed", String(isSaved));
+  btn.querySelector(".btn__icon")?.setAttribute("aria-hidden", "true");
+  btn.lastChild.textContent = isSaved ? " Saved" : " Add to Wishlist";
+}
 
-  // "Plan a Safety Session" CTA (demo)
-  function setupPlanSessionCTA() {
-    const btn = $("[data-plan-session]");
-    if (!btn) return;
-    btn.addEventListener("click", () => {
-      // Demo behavior: scroll to plan section
-      $("#plan")?.scrollIntoView?.({ behavior: prefersReducedMotion.matches ? "auto" : "smooth" });
-    });
-  }
+// "Plan a Safety Session" CTA (demo)
+function setupPlanSessionCTA() {
+  const btn = $("[data-plan-session]");
+  if (!btn) return;
+  btn.addEventListener("click", () => {
+    $("#plan")?.scrollIntoView?.({ behavior: prefersReducedMotion.matches ? "auto" : "smooth" });
+  });
+}
 
   // ---------------------------
   // Plan form demo: store locally
@@ -1047,54 +1204,417 @@
     return escapeHtml(str);
   }
 
-  // ---------------------------
-  // Boot
-  // ---------------------------
-  function boot() {
-    syncBannerHeightVar();
-    setupHeaderCondense();
-    setupDisclaimerModal();
-    setupMobileDrawer();
-    setupMegaMenus();
-    setupCarousel();
+// ---------------------------
+// Boot
+// ---------------------------
+function boot() {
+  syncBannerHeightVar();
+  setupHeaderCondense();
+  setupDisclaimerModal();
+  setupMobileDrawer();
+  setupAuth();
+  setupMegaMenus();
+  setupCarousel();
 
-    setupSearch();
-    setupActivities();
-    setupSavedPanel();
-    setupDrawer();
-    setupPlanSessionCTA();
-    setupPlanForm();
-    setupGallery();
-    setupSubscribe();
-    setupDevTools();
+  setupSearch();
+  setupActivities();
+  setupActivityStripScroll();
+  setupActivityRowCarousel();
+  setupSavedPanel();
+  setupDrawer();
+  setupPlanSessionCTA();
+  setupPlanForm();
+  setupHowSteps();
+  setupPlanFormIntegration();
+  setupGallery();
+  setupSubscribe();
+  setupDevTools();
+  setupVideoGuides();
+  setupWeatherDemoShortcut();
 
-    renderTrails();
-    renderSaved();
+  renderTrails();
+  setupFeaturedRowCarousel();
+  renderSaved();
 
-    // Small CSS/DOM fix: trail-card click target overlay (added in JS to avoid extra HTML clutter)
-    // WHY: ensures the entire card is clickable while keeping buttons inside functional.
-    injectTrailCardHitStyle();
+  injectTrailCardHitStyle();
+}
+
+function injectTrailCardHitStyle() {
+  const style = document.createElement("style");
+  style.textContent = `
+    .trail-card__hit{
+      position:absolute; inset:0;
+      background: transparent;
+      border: none;
+      cursor:pointer;
+    }
+    .trail-card__hit:focus-visible{
+      outline: 3px solid color-mix(in oklab, var(--accent), white 10%);
+      outline-offset: -3px;
+      border-radius: var(--radius);
+    }
+    .trail-card .heart{ position: relative; z-index: 2; }
+    .trail-card a, .trail-card button, .trail-card input{ position: relative; z-index: 2; }
+  `;
+  document.head.appendChild(style);
+}
+
+function setupFeaturedRowCarousel() {
+  const strip = document.querySelector("[data-trail-grid]");
+  const prev = document.querySelector("[data-trails-prev]");
+  const next = document.querySelector("[data-trails-next]");
+
+  if (!strip || !prev || !next) return;
+
+  const page = () => Math.max(240, strip.clientWidth * 0.92);
+
+  prev.addEventListener("click", () => {
+    strip.scrollBy({ left: -page(), behavior: "smooth" });
+  });
+
+  next.addEventListener("click", () => {
+    strip.scrollBy({ left: page(), behavior: "smooth" });
+  });
+}
+
+function setupActivityStripScroll() {
+  const strip = document.querySelector(".activity-grid");
+  if (!strip) return;
+
+  strip.addEventListener("wheel", (e) => {
+    if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
+
+    const canScroll = strip.scrollWidth > strip.clientWidth;
+    if (!canScroll) return;
+
+    e.preventDefault();
+    strip.scrollLeft += e.deltaY;
+  }, { passive: false });
+}
+
+function setupActivityRowCarousel() {
+  const strip = document.querySelector("[data-activity-cards]");
+  const prev = document.querySelector("[data-activity-prev]");
+  const next = document.querySelector("[data-activity-next]");
+  if (!strip || !prev || !next) return;
+
+  function step() {
+    const first = strip.querySelector(".activity");
+    if (!first) return 140;
+    const styles = getComputedStyle(strip);
+    const gap = parseFloat(styles.columnGap || styles.gap || "0") || 0;
+    return first.getBoundingClientRect().width + gap;
   }
 
-  function injectTrailCardHitStyle() {
-    const style = document.createElement("style");
-    style.textContent = `
-      .trail-card__hit{
-        position:absolute; inset:0;
-        background: transparent;
-        border: none;
-        cursor:pointer;
-      }
-      .trail-card__hit:focus-visible{
-        outline: 3px solid color-mix(in oklab, var(--accent), white 10%);
-        outline-offset: -3px;
-        border-radius: var(--radius);
-      }
-      .trail-card .heart{ position: relative; z-index: 2; }
-      .trail-card a, .trail-card button, .trail-card input{ position: relative; z-index: 2; }
-    `;
-    document.head.appendChild(style);
+  prev.addEventListener("click", () => {
+    strip.scrollBy({ left: -step() * 2, behavior: "smooth" });
+  });
+
+  next.addEventListener("click", () => {
+    strip.scrollBy({ left: step() * 2, behavior: "smooth" });
+  });
+}
+
+// ======================================================
+// How RidgeRelay Works interactive steps
+// ======================================================
+function setupHowSteps() {
+  const howSteps = document.querySelectorAll(".how__step");
+  if (!howSteps.length) return;
+
+  const phone = document.getElementById("howPhoneImage");
+  const title = document.getElementById("howTitle");
+  const text = document.getElementById("howText");
+
+  if (!phone || !title || !text) return;
+
+  howSteps.forEach(step => {
+    step.addEventListener("click", () => {
+      howSteps.forEach(s => s.classList.remove("is-active"));
+      step.classList.add("is-active");
+
+      phone.src = step.dataset.img;
+      phone.alt = `${step.dataset.title} demo screen`;
+      title.textContent = step.dataset.title;
+      text.textContent = step.dataset.text;
+    });
+  });
+}
+
+// ======================================================
+// Forminit: Plan a safety session
+// ======================================================
+function setupPlanFormIntegration() {
+  const form = document.getElementById("plan-form");
+  const result = document.getElementById("plan-form-result");
+  if (!form || !result || typeof Forminit === "undefined") return;
+
+  const forminit = new Forminit();
+  const FORM_ID = "jjvkxjespdq";
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    result.textContent = "Submitting...";
+    result.style.color = "";
+
+    const formData = new FormData(form);
+    const { error } = await forminit.submit(FORM_ID, formData);
+
+    if (error) {
+      result.textContent = error.message || "Something went wrong. Please try again.";
+      result.style.color = "#ff8a8a";
+      return;
+    }
+
+    result.textContent = "Safety session saved successfully.";
+    result.style.color = "";
+    form.reset();
+  });
+}
+
+// ======================================================
+// Local demo auth
+// ======================================================
+const AUTH_LS = {
+  users: "rr_users_v1",
+  currentUser: "rr_current_user_v1"
+};
+
+function loadUsers() {
+  try {
+    const raw = localStorage.getItem(AUTH_LS.users);
+    const arr = raw ? JSON.parse(raw) : [];
+    return Array.isArray(arr) ? arr : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveUsers(users) {
+  localStorage.setItem(AUTH_LS.users, JSON.stringify(users));
+}
+
+function loadCurrentUser() {
+  try {
+    const raw = localStorage.getItem(AUTH_LS.currentUser);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}
+
+function saveCurrentUser(user) {
+  localStorage.setItem(AUTH_LS.currentUser, JSON.stringify(user));
+}
+
+function clearCurrentUser() {
+  localStorage.removeItem(AUTH_LS.currentUser);
+}
+
+function getUserDisplayName(user) {
+  if (!user) return "";
+  return [user.firstName, user.lastName].filter(Boolean).join(" ") || user.email;
+}
+
+function updateAuthUI() {
+  const loggedOutEls = document.querySelectorAll("[data-auth-logged-out]");
+  const loggedInEls = document.querySelectorAll("[data-auth-logged-in]");
+  const welcome = document.querySelector("[data-auth-welcome]");
+
+  const currentUser = loadCurrentUser();
+
+  loggedOutEls.forEach(el => {
+    el.hidden = !!currentUser;
+  });
+
+  loggedInEls.forEach(el => {
+    el.hidden = !currentUser;
+  });
+
+  if (welcome && currentUser) {
+    welcome.textContent = `Welcome, ${getUserDisplayName(currentUser)}`;
+  }
+}
+
+function setupAuth() {
+  const modal = document.querySelector("[data-auth-modal]");
+  if (!modal) return;
+
+  const title = modal.querySelector("[data-auth-title]");
+  const form = document.getElementById("auth-form");
+  const status = document.getElementById("auth-status");
+  const nameRow = modal.querySelector("[data-auth-name-row]");
+  const submitBtn = modal.querySelector("[data-auth-submit]");
+  const switchBtn = modal.querySelector("[data-auth-switch]");
+  const emailInput = document.getElementById("authEmail");
+  const passwordInput = document.getElementById("authPassword");
+  const firstNameInput = document.getElementById("authFirstName");
+  const lastNameInput = document.getElementById("authLastName");
+
+  const openLoginBtns = document.querySelectorAll("[data-open-login]");
+  const openSignupBtns = document.querySelectorAll("[data-open-signup]");
+  const closeBtns = modal.querySelectorAll("[data-auth-close]");
+  const logoutBtn = document.querySelector("[data-logout]");
+
+  let mode = "login";
+
+  function setMode(nextMode) {
+    mode = nextMode;
+
+    const isSignup = mode === "signup";
+    title.textContent = isSignup ? "Create account" : "Log in";
+    submitBtn.textContent = isSignup ? "Create account" : "Log in";
+    switchBtn.textContent = isSignup ? "Already have an account?" : "Need an account?";
+    nameRow.hidden = !isSignup;
+
+    firstNameInput.required = isSignup;
+    lastNameInput.required = isSignup;
+
+    status.textContent = "";
+    form.reset();
   }
 
-  boot();
+  function openModal(nextMode) {
+    setMode(nextMode);
+    modal.hidden = false;
+    modal.setAttribute("aria-hidden", "false");
+    emailInput.focus();
+  }
+
+  function closeModal() {
+    modal.hidden = true;
+    modal.setAttribute("aria-hidden", "true");
+    status.textContent = "";
+    form.reset();
+  }
+
+  openLoginBtns.forEach(btn => btn.addEventListener("click", () => openModal("login")));
+  openSignupBtns.forEach(btn => btn.addEventListener("click", () => openModal("signup")));
+  closeBtns.forEach(btn => btn.addEventListener("click", closeModal));
+
+  switchBtn.addEventListener("click", () => {
+    setMode(mode === "login" ? "signup" : "login");
+  });
+
+  logoutBtn?.addEventListener("click", () => {
+    clearCurrentUser();
+    updateAuthUI();
+  });
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const users = loadUsers();
+    const email = emailInput.value.trim().toLowerCase();
+    const password = passwordInput.value;
+    const firstName = firstNameInput.value.trim();
+    const lastName = lastNameInput.value.trim();
+
+    if (!email || !password) {
+      status.textContent = "Please fill out email and password.";
+      return;
+    }
+
+    if (mode === "signup") {
+      const exists = users.some(user => user.email === email);
+      if (exists) {
+        status.textContent = "An account with that email already exists.";
+        return;
+      }
+
+      const user = {
+        id: "u_" + Date.now(),
+        firstName,
+        lastName,
+        email,
+        password
+      };
+
+      users.push(user);
+      saveUsers(users);
+      saveCurrentUser(user);
+
+      updateAuthUI();
+      closeModal();
+      return;
+    }
+
+    const user = users.find(u => u.email === email && u.password === password);
+    if (!user) {
+      status.textContent = "Invalid email or password.";
+      return;
+    }
+
+    saveCurrentUser(user);
+    updateAuthUI();
+    closeModal();
+  });
+
+  updateAuthUI();
+}
+
+// ---------------------------
+// Video guides modal
+// ---------------------------
+function setupVideoGuides() {
+  const modal = document.querySelector("[data-video-modal]");
+  if (!modal) return;
+
+  const openers = document.querySelectorAll("[data-video-open]");
+  const closers = modal.querySelectorAll("[data-video-close]");
+  const title = modal.querySelector("[data-video-modal-title]");
+  const video = modal.querySelector("[data-guide-video]");
+  const source = video?.querySelector("source");
+
+  if (!video || !source) return;
+
+  function openVideo(src, label) {
+    source.src = src;
+    video.load();
+    title.textContent = label || "Video guide";
+    modal.hidden = false;
+    modal.setAttribute("aria-hidden", "false");
+  }
+
+  function closeVideo() {
+    video.pause();
+    source.src = "";
+    video.load();
+    modal.hidden = true;
+    modal.setAttribute("aria-hidden", "true");
+  }
+
+  openers.forEach(btn => {
+    btn.addEventListener("click", () => {
+      openVideo(btn.dataset.videoSrc, btn.dataset.videoTitle);
+    });
+  });
+
+  closers.forEach(btn => {
+    btn.addEventListener("click", closeVideo);
+  });
+}
+
+// Weather demo shortcut
+function setupWeatherDemoShortcut() {
+  const btn = document.querySelector("[data-open-weather-demo]");
+  if (!btn) return;
+
+  btn.addEventListener("click", (e) => {
+    e.preventDefault();
+
+    // scroll to featured section first
+    document.querySelector("#featured")?.scrollIntoView({
+      behavior: "smooth"
+    });
+
+    // open the demo trail
+    setTimeout(() => {
+      openDrawer("bridal-veil-falls-wa");
+    }, 400);
+  });
+}
+
+boot();
 })();

@@ -7,13 +7,28 @@
     - Accessible, mobile-first
     - Inspired by AllTrails / Fi / modern product landing pages (no copied code/assets)
   -->
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="color-scheme" content="dark light" />
-  <title>RidgeRelay — Find your next hike, with a safety layer</title>
-  <meta name="description" content="Explore trails and add an intent-based safety session for low-signal confidence. Privacy-first, session-limited, transparent escalation." />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="color-scheme" content="dark light" />
+<title>RidgeRelay — Find your next hike, with a safety layer</title>
+<meta name="description" content="Explore trails and add an intent-based safety session for low-signal confidence. Privacy-first, session-limited, transparent escalation." />
+<meta name="theme-color" content="#0b0e14">
+<meta name="apple-mobile-web-app-capable" content="yes">
 
-  <link rel="stylesheet" href="css/styles.css" />
+<link rel="stylesheet" href="css/styles.css">
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+<link rel="icon" href="favicon/favicon.ico" sizes="any">
+<link rel="icon" type="image/svg+xml" href="favicon/favicon.svg">
+<link rel="icon" type="image/png" sizes="96x96" href="favicon/favicon-96x96.png">
+<link rel="apple-touch-icon" href="favicon/apple-touch-icon.png">
+<link rel="manifest" href="favicon/site.webmanifest">
+<meta name="theme-color" content="#0b0e14">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<!-- <link rel="manifest" href="favicon/site.webmanifest"> -->
+
+<meta name="theme-color" content="#0b0c0f">
 </head>
 
 <body>
@@ -41,30 +56,15 @@
     </div>
   </div>
 
-  <!-- =========================
-       2) Sticky header (condenses on scroll)
-       ========================= -->
-  <header class="site-header" data-header>
-    <div class="container header__inner">
-      <a class="brand" href="#top" aria-label="RidgeRelay home">
-        <!-- RR logo mark (simple inline SVG, consistent stroke) -->
-        <span class="brand__mark" aria-hidden="true">
-          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M4 18V6h7a4 4 0 0 1 0 8H4" />
-            <path d="M11 14l4 4" />
-            <path d="M13 10h3a4 4 0 0 1 0 8h-3V6h3a4 4 0 0 1 0 8h-3" opacity=".0"/>
-            <path d="M13 6h3a4 4 0 0 1 0 8h-3" />
-            <path d="M13 14h3" />
-          </svg>
-        </span>
-        <span class="brand__word">
-          <span class="brand__name">RidgeRelay</span>
-          <span class="brand__tag">Safety-first trail planning</span>
-        </span>
-      </a>
+ <header class="site-header" data-header>
+  <div class="container header__inner">
 
-      <!-- Desktop nav -->
-      <nav class="nav nav--desktop" aria-label="Primary navigation">
+    <a class="brand brand--wordmark" href="#top" aria-label="RidgeRelay home">
+      <img class="brand__wordmark" src="assets/img/brand/rr-logo.png" alt="RidgeRelay">
+    </a>
+
+    <!-- Desktop nav -->
+    <nav class="nav nav--desktop" aria-label="Primary navigation">
         <div class="nav__group">
           <button class="nav__trigger" type="button"
             aria-expanded="false"
@@ -107,21 +107,6 @@
                   </span>
                 </a>
 
-                <a class="mega-card" href="#community">
-                  <span class="mega-card__icon" aria-hidden="true">
-                    <!-- gallery -->
-                    <svg viewBox="0 0 24 24" class="icon" aria-hidden="true">
-                      <path d="M4 6h16v12H4z" fill="none" stroke="currentColor" stroke-width="1.8"/>
-                      <path d="M8 14l2-2 3 3 2-2 3 3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                      <path d="M8.5 10.5h.01" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
-                    </svg>
-                  </span>
-                  <span class="mega-card__text">
-                    <span class="mega-card__label">Community</span>
-                    <span class="mega-card__desc">Share moments, not pins</span>
-                  </span>
-                </a>
-
                 <a class="mega-card" href="#gear">
                   <span class="mega-card__icon" aria-hidden="true">
                     <!-- backpack -->
@@ -132,8 +117,8 @@
                     </svg>
                   </span>
                   <span class="mega-card__text">
-                    <span class="mega-card__label">Gear</span>
-                    <span class="mega-card__desc">Demo shop cards</span>
+                    <span class="mega-card__label">Quick Safety</span>
+                    <span class="mega-card__desc">Short field-ready videos</span>
                   </span>
                 </a>
               </div>
@@ -186,18 +171,23 @@
                   </span>
                 </a>
 
-                <a class="mega-card" href="#weather">
-                  <span class="mega-card__icon" aria-hidden="true">
-                    <!-- cloud -->
-                    <svg viewBox="0 0 24 24" class="icon" aria-hidden="true">
-                      <path d="M7 18h10a4 4 0 0 0 0-8 5 5 0 0 0-9.7 1.5A3.5 3.5 0 0 0 7 18z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
-                    </svg>
-                  </span>
-                  <span class="mega-card__text">
-                    <span class="mega-card__label">Weather demo</span>
-                    <span class="mega-card__desc">Mock forecast + risk hint</span>
-                  </span>
-                </a>
+                <a class="mega-card" href="#" data-open-weather-demo>
+  <span class="mega-card__icon" aria-hidden="true">
+    <!-- cloud -->
+    <svg viewBox="0 0 24 24" class="icon" aria-hidden="true">
+      <path d="M7 18h10a4 4 0 0 0 0-8 5 5 0 0 0-9.7 1.5A3.5 3.5 0 0 0 7 18z"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linejoin="round"/>
+    </svg>
+  </span>
+
+  <span class="mega-card__text">
+    <span class="mega-card__label">Weather demo</span>
+    <span class="mega-card__desc">Mock forecast + risk hint</span>
+  </span>
+</a>
 
                 <a class="mega-card" href="#faq">
                   <span class="mega-card__icon" aria-hidden="true">
@@ -222,15 +212,16 @@
         <a class="nav__link" href="#privacy">Privacy</a>
       </nav>
 
-      <div class="header__actions">
-        <button class="btn btn--ghost icon-btn" type="button" aria-label="Log in (demo)">
-          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4z" fill="none" stroke="currentColor" stroke-width="1.8"/>
-            <path d="M4 21a8 8 0 0 1 16 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-          </svg>
-          <span class="hide-sm">Log in</span>
-        </button>
+     <div class="header__actions">
+  <div class="auth auth--logged-out" data-auth-logged-out>
+    <button class="btn btn--ghost" type="button" data-open-login>Log in</button>
+    <button class="btn btn--primary" type="button" data-open-signup>Create account</button>
+  </div>
 
+  <div class="auth auth--logged-in" data-auth-logged-in hidden>
+    <span class="auth__welcome" data-auth-welcome>Welcome</span>
+    <button class="btn btn--ghost" type="button" data-logout>Log out</button>
+  </div>
         <!-- Mobile hamburger -->
         <button class="btn btn--ghost icon-btn nav-toggle" type="button"
           aria-label="Open menu"
@@ -245,32 +236,82 @@
     </div>
   </header>
 
-  <!-- Mobile nav drawer (focus trap + ESC) -->
-  <aside class="mobile-drawer" id="mobileNav" aria-hidden="true" data-mobile-drawer>
-    <div class="mobile-drawer__backdrop" data-mobile-close tabindex="-1" aria-hidden="true"></div>
-    <div class="mobile-drawer__panel" role="dialog" aria-modal="true" aria-label="Menu">
-      <div class="mobile-drawer__top">
-        <span class="mobile-drawer__brand">Menu</span>
-        <button class="icon-btn btn btn--ghost" type="button" data-mobile-close aria-label="Close menu">
-          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-          </svg>
-        </button>
+<!-- Mobile nav drawer (focus trap + ESC) -->
+<aside class="mobile-drawer" id="mobileNav" aria-hidden="true" data-mobile-drawer>
+  <div class="mobile-drawer__backdrop" data-mobile-close tabindex="-1" aria-hidden="true"></div>
+
+  <div class="mobile-drawer__panel" role="dialog" aria-modal="true" aria-label="Menu">
+    <div class="mobile-drawer__top">
+      <span class="mobile-drawer__brand">Menu</span>
+      <button class="icon-btn btn btn--ghost" type="button" data-mobile-close aria-label="Close menu">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="mobile-drawer__body">
+      <div class="mobile-drawer__media">
+        <img
+          src="assets/img/hero/mobile-menu/menu-hero.jpg"
+          alt="Scenic RidgeRelay preview"
+          class="mobile-drawer__hero"
+        />
+        <div class="mobile-drawer__overlay">
+          <p class="mobile-drawer__eyebrow">RidgeRelay</p>
+          <h3 class="mobile-drawer__headline">Find your next hike with a safety layer.</h3>
+        </div>
       </div>
 
       <nav class="mobile-nav" aria-label="Mobile navigation">
-        <a href="#featured" class="mobile-nav__link" data-mobile-link>Featured</a>
-        <a href="#browse" class="mobile-nav__link" data-mobile-link>Browse</a>
-        <a href="#how" class="mobile-nav__link" data-mobile-link>How it works</a>
-        <a href="#plan" class="mobile-nav__link" data-mobile-link>Plan</a>
-        <a href="#community" class="mobile-nav__link" data-mobile-link>Community</a>
-        <a href="#gear" class="mobile-nav__link" data-mobile-link>Gear</a>
-        <a href="#faq" class="mobile-nav__link" data-mobile-link>FAQ</a>
+        <a href="#featured" class="mobile-nav__card mobile-nav__card--image" data-mobile-link>
+          <img src="assets/img/hero/mobile-menu/menu-featured.jpg" alt="Featured trails preview" class="mobile-nav__card-img">
+          <div class="mobile-nav__card-overlay">
+            <span class="mobile-nav__card-title">Featured trails</span>
+            <span class="mobile-nav__card-desc">Popular Washington hikes and scenic routes</span>
+          </div>
+        </a>
 
-        <button class="btn btn--primary mobile-nav__cta" type="button" data-open-disclaimer>
-          Safety Disclaimer
-        </button>
+        <a href="#gear" class="mobile-nav__card mobile-nav__card--image" data-mobile-link>
+          <img src="assets/img/hero/mobile-menu/menu-safety.jpg" alt="Safety essentials preview" class="mobile-nav__card-img">
+          <div class="mobile-nav__card-overlay">
+            <span class="mobile-nav__card-title">Safety essentials</span>
+            <span class="mobile-nav__card-desc">Quick videos for trail prep, gear, and essentials</span>
+          </div>
+        </a>
+
+         <a href="#activities" class="mobile-nav__card mobile-nav__card--image" data-mobile-link>
+          <img src="assets/img/hero/mobile-menu/menu-browse.jpg" alt="Browse activities preview" class="mobile-nav__card-img">
+          <div class="mobile-nav__card-overlay">
+            <span class="mobile-nav__card-title">Browse activities</span>
+            <span class="mobile-nav__card-desc">Filter by hiking, running, backpacking, and more</span>
+          </div>
+        </a>
+
+        <a href="#how" class="mobile-nav__card" data-mobile-link>
+          <span class="mobile-nav__card-title">How it works</span>
+          <span class="mobile-nav__card-desc">See how RidgeRelay supports safer outdoor trips</span>
+        </a>
+
+        <a href="#plan" class="mobile-nav__card" data-mobile-link>
+          <span class="mobile-nav__card-title">Plan a session</span>
+          <span class="mobile-nav__card-desc">Create a simple safety plan before heading out</span>
+        </a>
+
+        <a href="#faq" class="mobile-nav__card" data-mobile-link>
+          <span class="mobile-nav__card-title">FAQ</span>
+          <span class="mobile-nav__card-desc">What this demo is, how it works, and what’s next</span>
+        </a>
+
+        <div class="mobile-nav__actions">
+          <button class="btn btn--primary mobile-nav__cta" type="button" data-open-disclaimer">
+            Safety Disclaimer
+          </button>
+        </div>
       </nav>
+    </div>
+  </div>
+</aside>
 
       <!-- FUTURE HOOKS:
         - Auth: route Log in to a real OAuth flow
@@ -408,8 +449,31 @@
       </div>
 
       <div class="container grid">
-        <div class="trail-grid" aria-live="polite" aria-busy="false" data-trail-grid></div>
-      </div>
+  <div class="trail-row" aria-label="Featured trails carousel">
+    <button class="trail-row__nav trail-row__nav--prev btn btn--ghost icon-btn"
+            type="button" aria-label="Scroll featured trails left"
+            data-trails-prev>
+      <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="1.8"
+              stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <div class="trail-grid trail-strip"
+         aria-live="polite"
+         aria-busy="false"
+         data-trail-grid></div>
+
+    <button class="trail-row__nav trail-row__nav--next btn btn--ghost icon-btn"
+            type="button" aria-label="Scroll featured trails right"
+            data-trails-next>
+      <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8"
+              stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  </div>
+</div>
 
       <div class="container saved" hidden data-saved-panel>
         <div class="saved__head">
@@ -420,115 +484,225 @@
       </div>
     </section>
 
-    <!-- =========================
-         5) How it works
-         ========================= -->
-    <section class="section section--alt" id="how" aria-label="How RidgeRelay works">
-      <div class="container section__head">
-        <h2 class="section__title">How RidgeRelay works</h2>
-        <p class="section__desc">Safety-first flows that stay calm, private, and session-limited.</p>
+<!-- =========================
+     5) Browse by activity
+     ========================= -->
+<section class="section" id="browse" aria-label="Browse by activity">
+  <div class="container section__head">
+    <h2 class="section__title">Browse by activity</h2>
+    <p class="section__desc">Click an activity to filter the Featured trails above.</p>
+  </div>
+
+  <div class="container activity-wrap">
+    <button class="activity-nav btn btn--ghost icon-btn"
+            type="button"
+            aria-label="Scroll activities left"
+            data-activity-prev>
+      <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="1.8"
+              stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <div class="activity-grid" data-activity-cards>
+      <!-- JS populates -->
+    </div>
+
+    <button class="activity-nav btn btn--ghost icon-btn"
+            type="button"
+            aria-label="Scroll activities right"
+            data-activity-next>
+      <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8"
+              stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  </div>
+</section>
+
+ <!-- =========================
+     6) How it works
+     ========================= -->
+<section class="section section--alt" id="how" aria-label="How RidgeRelay works">
+  <div class="container section__head">
+    <h2 class="section__title">How RidgeRelay works</h2>
+    <p class="section__desc">A calm safety flow designed for real outdoor trips.</p>
+  </div>
+
+  <div class="container how">
+
+    <!-- Phone mockup -->
+    <div class="how__phone">
+      <img id="howPhoneImage"
+           src="assets/img/demo/intent.png"
+           alt="RidgeRelay app screen"
+           class="how__img">
+    </div>
+
+    <!-- Steps -->
+    <div class="how__steps">
+
+      <button class="how__step is-active"
+              data-img="assets/img/demo/intent.png"
+              data-title="Declare intent"
+              data-text="Start a safety session with your plan: who, where, and when you'll be back.">
+        <span class="how__num">1</span>
+        <span class="how__label">Declare intent</span>
+      </button>
+
+      <button class="how__step"
+              data-img="assets/img/demo/gaurd-rail.png"
+              data-title="Guardrails"
+              data-text="Set expectations like return windows, check-ins, and low-signal awareness.">
+        <span class="how__num">2</span>
+        <span class="how__label">Guardrails</span>
+      </button>
+
+      <button class="how__step"
+              data-img="assets/img/demo/nudge.png"
+              data-title="Nudges"
+              data-text="Helpful prompts before anything escalates — designed to reduce false alarms.">
+        <span class="how__num">3</span>
+        <span class="how__label">Nudges</span>
+      </button>
+
+      <button class="how__step"
+              data-img="assets/img/demo/escalation.png"
+              data-title="Escalate only if needed"
+              data-text="If the session goes quiet past your rules, RidgeRelay can notify trusted contacts.">
+        <span class="how__num">4</span>
+        <span class="how__label">Escalate only if needed</span>
+      </button>
+
+      <div class="how__desc">
+        <h3 id="howTitle">Declare intent</h3>
+        <p id="howText">
+          Start a safety session with your plan: who, where, and when you'll be back.
+        </p>
       </div>
-
-      <div class="container steps">
-        <article class="step">
-          <h3 class="step__title">1) Declare intent</h3>
-          <p class="step__text">Start a safety session with your plan: who, where, and when you’ll be back.</p>
-        </article>
-
-        <article class="step">
-          <h3 class="step__title">2) Guardrails</h3>
-          <p class="step__text">Set boundaries and expectations (time windows, check-ins, and low-signal awareness).</p>
-        </article>
-
-        <article class="step">
-          <h3 class="step__title">3) Nudges</h3>
-          <p class="step__text">Helpful prompts before anything escalates — designed to reduce false alarms.</p>
-        </article>
-
-        <article class="step">
-          <h3 class="step__title">4) Escalate only if needed</h3>
-          <p class="step__text">If the session goes quiet past your rules, RidgeRelay can notify trusted contacts.</p>
-        </article>
-      </div>
-
-      <!-- FUTURE HOOKS:
+ <!-- FUTURE HOOKS:
         - Replace step copy with content from PROJECT_BRIEF / DIFFERENTIATION.md
         - Add a short timeline animation (respect reduced motion)
         - Add “See the policy” links (Privacy/Terms)
       -->
-    </section>
-
+    </div>
+  </div>
+  </section>
+     
     <!-- =========================
-         6) Browse by activity
-         ========================= -->
-    <section class="section" id="browse" aria-label="Browse by activity">
-      <div class="container section__head">
-        <h2 class="section__title">Browse by activity</h2>
-        <p class="section__desc">Click an activity to filter the Featured trails above.</p>
+     7) Plan a safety session
+     ========================= -->
+<section class="section section--alt" id="plan" aria-label="Plan a safety session">
+  <div class="container section__head">
+    <h2 class="section__title">Plan a safety session</h2>
+    <p class="section__desc">Set your trip details, return expectations, and private contact info.</p>
+  </div>
+
+  <div class="container plan">
+    <form class="card form form--plan" id="plan-form">
+      <div class="form__split">
+        <div class="form__group">
+          <label class="form__label" for="planFirstName">First name</label>
+          <input class="input" id="planFirstName" name="fi-sender-firstName" type="text" placeholder="James" required>
+        </div>
+
+        <div class="form__group">
+          <label class="form__label" for="planLastName">Last name</label>
+          <input class="input" id="planLastName" name="fi-sender-lastName" type="text" placeholder="Daniels" required>
+        </div>
       </div>
 
-      <div class="container activity-grid" data-activity-cards>
-        <!-- JS populates -->
-      </div>
-    </section>
-
-    <!-- =========================
-         7) Plan with friends (demo UI)
-         ========================= -->
-    <section class="section section--alt" id="plan" aria-label="Plan with friends">
-      <div class="container section__head">
-        <h2 class="section__title">Plan with friends</h2>
-        <p class="section__desc">A tiny demo form. Private fields are clearly labeled and not shared publicly.</p>
+      <div class="form__group">
+        <label class="form__label" for="planEmail">Email</label>
+        <input class="input" id="planEmail" name="fi-sender-email" type="email" placeholder="you@example.com" required>
       </div>
 
-      <div class="container plan">
-        <form class="card form" data-plan-form>
-          <fieldset class="form__group">
-            <legend class="form__legend">Trip type</legend>
-            <label class="radio">
-              <input type="radio" name="party" value="solo" checked />
-              <span>Solo</span>
-            </label>
-            <label class="radio">
-              <input type="radio" name="party" value="group" />
-              <span>Group</span>
-            </label>
-            <label class="radio">
-              <input type="checkbox" name="dog" />
-              <span>With dog</span>
-            </label>
-          </fieldset>
+      <fieldset class="form__group">
+        <legend class="form__legend">Trip type</legend>
 
-          <div class="form__group">
-            <label class="form__label" for="contactPrivate">
-              Emergency contact <span class="pill pill--private">PRIVATE</span>
-            </label>
-            <input class="input" id="contactPrivate" type="text" placeholder="Name + phone (demo)" />
-            <p class="form__hint">Not shared publicly — only disclosed during escalation.</p>
-          </div>
+        <div class="plan-choice">
+          <label class="radio radio--card">
+            <input type="radio" name="fi-radio-tripType" value="Solo" checked>
+            <span>Solo</span>
+          </label>
 
-          <div class="form__actions">
-            <button class="btn btn--primary" type="button" data-plan-submit>Save (demo)</button>
-            <button class="btn btn--ghost" type="button" data-open-disclaimer>Safety disclaimer</button>
-          </div>
+          <label class="radio radio--card">
+            <input type="radio" name="fi-radio-tripType" value="Group">
+            <span>Group</span>
+          </label>
 
-          <p class="form__status" role="status" aria-live="polite" data-plan-status></p>
-        </form>
+          <label class="radio radio--card">
+            <input type="checkbox" name="fi-checkbox-features[]" value="With dog">
+            <span>With dog</span>
+          </label>
+        </div>
+      </fieldset>
 
-        <aside class="card plan__copy">
-          <h3 class="card__title">Why this matters</h3>
-          <p class="muted">
-            RidgeRelay is designed to keep your “shareable” experience separate from sensitive details.
-            Your safety session data is scoped to the session and used only when needed.
-          </p>
-        </aside>
+      <div class="form__group">
+        <label class="form__label" for="trailName">Trail / destination</label>
+        <input class="input" id="trailName" name="fi-text-trail" type="text" placeholder="Rattlesnake Ledge" required>
       </div>
-    </section>
+
+      <div class="form__split">
+        <div class="form__group">
+          <label class="form__label" for="startTime">Start time</label>
+          <input class="input" id="startTime" name="fi-text-start-time" type="text" placeholder="Today, 9:45 AM" required>
+        </div>
+
+        <div class="form__group">
+          <label class="form__label" for="returnTime">Expected return</label>
+          <input class="input" id="returnTime" name="fi-text-return-time" type="text" placeholder="Today, 4:30 PM" required>
+        </div>
+      </div>
+
+      <div class="form__split">
+        <div class="form__group">
+          <label class="form__label" for="emergencyName">
+            Emergency contact name <span class="pill pill--private">PRIVATE</span>
+          </label>
+          <input class="input" id="emergencyName" name="fi-text-emergency-name" type="text" placeholder="Kyle Suy" required>
+        </div>
+
+        <div class="form__group">
+          <label class="form__label" for="emergencyPhone">
+            Emergency contact phone <span class="pill pill--private">PRIVATE</span>
+          </label>
+          <input class="input" id="emergencyPhone" name="fi-phone-emergency-contact" type="tel" placeholder="+12065550192" required>
+        </div>
+      </div>
+
+      <div class="form__group">
+        <label class="form__label" for="notesPrivate">
+          Notes for escalation <span class="pill pill--private">PRIVATE</span>
+        </label>
+        <textarea class="input input--textarea" id="notesPrivate" name="fi-text-escalation-notes" placeholder="Vehicle info, parking area, weather concerns, route notes, dog breed, indentifiable clothing, etc." rows="4"></textarea>
+        <p class="form__hint">Private fields are only meant for trusted contact or escalation context.</p>
+      </div>
+
+      <div class="form__actions">
+        <button class="btn btn--primary" type="submit">Start safety session</button>
+        <button class="btn btn--ghost" type="button" data-open-disclaimer>Safety disclaimer</button>
+      </div>
+
+      <p class="form__status" id="plan-form-result" role="status" aria-live="polite"></p>
+    </form>
+
+    <aside class="card plan__copy">
+      <h3 class="card__title">What this sends</h3>
+
+      <div class="plan__mini">
+        <p><strong>Shared in this prototype:</strong><br>Trip type, trail, timing, and session details.</p>
+        <p><strong>Marked private:</strong><br>Emergency contact info and escalation notes.</p>
+        <p><strong>Why this matters:</strong><br>RidgeRelay separates shareable trip context from sensitive contact details.</p>
+      </div>
+    </aside>
+  </div>
+</section>
 
     <!-- =========================
          8) Community gallery demo
          ========================= -->
-    <section class="section" id="community" aria-label="Community gallery">
+    <section class="section" id="community" data-auth-logged-in hidden>
       <div class="container section__head">
         <h2 class="section__title">Share your adventure</h2>
         <p class="section__desc">Demo upload stored locally. Share the moment, not your precise location.</p>
@@ -557,44 +731,198 @@
     </section>
 
     <!-- =========================
-         9) Gear up
-         ========================= -->
-    <section class="section section--alt" id="gear" aria-label="Gear up">
-      <div class="container section__head">
-        <h2 class="section__title">Gear up</h2>
-        <p class="section__desc">Demo product cards — placeholders for later integrations.</p>
-      </div>
+     9) Quick safety guides
+     ========================= -->
+<section class="section section--alt" id="gear" aria-label="Quick safety guides">
+  <div class="container section__head">
+    <h2 class="section__title">Quick safety guides</h2>
+    <p class="section__desc">Short field-ready videos for the basics that matter most.</p>
+  </div>
 
-      <div class="container gear-grid">
-        <article class="card product">
-          <div class="product__img" aria-hidden="true"></div>
-          <h3 class="card__title">Emergency bivy (demo)</h3>
-          <p class="muted">Compact warmth layer for unexpected delays.</p>
-          <button class="btn btn--ghost" type="button">Shop (demo)</button>
-        </article>
+  <div class="container gear-grid">
 
-        <article class="card product">
-          <div class="product__img" aria-hidden="true"></div>
-          <h3 class="card__title">Headlamp + spare battery</h3>
-          <p class="muted">Because “just one more mile” happens.</p>
-          <button class="btn btn--ghost" type="button">Shop (demo)</button>
-        </article>
+    <!-- Emergency bivy -->
+    <article class="card product">
 
-        <article class="card product">
-          <div class="product__img" aria-hidden="true"></div>
-          <h3 class="card__title">Water filter (demo)</h3>
-          <p class="muted">A tiny upgrade with big confidence.</p>
-          <button class="btn btn--ghost" type="button">Shop (demo)</button>
-        </article>
+      <button class="product__media"
+              type="button"
+              data-video-open
+              data-video-src="assets/video/emergency-bivy.mp4"
+              data-video-title="Emergency bivy">
 
-        <article class="card product">
-          <div class="product__img" aria-hidden="true"></div>
-          <h3 class="card__title">Offline map kit (demo)</h3>
-          <p class="muted">Print + backup nav basics.</p>
-          <button class="btn btn--ghost" type="button">Shop (demo)</button>
-        </article>
-      </div>
-    </section>
+        <img class="product__thumb"
+             src="assets/img/video-thumb/emergency-bivy.jpg"
+             alt="Emergency bivy preview">
+
+        <video class="product__preview"
+               muted
+               playsinline
+               preload="metadata"
+               loop>
+          <source src="assets/video/emergency-bivy.mp4" type="video/mp4">
+        </video>
+
+        <span class="product__play" aria-hidden="true">▶</span>
+
+      </button>
+
+      <h3 class="card__title">Emergency bivy</h3>
+      <p class="muted">Compact warmth layer for unexpected delays.</p>
+
+      <button class="btn btn--ghost"
+              type="button"
+              data-video-open
+              data-video-src="assets/video/emergency-bivy.mp4"
+              data-video-title="Emergency bivy">
+        Watch video
+      </button>
+
+    </article>
+
+
+    <!-- Headlamp -->
+<article class="card product">
+
+  <button class="product__media"
+          type="button"
+          data-video-open
+          data-video-src="assets/video/headlamp.mp4"
+          data-video-title="Headlamp + spare battery">
+
+    <img class="product__thumb"
+         src="assets/img/video-thumb/headlamp.jpg"
+         alt="Headlamp preview">
+
+    <video class="product__preview"
+           muted
+           playsinline
+           preload="metadata"
+           loop>
+      <source src="assets/video/headlamp.mp4" type="video/mp4">
+    </video>
+
+    <span class="product__play" aria-hidden="true">▶</span>
+
+  </button>
+
+  <h3 class="card__title">Headlamp + spare battery</h3>
+  <p class="muted">Because “just one more mile” happens.</p>
+
+  <button class="btn btn--ghost"
+          type="button"
+          data-video-open
+          data-video-src="assets/video/headlamp.mp4"
+          data-video-title="Headlamp + spare battery">
+    Watch video
+  </button>
+
+</article>
+
+
+    <!-- Water filter -->
+    <article class="card product">
+
+      <button class="product__media"
+              type="button"
+              data-video-open
+              data-video-src="assets/video/water-filter.mp4"
+              data-video-title="Water filter">
+
+        <img class="product__thumb"
+             src="assets/img/video-thumb/water-filter.jpg"
+             alt="Water filter preview">
+
+        <video class="product__preview"
+               muted
+               playsinline
+               preload="metadata"
+               loop>
+          <source src="assets/video/water-filter.mp4" type="video/mp4">
+        </video>
+
+        <span class="product__play" aria-hidden="true">▶</span>
+
+      </button>
+
+      <h3 class="card__title">Water filter</h3>
+      <p class="muted">A tiny upgrade with big confidence.</p>
+
+      <button class="btn btn--ghost"
+              type="button"
+              data-video-open
+              data-video-src="assets/video/water-filter.mp4"
+              data-video-title="Water filter">
+        Watch video
+      </button>
+
+    </article>
+
+
+    <!-- Offline map kit -->
+<article class="card product">
+
+  <button class="product__media"
+          type="button"
+          data-video-open
+          data-video-src="assets/video/offline-map.mp4"
+          data-video-title="Offline map kit">
+
+    <img class="product__thumb"
+         src="assets/img/video-thumb/offline-map.jpg"
+         alt="Offline map kit preview">
+
+    <video class="product__preview"
+           muted
+           playsinline
+           preload="metadata"
+           loop>
+      <source src="assets/video/offline-map.mp4" type="video/mp4">
+    </video>
+
+    <span class="product__play" aria-hidden="true">▶</span>
+
+  </button>
+
+  <h3 class="card__title">Offline map kit</h3>
+  <p class="muted">Print + backup navigation basics.</p>
+
+  <button class="btn btn--ghost"
+          type="button"
+          data-video-open
+          data-video-src="assets/video/offline-map.mp4"
+          data-video-title="Offline map kit">
+    Watch video
+  </button>
+
+</article>
+
+  </div>
+</section>
+
+<!-- =========================
+     Video modal
+     ========================= -->
+<div class="modal" hidden data-video-modal aria-hidden="true">
+  <div class="modal__backdrop" data-video-close tabindex="-1" aria-hidden="true"></div>
+
+  <div class="modal__panel modal__panel--video" role="dialog" aria-modal="true" aria-label="Video guide">
+    <div class="modal__top">
+      <h2 class="modal__title" data-video-modal-title>Video guide</h2>
+      <button class="icon-btn btn btn--ghost" type="button" data-video-close aria-label="Close video">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="modal__content modal__content--video">
+      <video controls preload="metadata" playsinline data-guide-video>
+        <source src="" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+  </div>
+</div>
 
     <!-- =========================
          FAQ + Privacy anchors
@@ -625,91 +953,214 @@
   </main>
 
   <!-- =========================
-       10) Footer
-       ========================= -->
-  <footer class="footer" aria-label="Footer">
-    <div class="container footer__grid">
-      <div class="footer__brand">
-        <div class="footer__logo" aria-hidden="true">
-          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M4 18V6h7a4 4 0 0 1 0 8H4" />
-            <path d="M11 14l4 4" />
-            <path d="M13 6h3a4 4 0 0 1 0 8h-3" />
-            <path d="M13 14h3" />
-          </svg>
-        </div>
-        <p class="footer__copy">© 2026 RidgeRelay</p>
-        <p class="muted">Prototype UI • Static GitHub Pages • No live services</p>
+     Trail detail drawer
+     ========================= -->
+<div class="drawer" hidden data-drawer aria-hidden="true">
+  <div class="drawer__backdrop" data-drawer-close tabindex="-1" aria-hidden="true"></div>
+
+  <div class="drawer__panel" role="dialog" aria-modal="true" aria-label="Trail details">
+    <div class="drawer__top">
+      <div>
+        <h2 class="drawer__title" data-drawer-title>Trail</h2>
+        <p class="drawer__meta" data-drawer-meta></p>
       </div>
 
-      <div class="footer__col">
-        <h3 class="footer__title">Subscribe (demo)</h3>
-        <form class="subscribe" data-subscribe-form>
-          <label class="sr-only" for="subEmail">Email</label>
-          <input id="subEmail" class="input" type="email" placeholder="you@example.com" />
-          <button class="btn btn--primary" type="submit">Join</button>
-        </form>
+      <button class="icon-btn btn btn--ghost" type="button" data-drawer-close aria-label="Close trail details">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
 
-        <div class="store-badges" aria-label="Store badges (placeholders)">
-          <button class="badge" type="button" aria-label="App Store (placeholder)">App Store</button>
-          <button class="badge" type="button" aria-label="Google Play (placeholder)">Google Play</button>
-        </div>
+    <div class="drawer__content">
+      <section class="card weather" id="weather" aria-label="Trail conditions preview">
+        <h3 class="card__title">Trail conditions preview</h3>
+        <p class="muted">Mock forecast for this selected trail.</p>
+        <div class="weather__grid" data-weather-grid></div>
+        <p class="weather__hint" data-weather-hint></p>
+      </section>
+
+      <section class="card route-preview" aria-label="Route preview">
+        <h3 class="card__title">Route preview</h3>
+        <p class="muted">Demo trail line for the selected route.</p>
+        <div id="trailRouteMap" class="route-map"></div>
+      </section>
+
+      <div class="photo-strip" aria-label="Trail photos" data-photo-strip></div>
+
+      <div class="drawer__actions">
+        <button class="btn btn--primary" type="button" data-plan-session>Plan a Safety Session</button>
+
+        <button class="btn btn--ghost" type="button" data-drawer-heart>
+          <span class="btn__icon" aria-hidden="true">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 21s-7-4.4-9.5-8.2C.7 9.7 2.4 6.5 6 6.1c1.8-.2 3.1.7 4 1.8.9-1.1 2.2-2 4-1.8 3.6.4 5.3 3.6 3.5 6.7C19 16.6 12 21 12 21z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          Add to Wishlist
+        </button>
       </div>
 
-      <div class="footer__col">
-        <h3 class="footer__title">Links</h3>
-        <ul class="footer__links">
-          <li><a href="#top">About</a></li>
-          <li><a href="#demo">Demo</a></li>
-          <li><a href="#privacy">Privacy</a></li>
-          <li><a href="#faq">Terms</a></li>
-          <li><a href="#faq">FAQ</a></li>
-          <li><a href="#faq">Accessibility</a></li>
-        </ul>
-      </div>
+    </div>
+  </div>
+</div>
 
-      <div class="footer__col">
-        <h3 class="footer__title">Social</h3>
-        <div class="social" aria-label="Social links (placeholders)">
-          <!-- Instagram -->
-          <a class="social__btn" href="#" aria-label="Instagram (placeholder)">
-            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4z" fill="none" stroke="currentColor" stroke-width="1.8"/>
-              <path d="M12 17a5 5 0 1 0-5-5 5 5 0 0 0 5 5z" fill="none" stroke="currentColor" stroke-width="1.8"/>
-              <path d="M17.5 6.5h.01" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/>
-            </svg>
-          </a>
-          <!-- X -->
-          <a class="social__btn" href="#" aria-label="X (placeholder)">
-            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M5 19L19 5M7 5h5l5 14h-5L7 5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </a>
-          <!-- TikTok -->
-          <a class="social__btn" href="#" aria-label="TikTok (placeholder)">
-            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M14 5v10a4 4 0 1 1-4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M14 5c1.2 2.5 3 4 5 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-            </svg>
-          </a>
-          <!-- Pinterest -->
-          <a class="social__btn" href="#" aria-label="Pinterest (placeholder)">
-            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M12 21a9 9 0 1 1 0-18 9 9 0 0 1 0 18z" fill="none" stroke="currentColor" stroke-width="1.8"/>
-              <path d="M10.5 18l1.3-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-              <path d="M9 10.8c0-2 1.5-3.8 4.1-3.8 2.1 0 3.3 1.2 3.3 2.8 0 2.1-1.2 3.6-3 3.6-1 0-1.8-.6-1.6-1.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </a>
-          <!-- Facebook -->
-          <a class="social__btn" href="#" aria-label="Facebook (placeholder)">
-            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M14 8h2V5h-2a4 4 0 0 0-4 4v3H8v3h2v6h3v-6h2.2l.8-3H13V9a1 1 0 0 1 1-1z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
-            </svg>
-          </a>
-        </div>
+<!-- =========================
+     10) Footer
+     ========================= -->
+<footer class="footer" aria-label="Footer">
+
+  <!-- Main footer content -->
+  <div class="container footer__grid">
+
+    <div class="footer__brand">
+      <img src="assets/img/brand/rr-logo.png" alt="RidgeRelay" class="footer__wordmark">
+      <p class="muted">Prototype UI • No live services</p>
+    </div>
+
+    <div class="footer__col">
+      <h3 class="footer__title">Subscribe (demo)</h3>
+
+      <form class="subscribe" data-subscribe-form>
+        <input id="subEmail" class="input" type="email" placeholder="you@example.com" />
+        <button class="btn btn--primary" type="submit">Join</button>
+      </form>
+
+      <div class="store-badges">
+        <button class="badge">App Store</button>
+        <button class="badge">Google Play</button>
       </div>
     </div>
-  </footer>
+
+    <div class="footer__col">
+      <h3 class="footer__title">Links</h3>
+      <ul class="footer__links">
+        <li><a href="#top">About</a></li>
+        <li><a href="#demo">Demo</a></li>
+        <li><a href="#privacy">Privacy</a></li>
+        <li><a href="#faq">Terms</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#faq">Accessibility</a></li>
+      </ul>
+    </div>
+
+    <div class="footer__col">
+      <h3 class="footer__title">Social</h3>
+
+      <div class="social">
+
+        <a class="social__btn" href="#" aria-label="Instagram">
+          <svg class="icon" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.8"/>
+            <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/>
+            <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/>
+          </svg>
+        </a>
+
+        <a class="social__btn" href="#" aria-label="X">
+          <svg class="icon" viewBox="0 0 24 24">
+            <path d="M4 4l16 16M20 4L4 20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </a>
+
+        <a class="social__btn" href="#" aria-label="TikTok">
+          <svg class="icon" viewBox="0 0 24 24">
+            <path d="M14 3v10.5a3.5 3.5 0 1 1-3-3.45" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M14 3c1.5 2 3.2 3 5 3" fill="none" stroke="currentColor" stroke-width="1.8"/>
+          </svg>
+        </a>
+
+        <a class="social__btn" href="#" aria-label="Pinterest">
+          <svg class="icon" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M12 8a3 3 0 0 1 2.5 4.5c-.4.7-1 1.1-1.8 1.1-.6 0-1.1-.3-1.3-.8" fill="none" stroke="currentColor" stroke-width="1.8"/>
+          </svg>
+        </a>
+
+        <a class="social__btn" href="#" aria-label="Facebook">
+          <svg class="icon" viewBox="0 0 24 24">
+            <path d="M14 9h3V6h-3c-2 0-3 1-3 3v2H9v3h2v7h3v-7h2l1-3h-3V9c0-.6.4-1 1-1z" fill="currentColor"/>
+          </svg>
+        </a>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom legal bar -->
+  <div class="footer__bottom">
+    <div class="container footer__bottom-inner">
+
+      <p class="footer__legal">
+        © 2026 RidgeRelay • Explore with confidence
+      </p>
+
+      <div class="footer__policies">
+        <a href="#privacy">Privacy</a>
+        <span>•</span>
+        <a href="#terms">Terms</a>
+        <span>•</span>
+        <a href="#cookies">Cookies</a>
+      </div>
+
+    </div>
+  </div>
+
+</footer>
+
+  <!-- =========================
+     Auth modal
+     ========================= -->
+<div class="modal" hidden data-auth-modal aria-hidden="true">
+  <div class="modal__backdrop" data-auth-close tabindex="-1" aria-hidden="true"></div>
+
+  <div class="modal__panel" role="dialog" aria-modal="true" aria-label="Account">
+    <div class="modal__top">
+      <h2 class="modal__title" data-auth-title>Log in</h2>
+      <button class="icon-btn btn btn--ghost" type="button" data-auth-close aria-label="Close account modal">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="modal__content">
+      <form id="auth-form" class="form">
+        <div class="form__split" data-auth-name-row hidden>
+          <div class="form__group">
+            <label class="form__label" for="authFirstName">First name</label>
+            <input class="input" id="authFirstName" type="text" />
+          </div>
+
+          <div class="form__group">
+            <label class="form__label" for="authLastName">Last name</label>
+            <input class="input" id="authLastName" type="text" />
+          </div>
+        </div>
+
+        <div class="form__group">
+          <label class="form__label" for="authEmail">Email</label>
+          <input class="input" id="authEmail" type="email" required />
+        </div>
+
+        <div class="form__group">
+          <label class="form__label" for="authPassword">Password</label>
+          <input class="input" id="authPassword" type="password" required />
+        </div>
+
+        <p class="form__hint">Prototype only — account data stays in this browser.</p>
+
+        <div class="form__actions">
+          <button class="btn btn--primary" type="submit" data-auth-submit>Log in</button>
+          <button class="btn btn--ghost" type="button" data-auth-switch>Need an account?</button>
+        </div>
+
+        <p class="form__status" id="auth-status" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </div>
+</div>
 
   <!-- =========================
        Safety Disclaimer modal
@@ -745,53 +1196,59 @@
   </div>
 
   <!-- =========================
-       Trail detail drawer/modal
-       ========================= -->
-  <div class="drawer" hidden data-drawer aria-hidden="true">
-    <div class="drawer__backdrop" data-drawer-close tabindex="-1" aria-hidden="true"></div>
-    <div class="drawer__panel" role="dialog" aria-modal="true" aria-label="Trail details">
-      <div class="drawer__top">
-        <div>
-          <h2 class="drawer__title" data-drawer-title>Trail</h2>
-          <p class="drawer__meta" data-drawer-meta></p>
-        </div>
-        <button class="icon-btn btn btn--ghost" type="button" data-drawer-close aria-label="Close trail details">
-          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-          </svg>
+     Trail detail drawer
+     ========================= -->
+<div class="drawer" hidden data-drawer aria-hidden="true">
+  <div class="drawer__backdrop" data-drawer-close tabindex="-1" aria-hidden="true"></div>
+
+  <div class="drawer__panel" role="dialog" aria-modal="true" aria-label="Trail details">
+    <div class="drawer__top">
+      <div>
+        <h2 class="drawer__title" data-drawer-title>Trail</h2>
+        <p class="drawer__meta" data-drawer-meta></p>
+      </div>
+
+      <button class="icon-btn btn btn--ghost" type="button" data-drawer-close aria-label="Close trail details">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="drawer__content">
+      <div class="photo-strip" aria-label="Trail photos (placeholders)" data-photo-strip></div>
+
+      <div class="drawer__actions">
+        <button class="btn btn--primary" type="button" data-plan-session>Plan a Safety Session</button>
+
+        <button class="btn btn--ghost" type="button" data-drawer-heart>
+          <span class="btn__icon" aria-hidden="true">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 21s-7-4.4-9.5-8.2C.7 9.7 2.4 6.5 6 6.1c1.8-.2 3.1.7 4 1.8.9-1.1 2.2-2 4-1.8 3.6.4 5.3 3.6 3.5 6.7C19 16.6 12 21 12 21z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          Add to Wishlist
         </button>
       </div>
 
-      <div class="drawer__content">
-        <div class="photo-strip" aria-label="Trail photos (placeholders)" data-photo-strip></div>
+      <section class="card weather" id="weather" aria-label="Trail conditions preview">
+        <h3 class="card__title">Trail conditions preview</h3>
+        <p class="muted">Mock forecast for this selected trail.</p>
 
-        <div class="drawer__actions">
-          <button class="btn btn--primary" type="button" data-plan-session>Plan a Safety Session</button>
-          <button class="btn btn--ghost" type="button" data-drawer-heart>
-            <span class="btn__icon" aria-hidden="true">
-              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M12 21s-7-4.4-9.5-8.2C.7 9.7 2.4 6.5 6 6.1c1.8-.2 3.1.7 4 1.8.9-1.1 2.2-2 4-1.8 3.6.4 5.3 3.6 3.5 6.7C19 16.6 12 21 12 21z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
-              </svg>
-            </span>
-            Add to Wishlist
-          </button>
-        </div>
-
-        <section class="card weather" id="weather" aria-label="Weather demo panel">
-          <h3 class="card__title">Weather (demo)</h3>
-          <p class="muted">Mock forecast loaded from <code>assets/data/weather_demo.json</code>.</p>
-          <div class="weather__grid" data-weather-grid></div>
-          <p class="weather__hint" data-weather-hint></p>
-        </section>
-      </div>
+        <div class="weather__grid" data-weather-grid></div>
+        <p class="weather__hint" data-weather-hint></p>
+      </section>
     </div>
   </div>
+</div>
 
   <!-- =========================
        Dev overlay (never intercept clicks)
        ========================= -->
   <div class="dev-grid" hidden data-dev-grid aria-hidden="true"></div>
 
-  <script src="js/main.js" defer></script>
+<script src="https://forminit.com/sdk/v1/forminit.js"></script>
+<script src="js/main.js" defer></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </body>
 </html>

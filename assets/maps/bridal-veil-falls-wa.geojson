@@ -1,0 +1,21 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Bridal Veil Falls Demo Route"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-121.5498, 47.8032],
+          [-121.5496, 47.8038],
+          [-121.5494, 47.8044],
+          [-121.5492, 47.8050],
+          [-121.5490, 47.8055]
+        ]
+      }
+    }
+  ]
+}
