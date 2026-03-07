@@ -16,7 +16,7 @@ Progressive escalation
 can improve safety awareness for hikers, runners, and solo adventurers — without relying on constant connectivity.
 
 🔗 Live Demo
-https://jamdanie.github.io/230CRIDGERELAY/
+https://jamdanie.github.io/RidgeRelayProject
 
 Why RidgeRelay Exists
 
