@@ -331,9 +331,10 @@ syncBannerHeightVar();
       });
     }
 
-    function startAuto() {
-      if (prefersReducedMotion.matches) return; // Respect reduced motion: no auto rotation
+      function startAuto() {
       stopAuto();
+      if (slides.length < 2) return;
+      if (document.hidden) return;
       timer = window.setInterval(() => setActive(index + 1), intervalMs);
     }
 
@@ -356,11 +357,13 @@ syncBannerHeightVar();
     setActive(0);
     startAuto();
 
-    // If user toggles reduced motion while open
-    prefersReducedMotion.addEventListener?.("change", () => {
-      if (prefersReducedMotion.matches) stopAuto();
+       document.addEventListener("visibilitychange", () => {
+      if (document.hidden) stopAuto();
       else startAuto();
     });
+
+    window.addEventListener("focus", startAuto);
+    window.addEventListener("blur", stopAuto);
   }
 
   // ---------------------------
