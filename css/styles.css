@@ -196,14 +196,18 @@ code{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liber
   border-bottom: 1px solid var(--stroke);
   /* backdrop-filter: blur(10px); */
 }
+
+/* keep header items on one line */
 .header__inner{
   display:flex;
   align-items:center;
   justify-content: space-between;
-  gap: 14px;
+  gap: 18px;
   padding: 14px 0;
   transition: padding 160ms var(--ease), box-shadow 160ms var(--ease);
+  flex-wrap: nowrap;
 }
+
 .site-header.is-condensed .header__inner{
   padding: 8px 0;
 }
@@ -236,17 +240,6 @@ code{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liber
   font-size: 13px;
   line-height: 1;
   opacity: .95;
-}
-
-/* keep header items on one line */
-.header__inner{
-  display:flex;
-  align-items:center;
-  justify-content: space-between;
-  gap: 18px;
-  padding: 14px 0;
-  transition: padding 160ms var(--ease), box-shadow 160ms var(--ease);
-  flex-wrap: nowrap;
 }
 
 .brand{
@@ -320,8 +313,6 @@ code{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liber
   color: var(--text);
   text-decoration:none;
 }
-
-.header__actions{ display:flex; align-items:center; gap: 10px; }
 
 /* Mega menus */
 .mega{
@@ -1062,55 +1053,6 @@ code{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liber
   color:var(--muted);
 }
 
-/* ====== Activity cards ====== 
-.activity-grid{
-  display:grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-@media (min-width: 900px){
-  .activity-grid{ grid-template-columns: repeat(6, 1fr); }
-}
-
-.activity{
-  text-align:center;
-  padding: 14px 12px;
-  border-radius: 999px;
-  border: 1px solid var(--stroke);
-  background: color-mix(in oklab, var(--surface), white 4%);
-  cursor:pointer;
-  font-weight: 850;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-}
-
-.activity__icon .icon{
-  width: 22px;
-  height: 22px;
-  display: block;
-  stroke: currentColor; 
-}
-
-.activity__icon .icon{
-  width: 22px;
-  height: 22px;
-  display: block;
-}
-.activity__label{
-  line-height: 1;
-}
-
-.activity:hover{ background: color-mix(in oklab, var(--surface), white 8%); }
-
-.activity[aria-pressed="true"]{
-  background: var(--accent);
-  color: var(--accent-ink);
-  border-color: color-mix(in oklab, var(--accent), black 20%);
-}
-*/
-
 /* ====== Browse by activity: arrows + strip layout ====== */
 .activity-wrap{
   display: grid;
@@ -1395,21 +1337,6 @@ code{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liber
     color-mix(in oklab, var(--surface-2), black 10%);
 }
 
-.product__play{
-  position:absolute;
-  inset:auto auto 12px 12px;
-  width: 42px;
-  height: 42px;
-  border-radius: 999px;
-  display:grid;
-  place-items:center;
-  border: 1px solid var(--stroke);
-  background: rgba(0,0,0,.45);
-  backdrop-filter: blur(6px);
-  font-size: 16px;
-  line-height: 1;
-}
-
 .modal__panel--video{
   width: min(900px, calc(100% - 24px));
   max-height: calc(100vh - 40px);
@@ -1640,6 +1567,7 @@ code{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liber
   gap: 12px;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
+  align-items: stretch;
 }
 
 .drawer__hero-image{
