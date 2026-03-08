@@ -1,5 +1,5 @@
 ![RidgeRelay Demo](assets/img/demo/intent.png)
-Prototype Scope (What This Demo Includes)
+Prototype Scope (What This Demo Includes) Demo site: https://jamdanie.github.io/RidgeRelayProject/
 
 This repository demonstrates a frontend-only prototype of the RidgeRelay concept.
 It focuses on user interface design and interaction patterns, rather than full system functionality.
