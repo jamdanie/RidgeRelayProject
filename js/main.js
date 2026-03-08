@@ -953,18 +953,42 @@ async function renderTrailRouteMap(trail) {
     $("[data-drawer-meta]")?.replaceChildren(document.createTextNode(`${trail.location} • ${formatMeta(trail)}`));
 
 const strip = $("[data-photo-strip]");
-if (strip) {
+const activePhoto = $("[data-photo-active]");
+
+if (strip && activePhoto) {
   strip.innerHTML = "";
 
   const photos = trail.photos ?? [trail.img];
 
+  activePhoto.src = photos[0];
+  activePhoto.alt = `${trail.name} photo 1`;
+
   photos.forEach((src, i) => {
+    const thumbBtn = document.createElement("button");
+    thumbBtn.type = "button";
+    thumbBtn.className = "photo-thumb";
+    thumbBtn.setAttribute("aria-label", `View ${trail.name} photo ${i + 1}`);
+    thumbBtn.setAttribute("aria-pressed", String(i === 0));
+
     const img = document.createElement("img");
     img.src = src;
-    img.alt = `${trail.name} photo ${i+1}`;
+    img.alt = `${trail.name} photo ${i + 1}`;
     img.loading = "lazy";
     img.className = "photo";
-    strip.appendChild(img);
+
+    thumbBtn.appendChild(img);
+
+    thumbBtn.addEventListener("click", () => {
+      activePhoto.src = src;
+      activePhoto.alt = `${trail.name} photo ${i + 1}`;
+
+      $$("[data-photo-strip] .photo-thumb").forEach(btn => {
+        btn.setAttribute("aria-pressed", "false");
+      });
+      thumbBtn.setAttribute("aria-pressed", "true");
+    });
+
+    strip.appendChild(thumbBtn);
   });
 }
 
@@ -987,15 +1011,29 @@ if (strip) {
 } else {
   if (weatherGrid) weatherGrid.innerHTML = "";
 
-  demo.forecast.slice(0, 4).forEach(day => {
-    const row = document.createElement("div");
-    row.className = "weather-row";
-    row.innerHTML = `
-      <span>${escapeHtml(day.day)} • ${escapeHtml(day.summary)}</span>
-      <span class="muted">${day.high_f}° / ${day.low_f}° • ${day.precip_chance}%</span>
-    `;
-    weatherGrid?.appendChild(row);
-  });
+  demo.forecast.slice(0, 7).forEach(day => {
+  const card = document.createElement("div");
+  card.className = "weather-day";
+
+  card.innerHTML = `
+    <div class="weather-day__top">
+      <span class="weather-day__name">${escapeHtml(day.day)}</span>
+      <span class="weather-day__summary">${escapeHtml(day.summary)}</span>
+    </div>
+
+    <div class="weather-day__temps">
+      <span class="weather-day__high">${day.high_f}°</span>
+      <span class="weather-day__low">${day.low_f}°</span>
+    </div>
+
+    <div class="weather-day__meta">
+      <span>Rain ${day.precip_chance}%</span>
+      <span>Wind ${day.wind_mph} mph</span>
+    </div>
+  `;
+
+  weatherGrid?.appendChild(card);
+});
 
   if (weatherHint) {
     weatherHint.textContent = riskHintFromForecast(demo.forecast, trail);
@@ -1013,17 +1051,15 @@ function updateDrawerHeart() {
   if (!btn || !state.drawerTrailId) return;
 
   const isSaved = state.saved.has(state.drawerTrailId);
+
   btn.setAttribute("aria-pressed", String(isSaved));
-  btn.querySelector(".btn__icon")?.setAttribute("aria-hidden", "true");
 
-  const textNode = Array.from(btn.childNodes).find(
-    node => node.nodeType === Node.TEXT_NODE
-  );
+  /* toggle visual state */
+  btn.classList.toggle("is-saved", isSaved);
 
-  if (textNode) {
-    textNode.textContent = isSaved ? " Saved" : " Add to Wishlist";
-  } else {
-    btn.append(document.createTextNode(isSaved ? " Saved" : " Add to Wishlist"));
+  const text = btn.querySelector(".wishlist-text");
+  if (text) {
+    text.textContent = isSaved ? "Saved" : "Add to Wishlist";
   }
 }
 
@@ -1206,6 +1242,7 @@ function boot() {
   setupSearch();
   setupActivities();
   setupActivityStripScroll();
+  setupWeatherStripScroll();
   setupActivityRowCarousel();
   setupSavedPanel();
   setupDrawer();
@@ -1216,6 +1253,7 @@ function boot() {
   setupGallery();
   setupSubscribe();
   setupDevTools();
+  setupPrecisionDevOverlay();
   setupVideoGuides();
   setupWeatherDemoShortcut();
 
@@ -1258,6 +1296,21 @@ function setupActivityStripScroll() {
   }, { passive: false });
 }
 
+function setupWeatherStripScroll() {
+  document.addEventListener("wheel", (e) => {
+    const strip = e.target.closest(".weather__grid");
+    if (!strip) return;
+
+    if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
+
+    const canScroll = strip.scrollWidth > strip.clientWidth;
+    if (!canScroll) return;
+
+    e.preventDefault();
+    strip.scrollLeft += e.deltaY;
+  }, { passive: false });
+}
+
 function setupActivityRowCarousel() {
   const strip = document.querySelector("[data-activity-cards]");
   const prev = document.querySelector("[data-activity-prev]");
@@ -1278,6 +1331,41 @@ function setupActivityRowCarousel() {
 
   next.addEventListener("click", () => {
     strip.scrollBy({ left: step() * 2, behavior: "smooth" });
+  });
+}
+
+function setupPrecisionDevOverlay() {
+  if (document.body.dataset.page !== "template") return;
+
+  const overlay = document.querySelector("[data-dev-grid]");
+  const coords = document.querySelector("[data-dev-coords]");
+  if (!overlay) return;
+
+  let enabled = false;
+
+  function getBreakpointLabel() {
+    const w = window.innerWidth;
+    if (w < 700) return "mobile";
+    if (w < 900) return "tablet";
+    return "desktop";
+  }
+
+  function setOverlay(state) {
+    enabled = state;
+    overlay.hidden = !state;
+    document.body.classList.toggle("dev-mode", state);
+  }
+
+  document.addEventListener("keydown", (e) => {
+    if (e.ctrlKey && e.key.toLowerCase() === "e") {
+      e.preventDefault();
+      setOverlay(!enabled);
+    }
+  });
+
+  document.addEventListener("mousemove", (e) => {
+    if (!enabled || !coords) return;
+    coords.textContent = `${e.clientX}, ${e.clientY} • ${window.innerWidth}×${window.innerHeight} • ${getBreakpointLabel()}`;
   });
 }
 

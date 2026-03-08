@@ -444,8 +444,11 @@
             <span class="btn__icon" aria-hidden="true">
               <!-- heart -->
               <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M12 21s-7-4.4-9.5-8.2C.7 9.7 2.4 6.5 6 6.1c1.8-.2 3.1.7 4 1.8.9-1.1 2.2-2 4-1.8 3.6.4 5.3 3.6 3.5 6.7C19 16.6 12 21 12 21z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
-              </svg>
+                <path d="M12 21s-7-4.4-9.5-8.2C.7 9.7 2.4 6.5 6 6.1c1.8-.2 3.1.7 4 1.8.9-1.1 2.2-2 4-1.8 3.6.4 5.3 3.6 3.5 6.7C19 16.6 12 21 12 21z"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linejoin="round"/>
+                </svg>
             </span>
             Saved
           </button>
@@ -996,21 +999,30 @@
         <div id="trailRouteMap" class="route-map"></div>
       </section>
 
-      <div class="photo-strip" aria-label="Trail photos" data-photo-strip></div>
+      <section class="card trail-gallery" aria-label="Trail photos">
+  <h3 class="card__title">Hike photos</h3>
+  <p class="muted">Tap a thumbnail to preview a larger trail image.</p>
+
+  <div class="trail-gallery__featured">
+    <img src="" alt="" class="trail-gallery__active-img" data-photo-active>
+  </div>
+
+  <div class="photo-strip" aria-label="Trail photos" data-photo-strip></div>
+</section>
 
       <div class="drawer__actions">
         <button class="btn btn--primary" type="button" data-plan-session>Plan a Safety Session</button>
 
         <button class="btn btn--ghost" type="button" data-drawer-heart>
-          <span class="btn__icon" aria-hidden="true">
-            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M12 21s-7-4.4-9.5-8.2C.7 9.7 2.4 6.5 6 6.1c1.8-.2 3.1.7 4 1.8.9-1.1 2.2-2 4-1.8 3.6.4 5.3 3.6 3.5 6.7C19 16.6 12 21 12 21z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
-            </svg>
-          </span>
-          Add to Wishlist
-        </button>
-      </div>
+  <span class="btn__icon" aria-hidden="true">
+    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M12 21s-7-4.4-9.5-8.2C.7 9.7 2.4 6.5 6 6.1c1.8-.2 3.1.7 4 1.8.9-1.1 2.2-2 4-1.8 3.6.4 5.3 3.6 3.5 6.7C19 16.6 12 21 12 21z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+    </svg>
+  </span>
+  <span class="wishlist-text">Add to Wishlist</span>
+</button>
 
+      </div>
     </div>
   </div>
 </div>

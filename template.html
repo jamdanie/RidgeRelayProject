@@ -1,0 +1,516 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!--
+    RidgeRelay — Static GitHub Pages friendly
+    - No build step
+    - Accessible, mobile-first
+  -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="color-scheme" content="dark light" />
+
+  <title>PAGE TITLE — RidgeRelay</title>
+  <meta name="description" content="PAGE DESCRIPTION HERE." />
+
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+  <link rel="icon" href="favicon/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="favicon/favicon.svg">
+  <link rel="icon" type="image/png" sizes="96x96" href="favicon/favicon-96x96.png">
+  <link rel="apple-touch-icon" href="favicon/apple-touch-icon.png">
+  <link rel="manifest" href="favicon/site.webmanifest">
+
+  <meta name="theme-color" content="#0b0c0f">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+</head>
+
+<body data-page="template">
+  <!-- =========================
+       Sticky prototype banner
+       ========================= -->
+  <div class="proto-banner" role="region" aria-label="Prototype banner">
+    <div class="container proto-banner__inner">
+      <p class="proto-banner__marquee" aria-label="Prototype disclaimer">
+        <span class="proto-banner__rail" aria-hidden="true">
+          <span class="proto-banner__track">
+            Prototype: concept demo (no live tracking, no real GPS, no dispatch). &nbsp;•&nbsp;
+            Prototype: concept demo (no live tracking, no real GPS, no dispatch). &nbsp;•&nbsp;
+          </span>
+          <span class="proto-banner__track">
+            Prototype: concept demo (no live tracking, no real GPS, no dispatch). &nbsp;•&nbsp;
+            Prototype: concept demo (no live tracking, no real GPS, no dispatch). &nbsp;•&nbsp;
+          </span>
+        </span>
+
+        <span class="sr-only">
+          Prototype: concept demo (no live tracking, no real GPS, no dispatch).
+        </span>
+      </p>
+
+      <button class="linklike proto-banner__link" type="button" data-open-disclaimer>
+        Learn more
+        <span class="sr-only">about the safety disclaimer</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- =========================
+       Header
+       ========================= -->
+  <header class="site-header" data-header>
+    <div class="container header__inner">
+
+      <a class="brand brand--wordmark" href="index.html#top" aria-label="RidgeRelay home">
+        <img class="brand__wordmark" src="assets/img/brand/rr-logo.png" alt="RidgeRelay">
+      </a>
+
+      <!-- Desktop nav -->
+      <nav class="nav nav--desktop" aria-label="Primary navigation">
+        <div class="nav__group">
+          <button class="nav__trigger" type="button"
+            aria-expanded="false"
+            aria-controls="menu-explore"
+            data-mega-trigger="explore">
+            Explore
+            <svg class="icon icon--chev" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+
+          <div class="mega" id="menu-explore" role="region" aria-label="Explore menu" data-mega="explore">
+            <div class="mega__panel">
+              <p class="mega__title">Explore</p>
+              <div class="mega__cards">
+                <a class="mega-card" href="index.html#demo">
+                  <span class="mega-card__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" class="icon" aria-hidden="true">
+                      <path d="M3 19l7-12 4 7 2-3 5 8H3z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </span>
+                  <span class="mega-card__text">
+                    <span class="mega-card__label">Featured</span>
+                    <span class="mega-card__desc">Popular WA trails + demos</span>
+                  </span>
+                </a>
+
+                <a class="mega-card" href="index.html#browse">
+                  <span class="mega-card__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" class="icon" aria-hidden="true">
+                      <path d="M12 21a9 9 0 1 1 0-18 9 9 0 0 1 0 18z" fill="none" stroke="currentColor" stroke-width="1.8"/>
+                      <path d="M14.5 9.5l-1.8 5.2-5.2 1.8 1.8-5.2 5.2-1.8z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                    </svg>
+                  </span>
+                  <span class="mega-card__text">
+                    <span class="mega-card__label">Browse</span>
+                    <span class="mega-card__desc">Filter by activity</span>
+                  </span>
+                </a>
+
+                <a class="mega-card" href="index.html#gear">
+                  <span class="mega-card__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" class="icon" aria-hidden="true">
+                      <path d="M8 7a4 4 0 0 1 8 0" fill="none" stroke="currentColor" stroke-width="1.8"/>
+                      <path d="M7 8h10a2 2 0 0 1 2 2v10H5V10a2 2 0 0 1 2-2z" fill="none" stroke="currentColor" stroke-width="1.8"/>
+                      <path d="M9 12h6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                    </svg>
+                  </span>
+                  <span class="mega-card__text">
+                    <span class="mega-card__label">Quick Safety</span>
+                    <span class="mega-card__desc">Short field-ready videos</span>
+                  </span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="nav__group">
+          <button class="nav__trigger" type="button"
+            aria-expanded="false"
+            aria-controls="menu-app"
+            data-mega-trigger="app">
+            The App
+            <svg class="icon icon--chev" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+
+          <div class="mega" id="menu-app" role="region" aria-label="The App menu" data-mega="app">
+            <div class="mega__panel">
+              <p class="mega__title">The App</p>
+              <div class="mega__cards">
+                <a class="mega-card" href="index.html#how">
+                  <span class="mega-card__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" class="icon" aria-hidden="true">
+                      <path d="M9 6h12M9 12h12M9 18h12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                      <path d="M3 6l1.5 1.5L7 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M3 12l1.5 1.5L7 11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M3 18l1.5 1.5L7 17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </span>
+                  <span class="mega-card__text">
+                    <span class="mega-card__label">Plan</span>
+                    <span class="mega-card__desc">Intent-based safety session</span>
+                  </span>
+                </a>
+
+                <a class="mega-card" href="index.html#plan">
+                  <span class="mega-card__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" class="icon" aria-hidden="true">
+                      <path d="M12 3l8 4v6c0 5-3.5 8.5-8 8.5S4 18 4 13V7l8-4z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                      <path d="M9 12l2 2 4-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </span>
+                  <span class="mega-card__text">
+                    <span class="mega-card__label">Safety Profile</span>
+                    <span class="mega-card__desc">Private escalation details</span>
+                  </span>
+                </a>
+
+                <a class="mega-card" href="index.html#faq">
+                  <span class="mega-card__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" class="icon" aria-hidden="true">
+                      <path d="M12 21a9 9 0 1 1 0-18 9 9 0 0 1 0 18z" fill="none" stroke="currentColor" stroke-width="1.8"/>
+                      <path d="M9.5 9a2.5 2.5 0 1 1 3.3 2.3c-.9.3-1.3.8-1.3 1.7v.7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                      <path d="M12 17h.01" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+                    </svg>
+                  </span>
+                  <span class="mega-card__text">
+                    <span class="mega-card__label">FAQ</span>
+                    <span class="mega-card__desc">What this demo is / isn’t</span>
+                  </span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <a class="nav__link" href="index.html#privacy">Privacy</a>
+        <a class="nav__link" href="about.html">About</a>
+        <a class="nav__link" href="safety.html">Safety</a>
+      </nav>
+
+      <div class="header__actions">
+        <div class="auth auth--logged-out" data-auth-logged-out>
+          <button class="btn btn--ghost" type="button" data-open-login>Log in</button>
+          <button class="btn btn--primary" type="button" data-open-signup>Create account</button>
+        </div>
+
+        <div class="auth auth--logged-in" data-auth-logged-in hidden>
+          <span class="auth__welcome" data-auth-welcome>Welcome</span>
+          <button class="btn btn--ghost" type="button" data-logout>Log out</button>
+        </div>
+
+        <button class="btn btn--ghost icon-btn nav-toggle" type="button"
+          aria-label="Open menu"
+          aria-controls="mobileNav"
+          aria-expanded="false"
+          data-mobile-open>
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M5 7h14M5 12h14M5 17h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- =========================
+       Mobile nav drawer
+       ========================= -->
+  <aside class="mobile-drawer" id="mobileNav" aria-hidden="true" data-mobile-drawer>
+    <div class="mobile-drawer__backdrop" data-mobile-close tabindex="-1" aria-hidden="true"></div>
+
+    <div class="mobile-drawer__panel" role="dialog" aria-modal="true" aria-label="Menu">
+      <div class="mobile-drawer__top">
+        <span class="mobile-drawer__brand">Menu</span>
+        <button class="icon-btn btn btn--ghost" type="button" data-mobile-close aria-label="Close menu">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="mobile-drawer__body">
+        <div class="mobile-drawer__media">
+          <img
+            src="assets/img/hero/mobile-menu/menu-hero.jpg"
+            alt="Scenic RidgeRelay preview"
+            class="mobile-drawer__hero"
+          />
+          <div class="mobile-drawer__overlay">
+            <p class="mobile-drawer__eyebrow">RidgeRelay</p>
+            <h3 class="mobile-drawer__headline">Find your next hike with a safety layer.</h3>
+          </div>
+        </div>
+
+        <nav class="mobile-nav" aria-label="Mobile navigation">
+          <a href="index.html#demo" class="mobile-nav__card" data-mobile-link>
+            <span class="mobile-nav__card-title">Featured trails</span>
+            <span class="mobile-nav__card-desc">Browse the main demo experience</span>
+          </a>
+
+          <a href="index.html#browse" class="mobile-nav__card" data-mobile-link>
+            <span class="mobile-nav__card-title">Browse activities</span>
+            <span class="mobile-nav__card-desc">Filter by hiking, running, backpacking, and more</span>
+          </a>
+
+          <a href="index.html#gear" class="mobile-nav__card" data-mobile-link>
+            <span class="mobile-nav__card-title">Safety essentials</span>
+            <span class="mobile-nav__card-desc">Quick videos for trail prep, gear, and essentials</span>
+          </a>
+
+          <a href="about.html" class="mobile-nav__card" data-mobile-link>
+            <span class="mobile-nav__card-title">About RidgeRelay</span>
+            <span class="mobile-nav__card-desc">Concept, constraints, and future direction</span>
+          </a>
+
+          <a href="safety.html" class="mobile-nav__card" data-mobile-link>
+            <span class="mobile-nav__card-title">Safety model</span>
+            <span class="mobile-nav__card-desc">Intent, guardrails, and escalation logic</span>
+          </a>
+
+          <div class="mobile-nav__actions">
+            <button class="btn btn--primary mobile-nav__cta" type="button" data-open-disclaimer">
+              Safety Disclaimer
+            </button>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </aside>
+
+  <!-- =========================
+       Main page content
+       ========================= -->
+  <main id="top">
+    <section class="section section--alt" aria-label="Page hero">
+      <div class="container section__head">
+        <h1 class="section__title">PAGE TITLE</h1>
+        <p class="section__desc">Short supporting intro for this page.</p>
+      </div>
+    </section>
+
+    <section class="section" aria-label="Page content">
+      <div class="container" style="display:grid; gap:16px;">
+        <article class="card" style="padding:20px;">
+          <h2 class="card__title">Section heading</h2>
+          <p class="muted">
+            Replace this content with your new page content.
+          </p>
+        </article>
+
+        <article class="card" style="padding:20px;">
+          <h2 class="card__title">Another section</h2>
+          <p class="muted">
+            This template mirrors the RidgeRelay site layout without copying the homepage content.
+          </p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <!-- =========================
+       Footer
+       ========================= -->
+  <footer class="footer" aria-label="Footer">
+    <div class="container footer__grid">
+
+      <div class="footer__brand">
+        <img src="assets/img/brand/rr-logo.png" alt="RidgeRelay" class="footer__wordmark">
+        <p class="muted">Prototype UI • No live services</p>
+      </div>
+
+      <div class="footer__col">
+        <h3 class="footer__title">Subscribe (demo)</h3>
+
+        <form class="subscribe" data-subscribe-form>
+          <input id="subEmail" class="input" type="email" placeholder="you@example.com" />
+          <button class="btn btn--primary" type="submit">Join</button>
+        </form>
+
+        <div class="store-badges">
+          <button class="badge">App Store</button>
+          <button class="badge">Google Play</button>
+        </div>
+      </div>
+
+      <div class="footer__col">
+        <h3 class="footer__title">Links</h3>
+        <ul class="footer__links">
+          <li><a href="index.html#demo">Demo</a></li>
+          <li><a href="index.html#privacy">Privacy</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="safety.html">Safety</a></li>
+          <li><a href="index.html#faq">Terms</a></li>
+          <li><a href="index.html#faq">FAQ</a></li>
+          <li><a href="index.html#faq">Accessibility</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__col">
+        <h3 class="footer__title">Social</h3>
+
+        <div class="social">
+          <a class="social__btn" href="#" aria-label="Instagram">
+            <svg class="icon" viewBox="0 0 24 24">
+              <rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.8"/>
+              <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/>
+              <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/>
+            </svg>
+          </a>
+
+          <a class="social__btn" href="#" aria-label="X">
+            <svg class="icon" viewBox="0 0 24 24">
+              <path d="M4 4l16 16M20 4L4 20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </a>
+
+          <a class="social__btn" href="#" aria-label="TikTok">
+            <svg class="icon" viewBox="0 0 24 24">
+              <path d="M14 3v10.5a3.5 3.5 0 1 1-3-3.45" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              <path d="M14 3c1.5 2 3.2 3 5 3" fill="none" stroke="currentColor" stroke-width="1.8"/>
+            </svg>
+          </a>
+
+          <a class="social__btn" href="#" aria-label="Pinterest">
+            <svg class="icon" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/>
+              <path d="M12 8a3 3 0 0 1 2.5 4.5c-.4.7-1 1.1-1.8 1.1-.6 0-1.1-.3-1.3-.8" fill="none" stroke="currentColor" stroke-width="1.8"/>
+            </svg>
+          </a>
+
+          <a class="social__btn" href="#" aria-label="Facebook">
+            <svg class="icon" viewBox="0 0 24 24">
+              <path d="M14 9h3V6h-3c-2 0-3 1-3 3v2H9v3h2v7h3v-7h2l1-3h-3V9c0-.6.4-1 1-1z" fill="currentColor"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <div class="container footer__bottom-inner">
+        <p class="footer__legal">
+          © 2026 RidgeRelay • Explore with confidence • @ridgerelay
+        </p>
+
+        <div class="footer__policies">
+          <a href="index.html#privacy">Privacy</a>
+          <span>•</span>
+          <a href="index.html#faq">Terms</a>
+          <span>•</span>
+          <a href="index.html#faq">Cookies</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- =========================
+       Auth modal
+       ========================= -->
+  <div class="modal" hidden data-auth-modal aria-hidden="true">
+    <div class="modal__backdrop" data-auth-close tabindex="-1" aria-hidden="true"></div>
+
+    <div class="modal__panel" role="dialog" aria-modal="true" aria-label="Account">
+      <div class="modal__top">
+        <h2 class="modal__title" data-auth-title>Log in</h2>
+        <button class="icon-btn btn btn--ghost" type="button" data-auth-close aria-label="Close account modal">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal__content">
+        <form id="auth-form" class="form">
+          <div class="form__split" data-auth-name-row hidden>
+            <div class="form__group">
+              <label class="form__label" for="authFirstName">First name</label>
+              <input class="input" id="authFirstName" type="text" />
+            </div>
+
+            <div class="form__group">
+              <label class="form__label" for="authLastName">Last name</label>
+              <input class="input" id="authLastName" type="text" />
+            </div>
+          </div>
+
+          <div class="form__group">
+            <label class="form__label" for="authEmail">Email</label>
+            <input class="input" id="authEmail" type="email" required />
+          </div>
+
+          <div class="form__group">
+            <label class="form__label" for="authPassword">Password</label>
+            <input class="input" id="authPassword" type="password" required />
+          </div>
+
+          <p class="form__hint">Prototype only — account data stays in this browser.</p>
+
+          <div class="form__actions">
+            <button class="btn btn--primary" type="submit" data-auth-submit>Log in</button>
+            <button class="btn btn--ghost" type="button" data-auth-switch>Need an account?</button>
+          </div>
+
+          <p class="form__status" id="auth-status" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================
+       Safety Disclaimer modal
+       ========================= -->
+  <div class="modal" hidden data-modal="disclaimer" aria-hidden="true">
+    <div class="modal__backdrop" data-modal-close tabindex="-1" aria-hidden="true"></div>
+    <div class="modal__panel" role="dialog" aria-modal="true" aria-label="Safety disclaimer">
+      <div class="modal__top">
+        <h2 class="modal__title">Safety disclaimer (prototype)</h2>
+        <button class="icon-btn btn btn--ghost" type="button" data-modal-close aria-label="Close disclaimer">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal__content">
+        <p><strong>This is a concept demo</strong> — no live tracking, no real GPS, no dispatch, no guarantee of safety outcomes.</p>
+        <ul>
+          <li>Always carry essentials and plan conservatively.</li>
+          <li>Conditions can change fast (weather, terrain, daylight).</li>
+          <li>In an emergency, contact local emergency services.</li>
+        </ul>
+        <p class="muted">
+          This prototype is intended to demonstrate interface design and safety planning concepts only.
+        </p>
+      </div>
+
+      <div class="modal__actions">
+        <button class="btn btn--primary" type="button" data-modal-close>Got it</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================
+     Template-only dev overlay
+     Ctrl + E toggles precision grid
+     ========================= -->
+<div class="dev-overlay" hidden data-dev-grid aria-hidden="true">
+  <div class="dev-container-guide"></div>
+  <div class="dev-overlay__coords" data-dev-coords>0, 0</div>
+</div>
+
+  <!-- Dev overlay -->
+  <div class="dev-grid" hidden data-dev-grid aria-hidden="true"></div>
+
+  <script src="https://forminit.com/sdk/v1/forminit.js"></script>
+  <script src="js/main.js" defer></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <button class="back-to-top" aria-label="Back to top" data-back-to-top>
+    ↑
+  </button>
+</body>
+</html>
