@@ -1067,11 +1067,29 @@ function updateDrawerHeart() {
 function setupPlanSessionCTA() {
   const btn = $("[data-plan-session]");
   if (!btn) return;
+
   btn.addEventListener("click", () => {
-    $("#plan")?.scrollIntoView?.({ behavior: prefersReducedMotion.matches ? "auto" : "smooth" });
+    const planSection = $("#plan");
+    const drawer = $("[data-drawer]");
+
+    // Close drawer first
+    if (window.__RR_DRAWER__?.close) {
+      window.__RR_DRAWER__.close();
+    } else if (drawer) {
+      drawer.classList.remove("is-open");
+      drawer.setAttribute("aria-hidden", "true");
+      drawer.setAttribute("hidden", "");
+    }
+
+    // Then scroll to the form
+    setTimeout(() => {
+      planSection?.scrollIntoView?.({
+        behavior: prefersReducedMotion.matches ? "auto" : "smooth",
+        block: "start"
+      });
+    }, 180);
   });
 }
-
  
 
   // ---------------------------
